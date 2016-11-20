@@ -1,0 +1,102 @@
+.picker-cover{
+    position: absolute;
+    background: rgba(32,32,32,0.4);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.picker{
+    &.picker-frame{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 280px;
+        z-index: 2;
+        background: #eee;
+    }
+    
+    & .picker-head{
+        width: 100%;
+        height: 40px;
+        padding: 5px;
+        box-sizing: border-box;
+        background: #fff;
+        text-align: right;
+    }
+    & .picker-btn-cancel,& .picker-btn-ok{
+        border: 1px solid #000;
+        display: inline-block;
+        font-size: 16px;
+        color: #fff;
+        padding: 4px 6px;
+    }
+    & .picker-btn-cancel{
+        background: #ff0000;
+        float: left;
+    }
+    & .picker-btn-ok{
+        background: #0000ff;
+    }
+    & .picker-selected{
+        
+    }
+    
+    & .picker-body{
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+    & .picker-body::before,& .picker-body::after{
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px solid #aaa;
+        content: '';
+        height: 0;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+    & .picker-body::after{
+        bottom:100px;
+    } 
+    & .picker-body::before{
+        top:100px;
+    }
+    
+    & .picker-pulley{
+        width: 50px;
+    }
+    
+    & .picker-pulley ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+       
+    }
+    
+    & .picker-pulley li{
+        display: block;
+        width: 50%;
+        height: 15px;
+        text-align: center;
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto auto;
+          background: black;
+          color: #fff;
+    }
+}
