@@ -42,23 +42,35 @@ function Pulley(list){
 	});
 	this.showLabel();
 
-	this.dom[0].addEventListener("touchstart", function(event){
-		that.lastY = event.touches[0].screenY;
+	function touchstart(event) {
+		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
+
+		that.lastY = point.screenY;
 		that.timeStamp = Date.now();
-		
-		cancelAnimationFrame(that.animationId)
-	});
-	this.dom[0].addEventListener("touchmove", function(event){
-		var yMove = event.touches[0].screenY - that.lastY;
+		that.starttouch = true;
+
+		cancelAnimationFrame(that.animationId);
+	}
+	this.dom[0].addEventListener("touchstart", touchstart);
+	this.dom[0].addEventListener("mousedown", touchstart);
+
+	function touchmove(event){
+		if(!that.starttouch){
+			return;
+		}
+
+		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
+
+		var yMove = point.screenY - that.lastY;
 		var _angle = yMove * (config.pulleyHeight - radius) / (config.pulleyHeight) * -1.0 / (radius * Math.PI * 2) * 360;
-		var angle = _angle + that.angle; 
-		
+		var angle = _angle + that.angle;
+
 		angle = Math.max(that.minAngle, angle);
 		angle = Math.min(that.maxAngle, angle);
-		
+
 		that.contains.css("transform","rotateX(" + angle + "deg)");
 		that.angle = angle;
-		that.lastY = event.touches[0].screenY;
+		that.lastY = point.screenY;
 		if(_angle){
 			that.speed = _angle / (Date.now() - that.timeStamp);
 		} else{
@@ -66,39 +78,47 @@ function Pulley(list){
 		}
 		that.timeStamp = Date.now();
 		that.showLabel();
-	});
-	
-	
-	this.dom[0].addEventListener("touchend", function(event){
+	}
+	this.dom[0].addEventListener("touchmove", touchmove);
+	this.dom[0].addEventListener("mousemove", touchmove);
+
+	function touchend(event){
+		if(!that.starttouch){
+			return;
+		}
+		that.starttouch = false;
+
 		that.lastY = 0;
 		cancelAnimationFrame(that.animationId)
-		
+
 		var angle = that.speed / 2 * config.pulleyTransitionTime;
-		var angle = angle + that.angle; 
-		
+		var angle = angle + that.angle;
+
 		angle = Math.max(that.minAngle, angle);
 		angle = Math.min(that.maxAngle, angle);
-		
+
 		angle = Math.round(angle / config.pulleyItemAngle) * config.pulleyItemAngle;
 
-		
+
 		that.speed = 0;
-		
+
 		var start = 0, during = 100;
-	    var _run = function() {
-	        start++;
-	        var top =easeOut(start, that.angle, angle - that.angle, during);
-	        that.contains.css("transform","rotateX(" + top + "deg)");
-	        that.angle = top;
-	        that.showLabel();
-	        if (top != angle) {
-	         	that.animationId = requestAnimationFrame(_run);
-	        } else {
-	        	console.log(1)
-	        }
-	    };
-	    _run();
-	});
+		var _run = function() {
+			start++;
+			var top =easeOut(start, that.angle, angle - that.angle, during);
+			that.contains.css("transform","rotateX(" + top + "deg)");
+			that.angle = top;
+			that.showLabel();
+			if (top != angle) {
+				that.animationId = requestAnimationFrame(_run);
+			} else {
+				console.log(1)
+			}
+		};
+		_run();
+	}
+	this.dom[0].addEventListener("touchend", touchend);
+	this.dom[0].addEventListener("mouseup", touchend);
 	
 }
 
