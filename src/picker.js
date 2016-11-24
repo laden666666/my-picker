@@ -1,11 +1,16 @@
 var frame = require("./frame");
 var Wheel = require("./wheel");
 var util = require("./util/util");
-var option = require("./option");
+var defaultOption = require("./option");
 var style = require("./style/style.scss");
 
+//Picker的私有变量key
+var KEY_OPTION = new Symbol("option");
+
 function Picker(option) {
-    util.extends({} ,option ,)
+    this[KEY_OPTION] = util.extends({} ,option , defaultOption);
+
+    this[KEY_OPTION].levelCount
 }
 
 var arr = [];
