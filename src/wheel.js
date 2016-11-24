@@ -1,22 +1,22 @@
 var $ = require("./util/domUtil");
 var config = require("./config");
 
-function Pulley(list){
+function Wheel(list){
 	if(Array.isArray(list)){
 		this.list = list;
 	} else {
 		throw new TypeError("list is not a array.")
 	}
 	//转轮主体
-	this.dom = $(`<div class='picker-pulley'>\
+	this.dom = $(`<div class='picker-wheel'>\
 					<ul></ul>\
-				</div>`).height(config.pulleyHeight);
+				</div>`).height(config.wheelHeight);
 	//转轮上面标签的容器，同时也是转动的轴
 	this.contains = this.dom.find('ul');
 	//最大转角
 	this.maxAngle = 0;
 	//最小转角
-	this.minAngle = -1 * config.pulleyItemAngle * (Math.max(0, this.list.length - 1) );
+	this.minAngle = -1 * config.wheelItemAngle * (Math.max(0, this.list.length - 1) );
 	//当前滚轮转角
 	this.angle = 0;
 	//速度，供触摸离开时候使用
@@ -25,14 +25,14 @@ function Pulley(list){
 	this.timeStamp = 0;
 	
 	
-	var radius = config.pulleyHeight / Math.sqrt(5);
+	var radius = config.wheelHeight / Math.sqrt(5);
 	
 	//生成滚轮
 	var that = this;
 	this.list.forEach(function(item,index){
 		var li = $("<li>").text(item);
-		var angle = config.pulleyItemAngle * index;
-		var height = radius * Math.PI * config.pulleyItemAngle / 180;
+		var angle = config.wheelItemAngle * index;
+		var height = radius * Math.PI * config.wheelItemAngle / 180;
 		
 		li.css("transform","rotateX(" + angle + "deg) translateZ(" + radius + "px)")
 		.height(height)	
@@ -62,7 +62,7 @@ function Pulley(list){
 		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
 
 		var yMove = point.screenY - that.lastY;
-		var _angle = yMove * (config.pulleyHeight - radius) / (config.pulleyHeight) * -1.0 / (radius * Math.PI * 2) * 360;
+		var _angle = yMove * (config.wheelHeight - radius) / (config.wheelHeight) * -1.0 / (radius * Math.PI * 2) * 360;
 		var angle = _angle + that.angle;
 
 		angle = Math.max(that.minAngle, angle);
@@ -91,13 +91,13 @@ function Pulley(list){
 		that.lastY = 0;
 		cancelAnimationFrame(that.animationId)
 
-		var angle = that.speed / 2 * config.pulleyTransitionTime;
+		var angle = that.speed * Math.abs( that.speed) * 2 * config.wheelTransitionTime;
 		var angle = angle + that.angle;
 
 		angle = Math.max(that.minAngle, angle);
 		angle = Math.min(that.maxAngle, angle);
 
-		angle = Math.round(angle / config.pulleyItemAngle) * config.pulleyItemAngle;
+		angle = Math.round(angle / config.wheelItemAngle) * config.wheelItemAngle;
 
 
 		that.speed = 0;
@@ -122,7 +122,7 @@ function Pulley(list){
 	
 }
 
-Pulley.prototype.showLabel = function(){
+Wheel.prototype.showLabel = function(){
 	var that = this;
 	this.dom.find("li").each(function(index, li){
 		li = $(li);
@@ -149,4 +149,4 @@ function easeInOut(t, b, c, d) {
 }
 
 
-module.exports = Pulley;
+module.exports = Wheel;

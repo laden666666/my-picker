@@ -15,8 +15,8 @@ var frame =
 		<div class="picker-body">\
 			
 		</div>\
-	</div>`).height(config.pulleyHeight + 40) //.hide();
-frame.find(".picker-body").css("perspective",(config.pulleyHeight) + "px")
+	</div>`).height(config.wheelHeight + 40) //.hide();
+frame.find(".picker-body").css("perspective",(config.wheelHeight) + "px")
 
 document.addEventListener("DOMContentLoaded",function(){
 	$("body").append(frame).append(cover);

@@ -213,7 +213,7 @@
 		"idle": {
 			"resources": [
 				"src/frame.js",
-				"src/pulley.js",
+				"src/wheel.js",
 				"run.bat",
 				"src/util/util.js",
 				"src/config.js",
