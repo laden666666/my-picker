@@ -6,6 +6,8 @@
     right: 0;
     bottom: 0;
     z-index: 1;
+
+    user-select: none;
 }
 
 .picker{
@@ -68,11 +70,11 @@
         top:100px;
     }
     
-    & .picker-pulley{
+    & .picker-wheel{
         width: 50px;
     }
     
-    & .picker-pulley ul{
+    & .picker-wheel ul{
         list-style: none;
         padding: 0;
         margin: 0;
@@ -84,7 +86,7 @@
        
     }
     
-    & .picker-pulley li{
+    & .picker-wheel li{
         display: block;
         width: 50%;
         height: 15px;
@@ -96,7 +98,8 @@
         bottom: 0;
         left: 0;
         margin: auto auto;
-          background: black;
-          color: #fff;
+        //background: black;
+        //color: #fff;
+        -webkit-user-select: none;
     }
 }

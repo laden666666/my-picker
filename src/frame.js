@@ -5,18 +5,34 @@ var config = require("./config");
 var cover = $("<div class='picker-cover'>")//.hide();
 
 //构建主框架
+function  Frame() {
+	this.frame =
+		$('<div class="picker picker-frame">'
+			+ '<div class="picker-head">'
+				+ '<a class="picker-btn-cancel">取消</a>'
+				+ '<span class="picker-selected">已选0</span>'
+				+ '<a class="picker-btn-ok">确定</a>'
+			+ '</div>'
+			+ '<div class="picker-body"></div>'
+		+ '</div>').height(config.wheelHeight + 40); //.hide();
+	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "px")
+
+	document.addEventListener("DOMContentLoaded",function(){
+		$("body").append(this.frame).append(cover);
+	})
+}
+
+
 var frame = 
-	$(`<div class="picker picker-frame">\
-		<div class="picker-head">\
-			<a class="picker-btn-cancel">取消</a>\
-			<span class="picker-selected">已选0</span>\
-			<a class="picker-btn-ok">确定</a>\
-		</div>\
-		<div class="picker-body">\
-			
-		</div>\
-	</div>`).height(config.pulleyHeight + 40) //.hide();
-frame.find(".picker-body").css("perspective",(config.pulleyHeight) + "px")
+	$('<div class="picker picker-frame">'
+		+ '<div class="picker-head">'
+			+ '<a class="picker-btn-cancel">取消</a>'
+			+ '<span class="picker-selected">已选0</span>'
+			+ '<a class="picker-btn-ok">确定</a>'
+		+ '</div>'
+		+ '<div class="picker-body"></div>'
+	+ '</div>').height(config.wheelHeight + 40) //.hide();
+frame.find(".picker-body").css("perspective",(config.wheelHeight) + "px")
 
 document.addEventListener("DOMContentLoaded",function(){
 	$("body").append(frame).append(cover);
