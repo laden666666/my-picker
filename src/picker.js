@@ -5,12 +5,26 @@ var defaultOption = require("./option");
 var style = require("./style/style.scss");
 
 //Picker的私有变量key
+//配置
 var KEY_OPTION = new Symbol("option");
+//滚轮列表
+var KEY_WHEELS = new Symbol("wheels");
+//主框架
+var KEY_FRAME = new Symbol("frame");
 
 function Picker(option) {
-    this[KEY_OPTION] = util.extends({} ,option , defaultOption);
+    //用用户配置,覆盖默认配置,生成当前控件的实例的配置
+    this[KEY_OPTION] = util.extends({} , defaultOption ,option);
 
-    this[KEY_OPTION].levelCount
+    //构造滚轮
+    var i = 0, wheel;
+    for(i = 0; i < this[KEY_OPTION].levelCount ; i++){
+        wheel = new Wheel(arr);
+
+        frame.body().append(wheel.dom );
+    }
+
+
 }
 
 var arr = [];

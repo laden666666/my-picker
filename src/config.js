@@ -1,12 +1,11 @@
 /**
  * 私有配置
- *  wheelHeight: number			滚轮的高度
- *  wheelItemAngle: number			每个可选项在滚轮上的角度
- *  wheelTransitionTime: number	滚轮的惯性减速滑动时间
- *
  */
 module.exports = {
+	//滚轮的高度
 	wheelHeight : 240,
+	//每个可选项在滚轮上的角度
 	wheelItemAngle : 15,
+	//滚轮因惯性而发生的减速滑动时间
 	wheelTransitionTime : 400,
 }
