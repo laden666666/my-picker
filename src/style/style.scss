@@ -62,6 +62,8 @@
         height: 0;
         -webkit-transform-style: preserve-3d;
         transform-style: preserve-3d;
+        -webkit-pointer-events: none;
+        pointer-events: none;
     }
     & .picker-body::after{
         bottom:100px;

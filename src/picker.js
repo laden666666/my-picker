@@ -20,21 +20,27 @@ function Picker(option) {
     this[KEY_FRAME] = new Frame();
 
     //构造滚轮
+    this[KEY_WHEELS] = [];
     var i = 0, wheel;
     for(i = 0; i < this[KEY_OPTION].levelCount ; i++){
+		wheel = new Wheel(this, this[KEY_OPTION], i);
+		this[KEY_WHEELS].push(wheel);
+		this[KEY_FRAME].body().append(wheel.dom );
     }
-
-	var arr = [];
-	for(var i = 0; i < 100; i++) arr.push(i);
-	var wheel = new Wheel(arr);
-	var wheel2 = new Wheel(arr);
-	//var wheel3 = new Wheel(arr);
-	
-	this[KEY_FRAME].body().append(wheel.dom );
-	this[KEY_FRAME].body().append(wheel2.dom );
 }
 
+Picker.prototype.setLabel = function(index, list){
+    this[KEY_WHEELS][index].setOption(list);
+}
+
+Picker.prototype.selectOption = function(index, value){
+    this[KEY_WHEELS][index].selectOption(value);
+}
+
+
+
 window.picker = function(option){
-	new Picker(option);
+	return new Picker(option);
 };
-window.picker()
+window._picker = window.picker();
+window._picker.setLabel(0,[1,2,3,4,5])
