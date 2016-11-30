@@ -26,6 +26,15 @@ function Picker(option) {
 		wheel = new Wheel(this, this[KEY_OPTION], i);
 		this[KEY_WHEELS].push(wheel);
 		this[KEY_FRAME].body().append(wheel.dom );
+
+        //重写wheel的onSelectItem事件
+        var that = this;
+        wheel.$onSelectItem = function (index, value) {
+            //如果用户注册了onSelectItem
+            if(typeof that[KEY_OPTION].onSelectItem == 'function'){
+                that[KEY_OPTION].onSelectItem(index, value);
+            }
+        }
     }
 }
 
@@ -42,5 +51,11 @@ Picker.prototype.selectOption = function(index, value){
 window.picker = function(option){
 	return new Picker(option);
 };
-window._picker = window.picker();
-window._picker.setLabel(0,[1,2,3,4,5])
+window._picker = window.picker({
+    levelCount : 2,
+    onSelectItem : function (index, value) {
+        if(index == 0 )
+            window._picker.setLabel(1,[value + 1,value + 2,value + 3,value + 4,value + 5]);
+    }
+});
+window._picker.setLabel(0,[1,2,3,4,5]);
