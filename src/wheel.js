@@ -32,7 +32,7 @@ function Wheel(picker, option, index){
 	//滚轮的实际半径,因为有透视效果,所以滚轮实际半径比容器的高度的一半还小。根据勾股定理,计算得实际半径是容器高度的根号5分之1
 	this.radius = config.wheelHeight / Math.sqrt(5);
 	//计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
-	this.visibleAngle = 90 - Math.acos(this.radius / config.wheelHeight / 2) / Math.PI * 180;
+	this.visibleAngle = 90 - (Math.acos(this.radius / config.wheelHeight * 2) / Math.PI * 180);
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	this.isPerspective = this.option.isPerspective;
 
@@ -248,7 +248,7 @@ Wheel.prototype.selectIndex = function(index, showAnimation){
 
 	var angle = this.calcAngleBySelectedIndex(index);
 	animationUtil.stopAnimation(this.animationId);
-	
+
 	if(showAnimation){
 
 		//用100帧渲染动画,并使用easeOut,使其有匀减速效果
@@ -339,7 +339,7 @@ Wheel.prototype.flushLabel = function(){
 	this.dom.find("li").each(function(index, li){
 		li = $(li);
 		var angle = li.data("angle") + that.angle;
-		if(angle > this.visibleAngle || angle < (-this.visibleAngle)){
+		if(angle > that.visibleAngle || angle < (-that.visibleAngle)){
 			if(li.css("display") != "none"){
 				li.css("display","none");
 			}

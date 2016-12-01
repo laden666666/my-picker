@@ -20,6 +20,7 @@ function  Frame() {
 	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "px")
 
 	$("body").append(this.frame).append(this.cover);
+
 }
 
 

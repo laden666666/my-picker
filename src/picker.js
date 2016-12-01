@@ -52,10 +52,25 @@ window.picker = function(option){
 	return new Picker(option);
 };
 window._picker = window.picker({
-    levelCount : 2,
+    levelCount : 3,
     onSelectItem : function (index, value) {
-        if(index == 0 )
-            window._picker.setLabel(1,[value + 1,value + 2,value + 3,value + 4,value + 5]);
     }
 });
-window._picker.setLabel(0,[1,2,3,4,5]);
+
+var year = [];
+for(var i = 16; i < 30 ; i++){
+    year.push(i + 2000);
+}
+var month = [];
+for(var i = 0; i < 12 ; i++){
+    month.push(i);
+}
+var day = [];
+for(var i = 0; i < 31 ; i++){
+    day.push(i);
+}
+
+
+window._picker.setLabel(0,year);
+window._picker.setLabel(1,month);
+window._picker.setLabel(2,day);
