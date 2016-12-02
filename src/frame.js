@@ -9,15 +9,16 @@ function  Frame() {
 	this.cover = $("<div class='picker-cover'>")//.hide();
 	
 	this.frame =
-		$('<div class="picker picker-frame">'
+		$('<header class="picker picker-frame">'
 			+ '<div class="picker-head">'
 				+ '<a class="picker-btn-cancel">取消</a>'
+				+ '<h4 class="picker-title"></h4>'
 				+ '<span class="picker-selected">已选0</span>'
 				+ '<a class="picker-btn-ok">确定</a>'
 			+ '</div>'
 			+ '<div class="picker-body"></div>'
-		+ '</div>').height(config.wheelHeight + 40); //.hide();
-	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "px")
+		+ '</header>').height((config.wheelHeight + 15) + "vmin"); //.hide();
+	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin")
 
 	$("body").append(this.frame).append(this.cover);
 

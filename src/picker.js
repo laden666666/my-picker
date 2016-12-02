@@ -4,7 +4,7 @@ var util = require("./util/util");
 var defaultOption = require("./option");
 var style = require("./style/style.scss");
 
-//Picker的私有变量key
+//Picker的私有成员的key
 //配置
 var KEY_OPTION = Symbol("option");
 //滚轮列表
@@ -23,6 +23,9 @@ function Picker(option) {
     this[KEY_WHEELS] = [];
     var i = 0, wheel;
     for(i = 0; i < this[KEY_OPTION].levelCount ; i++){
+
+
+        //设置滚轮
 		wheel = new Wheel(this, this[KEY_OPTION], i);
 		this[KEY_WHEELS].push(wheel);
 		this[KEY_FRAME].body().append(wheel.dom );
@@ -35,6 +38,8 @@ function Picker(option) {
                 that[KEY_OPTION].onSelectItem(index, value);
             }
         }
+
+        wheel.setSuffix('年')
     }
 }
 
@@ -53,6 +58,7 @@ window.picker = function(option){
 };
 window._picker = window.picker({
     levelCount : 3,
+    itemsSuffix : ['年','月','日'],
     onSelectItem : function (index, value) {
     }
 });
@@ -63,11 +69,11 @@ for(var i = 16; i < 30 ; i++){
 }
 var month = [];
 for(var i = 0; i < 12 ; i++){
-    month.push(i);
+    month.push(i + 1);
 }
 var day = [];
 for(var i = 0; i < 31 ; i++){
-    day.push(i);
+    day.push(i + 1);
 }
 
 

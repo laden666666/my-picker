@@ -31,10 +31,14 @@ module.exports = {
 	onChickCheck : null,
 
 	///////////////显示相关
+	//显示的字体,只支持数字,单位是px
+	fontSize: 15,
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	isPerspective : true,
 	//是否显示按钮,如果显示按钮
 	showButton: true,
+	//标题
+	title: '',
 	//显示按钮的名称,第一个是按钮是确定,第二个是取消。
 	buttons:["确定","取消"],
 	/**

@@ -18,8 +18,10 @@ function Wheel(picker, option, index){
 	//转轮主体
 	this.dom = $(
 		'<div class="picker-wheel">'
+		+ '<div class="picker-label"></div>'
 		+ '<ul></ul>'
-		+ '</div>').height(config.wheelHeight);
+		+ '<div class="picker-label"></div>'
+		+ '</div>').height((config.wheelHeight) + 'vmin');
 
 	//转轮上面标签的容器，同时也是转动的轴
 	this.contains = this.dom.find('ul');
@@ -35,6 +37,10 @@ function Wheel(picker, option, index){
 	this.visibleAngle = 90 - (Math.acos(this.radius / config.wheelHeight * 2) / Math.PI * 180);
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	this.isPerspective = this.option.isPerspective;
+	//获取1vmin的实际像素值
+	this.vmin = Math.min(screen.availWidth, screen.availHeight) / 100;
+	//获得控件到body最顶端的距离
+	this.offsetTop = 0;
 
 	////////////////////滚动属性
 	//当前滚轮转角
@@ -66,6 +72,7 @@ function Wheel(picker, option, index){
 	var that = this;
 	//注册拖拽开始事件
 	function startDrag(event) {
+		console.log(event)
 		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
 		that.startDrag(point.screenY);
 	}
@@ -87,6 +94,8 @@ function Wheel(picker, option, index){
 	this.dom[0].addEventListener("touchend", endDrag);
 	this.dom[0].addEventListener("mouseup", endDrag);
 
+	//初始化标签
+	this.dom.find(".picker-label").css("transform","translateZ(" + this.radius + "vmin)");
 }
 
 /////////////////////////////////拖拽相关事件
@@ -100,6 +109,10 @@ Wheel.prototype.startDrag = function (screenY) {
 	this.lastY = screenY;
 	this.timeStamp = Date.now();
 	this.isDraging = true;
+	this.offsetTop = this.dom[0].offsetTop;
+	for(var parent = this.dom[0].parentElement;parent; parent = parent.parentElement){
+		this.offsetTop += parent.offsetTop;
+	}
 
 	//终止之前的动画
 	animationUtil.stopAnimation(this.animationId);
@@ -116,7 +129,8 @@ Wheel.prototype.drag = function (screenY) {
 
 	//根据触摸位移(鼠标移动位移)计算转角变化量,由于透视关系,所以实际位移需要做一次变换
 	var yMove = screenY - this.lastY;
-	var changeAngle = yMove * (config.wheelHeight - this.radius) / (config.wheelHeight) * -1.0 / (this.radius * Math.PI * 2) * 360;
+	var changeAngle = (yMove / this.vmin) * (config.wheelHeight - this.radius) / (config.wheelHeight) * -1.0 /
+		(this.radius * Math.PI * 2) * 360;
 	var angle = changeAngle + this.angle;
 
 	//记录当前角度
@@ -141,7 +155,7 @@ Wheel.prototype.endDrag = function () {
 	}
 
 	//速度*4,做均减少运动,计算滚动后的angle。之所以乘4是根据偏移效果经验得到的
-	var changeAngle = this.speed * Math.abs( this.speed) * 2 * config.wheelTransitionTime;
+	var changeAngle = this.speed * Math.abs( this.speed) * 8 * config.wheelTransitionTime;
 	var angle = changeAngle + this.angle;
 
 	//根据角度计算最终的被选值
@@ -202,9 +216,9 @@ Wheel.prototype.setOption = function (list, selectedValue) {
 		var li = $("<li>").text(item);
 		var angle = config.wheelItemAngle * index;
 
-		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "px)")
-			.height(height)
-			.css("line-height", height + "px");
+		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin)")
+			.height((height) + "vmin")
+			.css("line-height", height + "vmin");
 		//将标签的角度保存到其dom中
 		li.data("angle", angle);
 		//将标签的index保存到其dom中
@@ -349,6 +363,22 @@ Wheel.prototype.flushLabel = function(){
 			}
 		}
 	})
+}
+
+/////////////////////////////设置前缀后缀
+/**
+ * 设置后缀
+ * @param text			后缀显示的文本
+ */
+Wheel.prototype.setSuffix = function (text) {
+	$(this.dom.find('.picker-label')[1]).text(text);
+}
+/**
+ * 设置前缀
+ * @param text			前缀显示的文本
+ */
+Wheel.prototype.setPrefix = function (text) {
+	$(this.dom.find('.picker-label')[0]).text(text);
 }
 
 /////////////////////////////wheel事件相关
