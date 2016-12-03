@@ -72,7 +72,6 @@ function Wheel(picker, option, index){
 	var that = this;
 	//注册拖拽开始事件
 	function startDrag(event) {
-		console.log(event)
 		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
 		that.startDrag(point.screenY);
 	}
@@ -128,8 +127,8 @@ Wheel.prototype.drag = function (screenY) {
 	}
 
 	//根据触摸位移(鼠标移动位移)计算转角变化量,由于透视关系,所以实际位移需要做一次变换
-	var yMove = screenY - this.lastY;
-	var changeAngle = (yMove / this.vmin) * (config.wheelHeight - this.radius) / (config.wheelHeight) * -1.0 /
+	var yMove = this.lastY - screenY;
+	var changeAngle = (yMove / this.vmin) * (config.wheelHeight - this.radius) / (config.wheelHeight) /
 		(this.radius * Math.PI * 2) * 360;
 	var angle = changeAngle + this.angle;
 
@@ -191,7 +190,7 @@ Wheel.prototype.setOption = function (list, selectedValue) {
 	this.valueHashMap = {};
 
 	//计算最小转角
-	this.minAngle = -1 * config.wheelItemAngle * (Math.max(0, this.list.length - 1) );
+	this.maxAngle = config.wheelItemAngle * (Math.max(0, this.list.length - 1) );
 
 	//生成滚轮的标签
 	//标签的index
@@ -214,7 +213,7 @@ Wheel.prototype.setOption = function (list, selectedValue) {
 
 		//创建label的显示dom,并计算他在容器中的位置(角度)
 		var li = $("<li>").text(item);
-		var angle = config.wheelItemAngle * index;
+		var angle = config.wheelItemAngle * -index;
 
 		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin)")
 			.height((height) + "vmin")
@@ -321,7 +320,7 @@ Wheel.prototype.setAngle = function(angle){
  */
 Wheel.prototype.calcSelectedIndexByAngle = function (angle) {
 	angle = this.rangeAngle(angle);
-	return Math.round(Math.abs(angle / -config.wheelItemAngle));
+	return Math.round(Math.abs(angle / config.wheelItemAngle));
 }
 
 /**
@@ -330,7 +329,7 @@ Wheel.prototype.calcSelectedIndexByAngle = function (angle) {
  * @returns {number}		被选项id
  */
 Wheel.prototype.calcAngleBySelectedIndex = function (index) {
-	return index * -config.wheelItemAngle;
+	return index * config.wheelItemAngle;
 }
 
 /**
