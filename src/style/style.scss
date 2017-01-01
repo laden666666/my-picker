@@ -20,6 +20,8 @@
         background: #fff;
         width: 100vmin;
         margin: 0 auto;
+        -webkit-user-select: none;
+        user-select: none;
     }
     
     & .picker-head{

@@ -5,6 +5,7 @@
 var $ = require("./util/domUtil");
 var animationUtil = require("./util/animationUtil");
 var config = require("./config");
+var intersectionY = require("./wheel/intersectionY")
 
 function Wheel(picker, option, index){
 
@@ -39,7 +40,7 @@ function Wheel(picker, option, index){
 	this.isPerspective = this.option.isPerspective;
 	//获取1vmin的实际像素值
 	this.vmin = Math.min(screen.availWidth, screen.availHeight) / 100;
-	//获得控件到body最顶端的距离
+	//获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
 	this.offsetTop = 0;
 
 	////////////////////滚动属性
@@ -53,7 +54,7 @@ function Wheel(picker, option, index){
 	this.speed = 0;
 	//当前时间戳,主要是计算转动速度使用的
 	this.timeStamp = 0;
-	//记录上一次触摸节点的screenY,主要是是计算转动速度使用的
+	//记录上一次触摸节点的offsetY,主要是是计算转动速度使用的
 	this.lastY = 0;
 	//是否开始触摸,主要给鼠标事件使用
 	this.isDraging = false;
@@ -72,16 +73,24 @@ function Wheel(picker, option, index){
 	var that = this;
 	//注册拖拽开始事件
 	function startDrag(event) {
-		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
-		that.startDrag(point.screenY);
+		//计算offsetTop,为计算触摸事件的offset使用
+		var target = event.currentTarget;
+		that.offsetTop = 0;
+		while (target){
+			that.offsetTop += target.offsetTop;
+			var target = target.parentElement;
+		}
+
+		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.offsetY;
+		that.startDrag(offsetY);
 	}
 	this.dom[0].addEventListener("touchstart", startDrag);
 	this.dom[0].addEventListener("mousedown", startDrag);
 
 	//注册拖拽事件
 	function drag(event){
-		var point = event.touches ?  event.touches[0] : {screenY: event.screenY,screenX: event.screenX};
-		that.drag(point.screenY);
+		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.offsetY;
+		that.drag(offsetY);
 	}
 	this.dom[0].addEventListener("touchmove", drag);
 	this.dom[0].addEventListener("mousemove", drag);
@@ -101,11 +110,11 @@ function Wheel(picker, option, index){
 /**
  *
  * 开始拖拽
- * @param screenY			当前用户手指(鼠标)的y坐标
+ * @param offsetY			当前用户手指(鼠标)的y坐标
  */
-Wheel.prototype.startDrag = function (screenY) {
-	//记录触摸相关信息,为下一步计算用
-	this.lastY = screenY;
+Wheel.prototype.startDrag = function (offsetY) {
+	//记录触摸相关信息,为下一步计算用.计算时候,要将坐标系移至中心,并将单位转为vm
+	this.lastY = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1 ;
 	this.timeStamp = Date.now();
 	this.isDraging = true;
 	this.offsetTop = this.dom[0].offsetTop;
@@ -119,24 +128,27 @@ Wheel.prototype.startDrag = function (screenY) {
 
 /**
  * 拖拽
- * @param screenY			当前用户手指(鼠标)的y坐标
+ * @param offsetY			当前用户手指(鼠标)的y坐标
  */
-Wheel.prototype.drag = function (screenY) {
+Wheel.prototype.drag = function (offsetY) {
 	if(!this.isDraging){
 		return;
 	}
 
-	//根据触摸位移(鼠标移动位移)计算转角变化量,由于透视关系,所以实际位移需要做一次变换
-	var yMove = this.lastY - screenY;
-	var changeAngle = (yMove / this.vmin) * (config.wheelHeight - this.radius) / (config.wheelHeight) /
-		(this.radius * Math.PI * 2) * 360;
+	//根据触摸位移(鼠标移动位移)计算转角变化量
+	//现将坐标系移植中心,并将单位转为vm
+	var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
+	//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
+
+	var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
+		/ Math.PI * 180;
 	var angle = changeAngle + this.angle;
 
 	//记录当前角度
 	this.setAngle(angle);
 
 	//计算并记录速度
-	this.lastY = screenY;
+	this.lastY = y;
 	if(changeAngle){
 		this.speed = changeAngle / (Date.now() - this.timeStamp);
 	} else{

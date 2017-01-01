@@ -52,6 +52,14 @@ Picker.prototype.selectOption = function(index, value){
 }
 
 
+Picker.prototype.setLabel = function(index, list){
+    this[KEY_WHEELS][index].setOption(list);
+}
+
+Picker.prototype.selectOption = function(index, value){
+    this[KEY_WHEELS][index].selectOption(value);
+}
+
 
 window.picker = function(option){
 	return new Picker(option);
