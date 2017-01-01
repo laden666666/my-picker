@@ -39,7 +39,7 @@ function Wheel(picker, option, index){
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	this.isPerspective = this.option.isPerspective;
 	//获取1vmin的实际像素值
-	this.vmin = Math.min(screen.availWidth, screen.availHeight) / 100;
+	this.vmin = Math.min(document.body.scrollWidth, document.body.scrollHeight) / 100;
 	//获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
 	this.offsetTop = 0;
 
@@ -81,7 +81,7 @@ function Wheel(picker, option, index){
 			var target = target.parentElement;
 		}
 
-		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.offsetY;
+		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.pageY - that.offsetTop;
 		that.startDrag(offsetY);
 	}
 	this.dom[0].addEventListener("touchstart", startDrag);
@@ -89,7 +89,7 @@ function Wheel(picker, option, index){
 
 	//注册拖拽事件
 	function drag(event){
-		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.offsetY;
+		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.pageY - that.offsetTop;
 		that.drag(offsetY);
 	}
 	this.dom[0].addEventListener("touchmove", drag);
@@ -101,6 +101,7 @@ function Wheel(picker, option, index){
 	}
 	this.dom[0].addEventListener("touchend", endDrag);
 	this.dom[0].addEventListener("mouseup", endDrag);
+
 
 	//初始化标签
 	this.dom.find(".picker-label").css("transform","translateZ(" + this.radius + "vmin)");
@@ -131,6 +132,7 @@ Wheel.prototype.startDrag = function (offsetY) {
  * @param offsetY			当前用户手指(鼠标)的y坐标
  */
 Wheel.prototype.drag = function (offsetY) {
+
 	if(!this.isDraging){
 		return;
 	}
@@ -138,6 +140,7 @@ Wheel.prototype.drag = function (offsetY) {
 	//根据触摸位移(鼠标移动位移)计算转角变化量
 	//现将坐标系移植中心,并将单位转为vm
 	var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
+	console.log(offsetY)
 	//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
 	var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
