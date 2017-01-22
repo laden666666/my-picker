@@ -3,24 +3,38 @@
  */
 module.exports = {
 	///////////////可选值相关
-	//级联的层级,默认是1级。最多支持3级
-	levelCount : 1,
-	//第一级可选项,是个数组。数组的值可以是字符串,也可以是对象,如果是对象必须为{[itemLabelKey]:xxx,[itemValeKey],xxx}结构
-	firstItems: [],
-	//如果items数组里的值是对象,其中显示的key
-	itemLabelKey : "label",
-	//如果items数组里的值是对象,其中值的key
-	itemValeKey: "vale",
-	//显示时候的前缀,是个数组,与行是对应关系
-	itemsPrefix: [],
-	//显示时候的后缀,是个数组,与行是对应关系
-	itemsSuffix: [],
+
+	/**
+	 * 列的配置,是个数组,数组每项一列,最多支持3列。如果cols的参数是一个json,将视为只有一列。
+	 * 一列的配置项的完整格式为一个json对象,如:
+	 * {
+     *  prefix: '第',
+     *  values: ['一', '二', '三', '四', '五'],
+     *  suffix: '章',
+     * }
+	 * prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
+	 *
+	 * 同时values里面的值可以是一个字符串,或者是一个json结构.如果是json结构,需要给出显示的key,和其值的key如:
+	 * {
+     *  labelKey: 'name',
+     *  valueKey: 'name',
+     *  values: [{name: '张三'},{name: '李四'},{name: '王五'}],
+     * }
+	 *
+	 * 如果一个配置项是一个数组,将视为列配置项仅存在values的情况,如
+	 * ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']
+     */
+	cols: [
+		[]
+	],
+
 	//已选择的对象。结构必须和items里面的值的结构一样
-	selected: [],
+	setValues: [],
 	/**
 	 * 用户转动滚轮停止时,响应的事件
 	 * @param level				被选值所在的层级,从0开始计数
-	 * @param selectedObj		被选值
+	 * @param selectedIndex		被选值在数组中的索引
+	 * @param selectedValue		被选值
      */
 	onSelectItem : null,
 	/**
@@ -28,7 +42,17 @@ module.exports = {
 	 * @param selectedObj		被选值
 	 * @param isSelected		是否被选中。如果是取消选择,值是false
 	 */
-	onChickCheck : null,
+	onChickCheckBox : null,
+
+	/**
+	 * 点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。接受一个返回值,如果返回值是false,picker不关闭,否则会关闭picker
+     */
+	onOkClick: null,
+
+	/**
+	 * 点击取消按钮的事件。执行后会关闭picker
+	 */
+	onCancelClick: null,
 
 	///////////////显示相关
 	//显示的字体,只支持数字,单位是px

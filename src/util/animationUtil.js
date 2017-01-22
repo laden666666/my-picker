@@ -42,6 +42,9 @@ module.exports = {
     stopAnimation : function (animationId) {
         cancelAnimationFrame(animationId);
     },
+    easeIn: function(t,b,c,d){
+        return c*(t/=d)*t*t*t + b;
+    },
     /**
      * 淡出效果
      * @param t

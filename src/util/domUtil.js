@@ -110,5 +110,5 @@
 //
 //
 //$.fn.init.prototype = $.fn;
-var $ = require("./jquery.min");
+var $ = require("jquery");
 module.exports = $;

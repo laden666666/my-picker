@@ -10,21 +10,23 @@ module.exports = {
     //输出的文件名,合并以后的js会命名为bundle.js
     output: {
         path: path.join(__dirname, "dist/"),
+        library: 'picker',
+        libraryTarget: 'umd',
         publicPath: "http://localhost:8088/dist/",
 		// 生成的打包文件名  
 		filename: 'picker.js'
     },
 	module: {
 		loaders: [{
-			test: /\.scss$/, 
+			test: /\.scss$/,
 			loader: "style!css!sass"
 		},{
 			test: /\.(css)$/,
-			// 多个加载器通过“!”连接  
+			// 多个加载器通过“!”连接
 			loader: 'style-loader!css-loader'
 		}, {
 			test: /\.(png|jpg)$/,
-			// url-loader 支持base64 编码的行内资源  
+			// url-loader 支持base64 编码的行内资源
 			loader: 'url-loader?size=8192'
 		}]
 	},

@@ -7,7 +7,7 @@ var animationUtil = require("./util/animationUtil");
 var config = require("./config");
 var intersectionY = require("./wheel/intersectionY")
 
-function Wheel(picker, option, index){
+function Wheel(picker, col, option, index){
 
 	///////////////////主要属性
 	//picker对象
@@ -48,6 +48,8 @@ function Wheel(picker, option, index){
 	this.angle = 0;
 	//当前被选值的index
 	this.selectedIndex = -1;
+	//被选值的值
+	this.selectedValue;
 	//记录惯性滑动动画的id
 	this.animationId = -1;
 	//速度，供触摸离开时候的惯性滑动动画使用
@@ -65,9 +67,9 @@ function Wheel(picker, option, index){
 	//根据值生成的hashmap,主要是为了快速获得value对应可选项的index
 	this.valueHashMap = {};
 	//如果items数组里的值是对象,其中显示的key
-	this.itemLabelKey = this.option.itemLabelKey;
+	this.labelKey = col.labelKey;
 	//如果items数组里的值是对象,其中值的key
-	this.itemValeKey = this.option.itemValeKey;
+	this.itemValeKey = col.valueKey;
 
 	////////////////////注册dom事件
 	var that = this;
@@ -105,6 +107,11 @@ function Wheel(picker, option, index){
 
 	//初始化标签
 	this.dom.find(".picker-label").css("transform","translateZ(" + this.radius + "vmin)");
+
+	//设置标签
+	this.setSuffix(col.suffix);
+	this.setPrefix(col.prefix);
+	this.setOptions(col.values, null, true)
 }
 
 /////////////////////////////////拖拽相关事件
@@ -140,7 +147,6 @@ Wheel.prototype.drag = function (offsetY) {
 	//根据触摸位移(鼠标移动位移)计算转角变化量
 	//现将坐标系移植中心,并将单位转为vm
 	var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
-	console.log(offsetY)
 	//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
 	var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
@@ -188,8 +194,10 @@ Wheel.prototype.endDrag = function () {
 /**
  * 生成用户可选的标签
  * @param list				用户可选项数组
+ * @param selectedValue		默认值
+ * @param isInti			是否是初始化,初始化不执行设置默认值操作
  */
-Wheel.prototype.setOption = function (list, selectedValue) {
+Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 	var that = this;
 
 	list = list || [];
@@ -217,9 +225,9 @@ Wheel.prototype.setOption = function (list, selectedValue) {
 
 	this.list.forEach(function(item,index){
 
-		//如果是对象,取itemLabelKey对应值显示。否则直接显示它本身
-		if(item instanceof Object){
-			label = item[that.itemLabelKey];
+		//如果是对象,取labelKey对应值显示。否则直接显示它本身
+		if(typeof item === 'object'){
+			label = item[that.labelKey];
 			that.valueHashMap[item[that.itemValeKey]] = i;
 		} else {
 			label = item;
@@ -246,12 +254,22 @@ Wheel.prototype.setOption = function (list, selectedValue) {
 	//刷新标签
 	this.flushLabel();
 
+	if(isInti){
+		return;
+	}
+
+	//设置被选值。如果用户给定被选值,使用给定被选值。如果没有且之前有被选值,并仍在新options里面,保存之前的值。都没有返回0
 	if(list.length > 0 ){
-		if(selectedValue !== undefined){
+		if(selectedValue != null && this.valueHashMap[selectedValue] != null){
 			this.selectOption(selectedValue);
+		} else if(this.valueHashMap[this.selectedValue] != null){
+			this.selectOption(this.selectedValue);
 		} else {
-			this.selectIndex(0);
+			this.selectIndex( 0);
 		}
+	} else {
+		this.selectedIndex = -1;
+		this.selectedValue = undefined;
 	}
 }
 
@@ -260,7 +278,7 @@ Wheel.prototype.setOption = function (list, selectedValue) {
  */
 Wheel.prototype.selectOption = function(value, showAnimation){
 	//如果valueHashMap里面没有value,表示没有这个标签,否则自动选中这个标签
-	if(this.valueHashMap[value] !== undefined){
+	if(this.valueHashMap[value] != null){
 		var index = this.valueHashMap[value];
 
 		this.selectIndex(index, showAnimation);
@@ -279,11 +297,11 @@ Wheel.prototype.selectIndex = function(index, showAnimation){
 
 	if(showAnimation){
 
-		//用100帧渲染动画,并使用easeOut,使其有匀减速效果
+		//用50帧渲染动画,并使用easeOut,使其有匀减速效果
 		//当前帧数
 		var start = 0,
 			//总帧数
-			during = 100,
+			during = 50,
 			that = this;
 		//动画渲染函数
 		var _run = function() {
@@ -297,7 +315,11 @@ Wheel.prototype.selectIndex = function(index, showAnimation){
 			} else {
 
 				that.selectedIndex = index;
-				that.toggleSelected(that.index, that.selectedIndex);
+				that.selectedValue = that.list[index];
+				if(typeof that.selectedValue == 'object'){
+					that.selectedValue = that.selectedValue[that.valueKey];
+				}
+				that.toggleSelected(that.selectedIndex, that.selectedValue);
 			}
 		};
 
@@ -307,7 +329,11 @@ Wheel.prototype.selectIndex = function(index, showAnimation){
 		//如果不显示动画,直接赋值
 		this.setAngle(angle);
 		this.selectedIndex = index;
-		this.toggleSelected(this.index, this.selectedIndex);
+		this.selectedValue = this.list[index];
+		if(typeof this.selectedValue == 'object'){
+			this.selectedValue = this.selectedValue[this.valueKey];
+		}
+		this.toggleSelected(this.selectedIndex, this.selectedValue);
 	}
 }
 
@@ -379,6 +405,13 @@ Wheel.prototype.flushLabel = function(){
 	})
 }
 
+/**
+ * 获取被选值
+ */
+Wheel.prototype.getValue = function(){
+	return this.selectedValue;
+}
+
 /////////////////////////////设置前缀后缀
 /**
  * 设置后缀
@@ -397,11 +430,18 @@ Wheel.prototype.setPrefix = function (text) {
 
 /////////////////////////////wheel事件相关
 /**
- *
+ * 触发回调函数的接口
+ * @param index			当前被选值的索引
+ * @param value			当前被选值的值
  */
 Wheel.prototype.toggleSelected = function (index, value) {
 	this.$onSelectItem(index, value);
 }
+/**
+ * 选择后的默认回调。会被packer覆盖掉
+ * @param index			当前被选值的索引
+ * @param value			当前被选值的值
+ */
 Wheel.prototype.$onSelectItem = function (index, value) {
 
 }

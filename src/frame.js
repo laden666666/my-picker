@@ -3,8 +3,13 @@ var config = require("./config");
 
 
 //构建主框架
-function  Frame() {
-	
+function  Frame(picker, option) {
+
+	//picker对象
+	this.picker = picker;
+	//option
+	this.option = option;
+
 	//构建cover
 	this.cover = $("<div class='picker-cover'>")//.hide();
 	
@@ -22,6 +27,24 @@ function  Frame() {
 
 	$("body").append(this.frame).append(this.cover);
 
+	//绑定主架的事件
+	var that = this;
+	this.frame.find(".picker-btn-cancel").on("click", function (event) {
+		if(typeof that.option.onCancelClick == 'function'){
+			that.option.onCancelClick.call(that.picker);
+		}
+		that.picker.hide();
+	});
+	this.frame.find(".picker-btn-ok").on("click", function (event) {
+		if(typeof that.option.onOkClick == 'function'){
+			var result = that.option.onOkClick.call(that.picker, picker.getValue());
+			if(result === false){
+				return;
+			}
+		}
+		that.picker.hide();
+	});
+
 }
 
 
@@ -38,7 +61,10 @@ Frame.prototype = {
 	showFrame : function(){
 		this.frame.show();
 	},
-	//
+	//显示frame
+	hideFrame : function(){
+		this.frame.hide();
+	},
 	dom: function(){
 		return this.frame;
 	},
