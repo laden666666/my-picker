@@ -69,7 +69,7 @@ function Wheel(picker, col, option, index){
 	//如果items数组里的值是对象,其中显示的key
 	this.labelKey = col.labelKey;
 	//如果items数组里的值是对象,其中值的key
-	this.itemValeKey = col.valueKey;
+	this.itemValueKey = col.valueKey;
 
 	////////////////////注册dom事件
 	var that = this;
@@ -228,7 +228,7 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 		//如果是对象,取labelKey对应值显示。否则直接显示它本身
 		if(typeof item === 'object'){
 			label = item[that.labelKey];
-			that.valueHashMap[item[that.itemValeKey]] = i;
+			that.valueHashMap[item[that.itemValueKey]] = i;
 		} else {
 			label = item;
 			that.valueHashMap[item] = i;
@@ -255,6 +255,18 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 	this.flushLabel();
 
 	if(isInti){
+		if(list.length > 0 ){
+			this.selectedIndex = 0;
+			if(typeof list[0] === 'object'){
+				this.selectedValue = this.list[0][this.itemValueKey];
+			} else {
+				this.selectedValue = this.list[0];
+			}
+		} else {
+			this.selectedIndex = -1;
+			this.selectedValue = undefined;
+		}
+
 		return;
 	}
 

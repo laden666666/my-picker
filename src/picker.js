@@ -3,7 +3,8 @@ var Wheel = require("./wheel");
 var Col = require("./wheel/col");
 var util = require("./util/util");
 var defaultOption = require("./option");
-var style = require("./style/style.scss");
+
+
 
 //Picker的私有成员的key
 //配置
@@ -25,10 +26,18 @@ function Picker(option) {
     //解析cols属性,将其转换为Cols的数组
     var cols = [], i= 0;
     if(Array.isArray(this[KEY_OPTION].cols)){
-        for(i =0; i < this[KEY_OPTION].cols.length; i++){
-            cols.push(new Col(this[KEY_OPTION].cols[i]))
+        //如果cols为空数组,或者里面的元素是字符串,表示仅一个滚轮,就是cols本身
+        if(this[KEY_OPTION].cols.length === 0 || typeof this[KEY_OPTION].cols[0] === 'string'){
+            cols.push(new Col(this[KEY_OPTION].cols))
+        } else {
+            //否则表示数组中的每个元素都是个滚轮
+            for(i =0; i < this[KEY_OPTION].cols.length; i++){
+                cols.push(new Col(this[KEY_OPTION].cols[i]))
+            }
         }
+
     } else {
+        //如果不是数组,表示有cols是一个json形式配置的滚轮
         cols.push(new Col(this[KEY_OPTION].cols));
     }
     this[KEY_COLS] = cols;
@@ -80,6 +89,13 @@ Picker.prototype.show = function () {
 Picker.prototype.hide = function () {
     this[KEY_FRAME].hideCover();
     this[KEY_FRAME].hideFrame();
+}
+
+/**
+ * 关闭
+ */
+Picker.prototype.close = function () {
+    this[KEY_FRAME].remove();
 }
 
 /**

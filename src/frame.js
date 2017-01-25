@@ -11,19 +11,24 @@ function  Frame(picker, option) {
 	this.option = option;
 
 	//构建cover
-	this.cover = $("<div class='picker-cover'>")//.hide();
+	this.cover = $("<div class='picker-cover' style='z-index: " + option.zIndex + "'>").hide();
 	
 	this.frame =
-		$('<header class="picker picker-frame">'
+		$('<header class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
 			+ '<div class="picker-head">'
-				+ '<a class="picker-btn-cancel">取消</a>'
+				+ '<a class="picker-btn-cancel"></a>'
 				+ '<h4 class="picker-title"></h4>'
 				+ '<span class="picker-selected">已选0</span>'
-				+ '<a class="picker-btn-ok">确定</a>'
+				+ '<a class="picker-btn-ok"></a>'
 			+ '</div>'
 			+ '<div class="picker-body"></div>'
-		+ '</header>').height((config.wheelHeight + 15) + "vmin"); //.hide();
-	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin")
+		+ '</header>').height((config.wheelHeight + 15) + "vmin").hide();
+	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin");
+
+	//设置标题按钮名
+	this.frame.find(".picker-title").text(option.title);
+	this.frame.find(".picker-btn-cancel").text( option.buttons[1] || '取消');
+	this.frame.find(".picker-btn-ok").text( option.buttons[0] || '确定');
 
 	$("body").append(this.frame).append(this.cover);
 
@@ -70,6 +75,10 @@ Frame.prototype = {
 	},
 	body: function(){
 		return this.frame.find('.picker-body');
+	},
+	//移除
+	remove:function () {
+		this.frame.remove();
 	}
 }
 

@@ -1,21 +1,10 @@
+# picker
+高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。
 
-/**
- * 没有透视效果，开了透视效果又没有透视的覆盖
- * 因为透视关系，环比父容器大，所以需要重新计算环的半径
- * 触摸问题，触摸的距离总是大，原因是因为透视关系，摸的是实际像素，看上去全是环面。因为环面有透视，所以需要换算
- * 触摸问题，父容器也参与转动，单转到90度时，再次触摸事件失效。所以还要加一个容器
- * 没有两端透视效果，所以让背景图也具备了透视效果，但是这样触摸滑动的区域就偏了，利用事件代理模式，调整了label高，解决了问题
- * 为了实现阻泥效果，利用css的Transition，但是发现计算显示隐藏又出现问题，
- *
- * 触摸的时候发现从父容器进入子容器无法触发子容器的触摸效果,因此需要进一步的事件委托
- * 没有充分利用屏幕的宽度,滚轮的宽度是定死的
- *
- * px和rem不统一造成的显示异常问题
- * 横屏问题。于是使用flex-basis加padding解决
- *
- * 怕影响效率,所以改用变换字体,这样不会引起回流
- *
- * 采用dom法会出现两边的滚轮再次出现触摸进入失灵。采用after和before无法修改,故采用
- *
- * 当容器装不下的时候,会出现bug
- */
+移动端demo效果图:![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
+
+pc端demo效果图:![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
+
+实际demo路径为：[我的博客](http://blog.csdn.net/guodongxiaren)
+
+具体使用文档请查看：[我的博客](http://blog.csdn.net/guodongxiaren)

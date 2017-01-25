@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
   "main": "dist/picker.js",
-  "scripts": {},
+  "scripts": {
+    "test": "webpack;mocha ./test/test.js",
+    "build": "NODE_ENV=production webpack",
+    "debug": "webpack-dev-server --content-base ./debugger --hot --inline"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/laden666666/picker.git"
@@ -14,8 +18,9 @@
   "author": "laden666666",
   "license": "MIT",
   "devDependencies": {
-    "chat": "^0.6.0",
+    "chai": "^3.5.0",
     "css-loader": "^0.25.0",
+    "jquery": "^3.1.1",
     "jsdom": "^9.9.1",
     "mocha": "^3.2.0",
     "mocha-cli": "^1.0.1",
@@ -30,7 +35,5 @@
     "url": "https://github.com/laden666666/picker/issues"
   },
   "homepage": "https://github.com/laden666666/picker#readme",
-  "dependencies": {
-    "jquery": "^3.1.1"
-  }
+  "dependencies": {}
 }
