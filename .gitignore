@@ -31,5 +31,4 @@ $RECYCLE.BIN/
 unpackage/
 node_modules/
 .tmp
-dist
 *.log
