@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>picker.js</title>
+    <meta name="description" content="高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。">
+    <meta name="author" content="laden666666"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+<div contenteditable="true">
+    <div id="wmd-preview-section-24" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h1 id="picker"
+            style="box-sizing: border-box; font-size: 2.6em; margin: 1.2em 0px 0.6em; font-family: inherit; line-height: 1.1; color: inherit; outline: none !important;">
+            picker</h1>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台。</p></div>
+    <div id="wmd-preview-section-5" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h3 id="安装方法"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1.7em; outline: none !important;">
+            安装方法:</h3>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            webpack中使用:</p></div>
+    <div id="wmd-preview-section-31" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs groovy"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;">npm install <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">git:</span><span
+                class="hljs-comment"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(117, 113, 94);">//github.com/laden666666/picker --save</span><br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            然后直接用reqiure引用即可</p></div>
+    <div id="wmd-preview-section-97" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs javascript"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;"><span
+                class="hljs-keyword"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">var</span> myValidation = <span
+                class="hljs-built_in"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">require</span>(<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">"picker"</span>);<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            如果是web环境直接script标签引用picker.js或者picker.js、link标签引用picker.css文件即可。</p>
+        <hr style="box-sizing: content-box; height: 0px; margin: 2em 0px; border-right: 0px; border-bottom: 0px; border-left: 0px; border-image: initial; border-top-style: solid; border-top-color: rgba(102, 128, 153, 0.0980392); line-height: 1.6; outline: none !important;">
+    </div>
+    <div id="wmd-preview-section-98" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h3 id="使用方法"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1.7em; outline: none !important;">
+            使用方法:</h3></div>
+    <div id="wmd-preview-section-107" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="初始化"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            初始化：</h5></div>
+    <div id="wmd-preview-section-236" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs stylus"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;">new <span
+                class="hljs-function"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);"><span
+                class="hljs-title"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(166, 226, 46);">picker</span><span
+                class="hljs-params"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(248, 248, 242);">(option)</span></span><br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            option是控件的初始化配置，具体配置项有：</p></div>
+    <div id="wmd-preview-section-534" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="cols"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            cols:</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            列的配置,是个数组,数组每项一列,一列的配置项的完整格式为一个json对象,最多支持3列。如:</p></div>
+    <div id="wmd-preview-section-702" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs prolog"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;">[{<br
+                style="box-sizing: border-box; outline: none !important;">    <span class="hljs-atom"
+                                                                                    style="box-sizing: border-box; outline: none !important; line-height: 1.6;">options</span>:[<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'1月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'2月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'3月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'4月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'5月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'6月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'7月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'8月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'9月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'10月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'11月'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'12月'</span>]<br
+                style="box-sizing: border-box; outline: none !important;">},{<br
+                style="box-sizing: border-box; outline: none !important;">    <span class="hljs-atom"
+                                                                                    style="box-sizing: border-box; outline: none !important; line-height: 1.6;">options</span>:[<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期一'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期二'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期三'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期四'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期五'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期六'</span>,<span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'星期日'</span>]<br
+                style="box-sizing: border-box; outline: none !important;">}]<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            如果cols的参数是一个json,将视为只有一列可选值列表,如:</p></div>
+    <div id="wmd-preview-section-661" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs css"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;"><span
+                class="hljs-rules" style="box-sizing: border-box; line-height: 1.6; outline: none !important;">{<br
+                style="box-sizing: border-box; outline: none !important;">    <span class="hljs-rule"
+                                                                                    style="box-sizing: border-box; outline: none !important; line-height: 1.6;"><span
+                class="hljs-attribute"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(102, 217, 239);">prefix</span>:<span
+                class="hljs-value" style="box-sizing: border-box; line-height: 1.6; outline: none !important;"> <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'第'</span>,<br
+                style="box-sizing: border-box; outline: none !important;">    options: [<span class="hljs-string"
+                                                                                              style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'一'</span>, <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'二'</span>, <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'三'</span>, <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'四'</span>, <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'五'</span>],<br
+                style="box-sizing: border-box; outline: none !important;">    suffix: <span class="hljs-string"
+                                                                                            style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'章'</span>,<br
+                style="box-sizing: border-box; outline: none !important;"></span></span></span>}<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。</p>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            同时options里面的值可以是一个字符串,也可以是一个json结构。如果是json结构,需要给出显示的key,和其值的key。如:</p></div>
+    <div id="wmd-preview-section-606" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs css"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;"><span
+                class="hljs-rules" style="box-sizing: border-box; line-height: 1.6; outline: none !important;">{<br
+                style="box-sizing: border-box; outline: none !important;">    <span class="hljs-rule"
+                                                                                    style="box-sizing: border-box; outline: none !important; line-height: 1.6;"><span
+                class="hljs-attribute"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(102, 217, 239);">labelKey</span>:<span
+                class="hljs-value" style="box-sizing: border-box; line-height: 1.6; outline: none !important;"> <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'name'</span>,<br
+                style="box-sizing: border-box; outline: none !important;">    valueKey: <span class="hljs-string"
+                                                                                              style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'name'</span>,<br
+                style="box-sizing: border-box; outline: none !important;">    options: [{name: <span class="hljs-string"
+                                                                                                     style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'张三'</span></span></span></span>},<span
+                class="hljs-rules" style="box-sizing: border-box; line-height: 1.6; outline: none !important;">{<span
+                class="hljs-rule" style="box-sizing: border-box; outline: none !important; line-height: 1.6;"><span
+                class="hljs-attribute"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(102, 217, 239);">name</span>:<span
+                class="hljs-value" style="box-sizing: border-box; line-height: 1.6; outline: none !important;"> <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'李四'</span></span></span></span>},<span
+                class="hljs-rules" style="box-sizing: border-box; line-height: 1.6; outline: none !important;">{<span
+                class="hljs-rule" style="box-sizing: border-box; outline: none !important; line-height: 1.6;"><span
+                class="hljs-attribute"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(102, 217, 239);">name</span>:<span
+                class="hljs-value" style="box-sizing: border-box; line-height: 1.6; outline: none !important;"> <span
+                class="hljs-string"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(230, 219, 116);">'王五'</span></span></span></span>}],<br
+                style="box-sizing: border-box; outline: none !important;">}<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            如果如果可选值列表只有一列,且是个字符串数组,可进一步简化配置为:</p></div>
+    <div id="wmd-preview-section-551" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs json"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;">['赵', '钱', '孙', '李', '周', '吴', '郑', '王']<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+    </div>
+    <div id="wmd-preview-section-762" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="setvalues"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            setValues:</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。</p></div>
+    <div id="wmd-preview-section-2073" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="onselectitem"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            onSelectItem:</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：</p></div>
+    <div id="wmd-preview-section-2074" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <pre class="prettyprint hljs-dark"
+             style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: 0.9em; white-space: pre-wrap; padding: 0px; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6; word-break: break-all; word-wrap: break-word; color: rgb(51, 51, 51); background: rgb(246, 246, 246); border: 0px; border-radius: 5px; outline: none !important;"><code
+                class="hljs gherkin"
+                style="box-sizing: border-box; font-family: ';Source Code Pro';, monospace; font-size: inherit; padding: 0.5em; color: rgb(248, 248, 242); background: rgb(35, 36, 31); border-radius: 0px; display: block; outline: none !important;">/<span
+                class="hljs-keyword"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span><span
+                class="hljs-keyword"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span><br
+                style="box-sizing: border-box; outline: none !important;"> <span class="hljs-keyword"
+                                                                                 style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span>用户转动滚轮停止时,响应的事件<br
+                style="box-sizing: border-box; outline: none !important;"> <span class="hljs-keyword"
+                                                                                 style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span><span
+                class="hljs-comment"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(117, 113, 94);">@param level              被选值所在的层级,从0开始计数</span><br
+                style="box-sizing: border-box; outline: none !important;"> <span class="hljs-keyword"
+                                                                                 style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span><span
+                class="hljs-comment"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(117, 113, 94);">@param selectedIndex      被选值在数组中的索引</span><br
+                style="box-sizing: border-box; outline: none !important;"> <span class="hljs-keyword"
+                                                                                 style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span><span
+                class="hljs-comment"
+                style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(117, 113, 94);">@param selectedValue      被选值</span><br
+                style="box-sizing: border-box; outline: none !important;"> <span class="hljs-keyword"
+                                                                                 style="box-sizing: border-box; outline: none !important; line-height: 1.6; color: rgb(249, 38, 114);">*</span>/<br
+                style="box-sizing: border-box; outline: none !important;">onSelectItem : null,<br
+                style="box-sizing: border-box; outline: none !important;"></code></pre>
+    </div>
+    <div id="wmd-preview-section-2115" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="hasvoice"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            hasVoice</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。</p></div>
+    <div id="wmd-preview-section-2425" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="title"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            title</h5>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">显示的标题。</p>
+    </div>
+    <div id="wmd-preview-section-2464" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="zindex"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            zIndex</h5>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            控件的z-index的属性值。</p></div>
+    <div id="wmd-preview-section-2465" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="onokclick"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            onOkClick</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            点击”确定按钮”的事件函数,函数会返回一个数组,数组里面是被选值。接受一个返回值,如果返回值是false,picker不关闭,否则会关闭picker。</p></div>
+    <div id="wmd-preview-section-3624" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="oncancelclick"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            onCancelClick</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            点击取消按钮的事件。执行后会关闭picker。</p>
+        <hr style="box-sizing: content-box; height: 0px; margin: 2em 0px; border-right: 0px; border-bottom: 0px; border-left: 0px; border-image: initial; border-top-style: solid; border-top-color: rgba(102, 128, 153, 0.0980392); line-height: 1.6; outline: none !important;">
+    </div>
+    <div id="wmd-preview-section-2824" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="显示隐藏相关api"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            显示隐藏相关api：</h5></div>
+    <div id="wmd-preview-section-3250" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypeshow-显示"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.show 显示</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            控件初始化完成后是隐藏状态，需要调用此接口显示。</p></div>
+    <div id="wmd-preview-section-3476" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypehide-隐藏"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.hide 隐藏</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            将显示出来的控件隐藏起来。</p></div>
+    <div id="wmd-preview-section-3678" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypeclose-关闭"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.close 关闭</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            删除控件，控件将不能再被打开。</p>
+        <hr style="box-sizing: content-box; height: 0px; margin: 2em 0px; border-right: 0px; border-bottom: 0px; border-left: 0px; border-image: initial; border-top-style: solid; border-top-color: rgba(102, 128, 153, 0.0980392); line-height: 1.6; outline: none !important;">
+    </div>
+    <div id="wmd-preview-section-3939" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="可选值列表相关api"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            可选值列表相关api：</h5></div>
+    <div id="wmd-preview-section-5255" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypesetoptionsindex-list-defaultvalue-设置可选值"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.setOptions(index, list, defaultValue) 设置可选值</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            这个函数可以动态地设置picker的可选值，参数含义如下：</p>
+        <ul style="box-sizing: border-box; outline: none !important; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6;">
+            <li style="box-sizing: border-box; outline: none !important; line-height: 1.6;">index 滚轮的index,从0开始记录</li>
+            <li style="box-sizing: border-box; outline: none !important; line-height: 1.6;">list 滚轮的可选值列表</li>
+            <li style="box-sizing: border-box; outline: none !important; line-height: 1.6;">defaultValue
+                默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值
+            </li>
+        </ul>
+    </div>
+    <div id="wmd-preview-section-5226" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypegetoptionsindex-获得可选值"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.getOptions(index) 获得可选值</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">略</p>
+        <hr style="box-sizing: content-box; height: 0px; margin: 2em 0px; border-right: 0px; border-bottom: 0px; border-left: 0px; border-image: initial; border-top-style: solid; border-top-color: rgba(102, 128, 153, 0.0980392); line-height: 1.6; outline: none !important;">
+    </div>
+    <div id="wmd-preview-section-5526" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h5 id="被选值相关api"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 1em; outline: none !important;">
+            被选值相关api：</h5></div>
+    <div id="wmd-preview-section-6208" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypesetvalueindex-list-defaultvalue-设置可选值"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.setValue(index, list, defaultValue) 设置可选值</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            设置滚轮的可选值，参数含义如下：</p>
+        <ul style="box-sizing: border-box; outline: none !important; margin-top: 0px; margin-bottom: 1.1em; line-height: 1.6;">
+            <li style="box-sizing: border-box; outline: none !important; line-height: 1.6;">param index
+                滚轮的index,从0开始记录
+            </li>
+            <li style="box-sizing: border-box; outline: none !important; line-height: 1.6;">param value
+                设置的值，是个数组，和cols里面配置的列一样
+            </li>
+        </ul>
+    </div>
+    <div id="wmd-preview-section-6581" class="wmd-preview-section preview-content"
+         style="box-sizing: border-box; line-height: 1.6; color: rgb(44, 63, 81); font-family: ';Helvetica Neue';, Arial, ';Hiragino Sans GB';, STHeiti, ';Microsoft YaHei';, ';WenQuanYi Micro Hei';, SimSun, Song, sans-serif; font-size: 16px; outline: none !important;">
+        <h6 id="pickerprototypegetvalueindex-获取可选值"
+            style="box-sizing: border-box; font-family: inherit; line-height: 1.6; color: inherit; margin: 1.2em 0px 0.6em; font-size: 0.85em; outline: none !important;">
+            Picker.prototype.getValue(index) 获取可选值</h6>
+        <p style="box-sizing: border-box; outline: none !important; margin: 0px 0px 1.1em; line-height: 1.6;">
+            获取滚轮的值,如果index为空表示获取所有滚轮的值。</p></div>
+</div>
+
+
+</body>
+</html>

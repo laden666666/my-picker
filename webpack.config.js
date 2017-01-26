@@ -1,6 +1,7 @@
 var path = require('path');
 var sass = require('node-sass');
 var fs = require("fs");
+var webpack = require('webpack');
 
 // sass编译
 if(process.env.NODE_ENV == 'production'){
@@ -39,6 +40,9 @@ module.exports = {
 		// 生成的打包文件名  
 		filename: 'picker.js'
     },
+    plugins: [
+        new webpack.optimize.MinChunkSizePlugin({})
+    ],
 	module: {
 		loaders: [{
 			test: /\.scss$/,
@@ -51,7 +55,10 @@ module.exports = {
 			test: /\.(png|jpg)$/,
 			// url-loader 支持base64 编码的行内资源
 			loader: 'url-loader?size=8192'
-		}]
+		}, {
+            test: /\.(wav|mp3)?$/,
+            loader: 'url-loader?limit=8192'
+        }]
 	},
     devServer: {
         historyApiFallback: true,

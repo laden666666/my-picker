@@ -9,15 +9,15 @@ function Cal(option) {
 
 
 
-    //如果option是一个数组,视为仅存在values的情况
+    //如果option是一个数组,视为仅存在options的情况
     if(Array.isArray(option)){
-        this.values = option;
+        this.options = option;
         this.prefix = "";
         this.suffix = "";
         this.labelKey = defaultLabelKey;
         this.valueKey = defaultValueKey;
     } else {
-        this.values = option.values || [];
+        this.options = option.options || [];
         this.prefix = option.prefix || "";
         this.suffix = option.suffix || "";
         this.labelKey = option.labelKey || defaultLabelKey;

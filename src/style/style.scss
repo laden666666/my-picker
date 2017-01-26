@@ -1,11 +1,16 @@
 .picker-cover{
-    position: absolute;
-    background: rgba(32,32,32,0.4);
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    height: 100vh;
+    width: 100vw;
     user-select: none;
+    background: transparent;
+    transition: 0.3s ease-out background;
+
+    &.s-open{
+        background:rgba(0,0,0,.6)
+    }
 }
 
 .picker{
@@ -20,6 +25,14 @@
         margin: 0 auto;
         -webkit-user-select: none;
         user-select: none;
+        -webkit-transform: translate3d(0,100vmin,0);
+        transform: translate3d(0,100vmin,0);
+        transition: 0.3s ease-out transform;
+
+        &.s-open{
+            -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+        }
     }
     
     & .picker-head{
@@ -27,7 +40,7 @@
         height: 15vmin;
         padding: 3vmin 5vmin;
         box-sizing: border-box;
-        background-color: #f7f7f8;
+        background: linear-gradient( to top, #fff 0%, #f7f7f8 100%);
         display: flex;
         font-size: 5vmin;
         line-height: 9vmin;
@@ -41,6 +54,8 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        padding: 0 5px;
+        font-weight: normal;
     }
     & .picker-btn-cancel,& .picker-btn-ok{
         color: #0894ec;
@@ -166,6 +181,7 @@
     }
     
     & .picker-wheel li{
+        cursor: pointer;
         display: block;
         width: 100%;
         text-align: center;

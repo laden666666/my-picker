@@ -14,16 +14,19 @@ function  Frame(picker, option) {
 	this.cover = $("<div class='picker-cover' style='z-index: " + option.zIndex + "'>").hide();
 	
 	this.frame =
-		$('<header class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
-			+ '<div class="picker-head">'
+		$('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
+			+ '<header class="picker-head">'
 				+ '<a class="picker-btn-cancel"></a>'
 				+ '<h4 class="picker-title"></h4>'
 				+ '<span class="picker-selected">已选0</span>'
 				+ '<a class="picker-btn-ok"></a>'
-			+ '</div>'
+			+ '</header>'
 			+ '<div class="picker-body"></div>'
-		+ '</header>').height((config.wheelHeight + 15) + "vmin").hide();
-	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin");
+		+ '</div>').height((config.wheelHeight + 15) + "vmin").hide();
+	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin")[0].addEventListener('touchstart', function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+	});
 
 	//设置标题按钮名
 	this.frame.find(".picker-title").text(option.title);
@@ -57,18 +60,28 @@ Frame.prototype = {
 	//显示cover
 	showCover : function(){
 		this.cover.show();
+		this.cover.addClass('s-open');
 	},
 	//隐藏cover
 	hideCover : function(){
-		this.cover.hide();
+		this.cover.removeClass('s-open');
+		var that = this;
+		setTimeout(function () {
+			that.cover.hide();
+		},500);
 	},
 	//显示frame
 	showFrame : function(){
 		this.frame.show();
+		this.frame.addClass('s-open');
 	},
 	//显示frame
 	hideFrame : function(){
-		this.frame.hide();
+		this.frame.removeClass('s-open');
+		var that = this;
+		setTimeout(function () {
+			that.frame.hide();
+		},500);
 	},
 	dom: function(){
 		return this.frame;

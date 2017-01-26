@@ -8,7 +8,7 @@
 </head>
 <body>
 </body>
-<script type="text/javascript" src="../../dist/picker.js"></script>
+<script type="text/javascript" src="../../dist/picker.min.js"></script>
 <script>
     var year = [];
     for(var i = 16; i < 30 ; i++){
@@ -22,13 +22,13 @@
 
     window._picker = window.picker({
         cols : [{
-            values: year,
+            options: year,
             suffix: "年",
         },{
-            values: month,
+            options: month,
             suffix: "月",
         },{
-            values: [],
+            options: [],
             suffix: "日",
         },],
         onOkClick: function (values) {

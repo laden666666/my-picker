@@ -72,6 +72,9 @@ function Picker(option) {
         //设置滚轮的选项
         that.setValue(i, that[KEY_OPTION].setValues[i]);
     }
+
+    //是否可见
+    this.visible = false;
 }
 
 /**
@@ -80,7 +83,7 @@ function Picker(option) {
 Picker.prototype.show = function () {
     this[KEY_FRAME].showCover();
     this[KEY_FRAME].showFrame();
-
+    this.visible = true;
 }
 
 /**
@@ -89,6 +92,7 @@ Picker.prototype.show = function () {
 Picker.prototype.hide = function () {
     this[KEY_FRAME].hideCover();
     this[KEY_FRAME].hideFrame();
+    this.visible = false;
 }
 
 /**
@@ -96,6 +100,10 @@ Picker.prototype.hide = function () {
  */
 Picker.prototype.close = function () {
     this[KEY_FRAME].remove();
+    this[KEY_OPTION] = null;
+    this[KEY_WHEELS] = null;
+    this[KEY_FRAME] = null;
+    this[KEY_COLS] = null;
 }
 
 /**
@@ -107,6 +115,19 @@ Picker.prototype.close = function () {
 Picker.prototype.setOptions = function(index, list, defaultValue){
     if(this[KEY_WHEELS][index])
         this[KEY_WHEELS][index].setOptions(list, defaultValue);
+}
+
+
+/**
+ * 获取滚轮的可选值列表
+ * @param index             滚轮的index,从0开始记录
+ */
+Picker.prototype.getOptions = function(index){
+    if(this[KEY_WHEELS][index]){
+        return this[KEY_WHEELS][index].getOptions();
+    } else {
+        return null;
+    }
 }
 
 /**

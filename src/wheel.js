@@ -6,6 +6,7 @@ var $ = require("./util/domUtil");
 var animationUtil = require("./util/animationUtil");
 var config = require("./config");
 var intersectionY = require("./wheel/intersectionCache")
+var tick = require("./tick/tick")();
 
 function Wheel(picker, col, option, index){
 
@@ -39,11 +40,17 @@ function Wheel(picker, col, option, index){
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	this.isPerspective = this.option.isPerspective;
 	//获取1vmin的实际像素值
-	this.vmin = Math.min(document.body.scrollWidth, document.body.scrollHeight) / 100;
+	this.vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
 	//获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
 	this.offsetTop = 0;
 
 	////////////////////滚动属性
+	//滚轮转动前初始的转角,用于计算滚轮是否转动过
+	this.originalAngle = 0;
+	//一次拖动过程中滚轮被转动的最大角度
+	this.lastIndexAngle = 0;
+	//当前的刻度,计算发声时候会用到。发声要进过一个刻度线或者达到一个新刻度新才会发声。所以需要记录上一次的刻度线。
+	this.changeMaxAngle = 0;
 	//当前滚轮转角
 	this.angle = 0;
 	//当前被选值的index
@@ -60,6 +67,8 @@ function Wheel(picker, col, option, index){
 	this.lastY = 0;
 	//是否开始触摸,主要给鼠标事件使用
 	this.isDraging = false;
+	//正在播放的刻度音
+	this.audio = null;
 
 	////////////////////可选项属性
 	//可选项列表
@@ -83,7 +92,7 @@ function Wheel(picker, col, option, index){
 			var target = target.parentElement;
 		}
 
-		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.pageY - that.offsetTop;
+		var offsetY = event.touches ?  event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
 		that.startDrag(offsetY);
 	}
 	this.dom[0].addEventListener("touchstart", startDrag);
@@ -91,7 +100,7 @@ function Wheel(picker, col, option, index){
 
 	//注册拖拽事件
 	function drag(event){
-		var offsetY = event.touches ?  event.touches[0].pageY - that.offsetTop : event.pageY - that.offsetTop;
+		var offsetY = event.touches ?  event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
 		that.drag(offsetY);
 	}
 	this.dom[0].addEventListener("touchmove", drag);
@@ -104,14 +113,13 @@ function Wheel(picker, col, option, index){
 	this.dom[0].addEventListener("touchend", endDrag);
 	this.dom[0].addEventListener("mouseup", endDrag);
 
-
 	//初始化标签
 	this.dom.find(".picker-label").css("transform","translateZ(" + this.radius + "vmin)");
 
 	//设置标签
 	this.setSuffix(col.suffix);
 	this.setPrefix(col.prefix);
-	this.setOptions(col.values, null, true)
+	this.setOptions(col.options, null, true)
 }
 
 /////////////////////////////////拖拽相关事件
@@ -126,6 +134,9 @@ Wheel.prototype.startDrag = function (offsetY) {
 	this.timeStamp = Date.now();
 	this.isDraging = true;
 	this.offsetTop = this.dom[0].offsetTop;
+	this.originalAngle = this.angle;
+	this.changeMaxAngle = 0;
+	this.lastIndexAngle = this.selectedIndex;
 	for(var parent = this.dom[0].parentElement;parent; parent = parent.parentElement){
 		this.offsetTop += parent.offsetTop;
 	}
@@ -152,6 +163,9 @@ Wheel.prototype.drag = function (offsetY) {
 	var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
 		/ Math.PI * 180;
 	var angle = changeAngle + this.angle;
+
+	//记录滚轮滚动的最大转角
+	this.changeMaxAngle = Math.max( Math.abs( this.originalAngle - angle ), this.changeMaxAngle);
 
 	//记录当前角度
 	this.setAngle(angle);
@@ -235,7 +249,7 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 		}
 
 		//创建label的显示dom,并计算他在容器中的位置(角度)
-		var li = $("<li>").text(item);
+		var li = $("<li>").text(label);
 		var angle = config.wheelItemAngle * -index;
 
 		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin)")
@@ -248,6 +262,24 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 
 		//将标签的dom放到contains上,contains的事件全部委托于容器,即标签不监听事件
 		that.contains.append(li);
+
+		//增加点击选择功能
+		var clickHandle = function (event) {
+			if(that.changeMaxAngle < 10) {
+				//计算完成,清空速度相关变量,并去除之前的动画效果
+				that.isDraging = false;
+				that.lastY = 0;
+				that.speed = 0;
+
+				that.selectIndex(index, true);
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		}
+
+		li[0].addEventListener('mouseup',clickHandle);
+		li[0].addEventListener('touchend',clickHandle);
+
 		i++;
 	});
 
@@ -286,6 +318,13 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 }
 
 /**
+ * 获得用户可选的标签
+ */
+Wheel.prototype.getOptions = function () {
+	return this.list;
+}
+
+/**
  * 给定指定标签的值,选择指定标签
  */
 Wheel.prototype.selectOption = function(value, showAnimation){
@@ -319,33 +358,43 @@ Wheel.prototype.selectIndex = function(index, showAnimation){
 		var _run = function() {
 			start++;
 			var _angle = animationUtil.easeOut(start, that.angle, angle - that.angle, during);
+			if(Math.abs(_angle - angle) < 1){
+				_angle = angle;
+			}
 
 			that.setAngle(_angle);
 
 			if (_angle != angle) {
 				that.animationId = animationUtil.startAnimation(_run);
 			} else {
+				//记录下原有的index,确定选择是否发生了改变
+				var oldSelectedIndex = that.selectedIndex;
 
 				that.selectedIndex = index;
 				that.selectedValue = that.list[index];
 				if(typeof that.selectedValue == 'object'){
-					that.selectedValue = that.selectedValue[that.valueKey];
+					that.selectedValue = that.selectedValue[that.itemValueKey];
 				}
-				that.toggleSelected(that.selectedIndex, that.selectedValue);
+				if(oldSelectedIndex != that.selectedIndex)
+					that.toggleSelected(that.selectedIndex, that.selectedValue);
 			}
 		};
 
 		//启动动画
 		that.animationId = animationUtil.startAnimation(_run);
 	} else {
+		//记录下原有的index,确定选择是否发生了改变
+		var oldSelectedIndex = this.selectedIndex;
+
 		//如果不显示动画,直接赋值
 		this.setAngle(angle);
 		this.selectedIndex = index;
 		this.selectedValue = this.list[index];
 		if(typeof this.selectedValue == 'object'){
-			this.selectedValue = this.selectedValue[this.valueKey];
+			this.selectedValue = this.selectedValue[this.itemValueKey];
 		}
-		this.toggleSelected(this.selectedIndex, this.selectedValue);
+		if(oldSelectedIndex != this.selectedIndex)
+			this.toggleSelected(this.selectedIndex, this.selectedValue);
 	}
 }
 
@@ -358,6 +407,15 @@ Wheel.prototype.setAngle = function(angle){
 
 	//修正转角,要求转角不能大于maxAngle,不能小于minAngle
 	angle = this.rangeAngle(angle);
+	// 如果角度变化经过刻度,则放声
+	if(this.option.hasVoice && this.picker.visible){
+		var lastIndexAngle = this.lastIndexAngle;
+		var index = this.calcSelectedIndexByAngle(angle);
+		if(lastIndexAngle != index){
+			tick.play()
+		}
+		this.lastIndexAngle = index;
+	}
 
 	this.contains.css("transform","rotateX(" + angle + "deg)");
 	this.angle = angle;

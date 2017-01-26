@@ -5,7 +5,7 @@
   "main": "dist/picker.js",
   "scripts": {
     "test": "webpack;mocha ./test/test.js",
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack;node node_modules/uglify-js/bin/uglifyjs dist/picker.js --o dist/picker.min.js",
     "debug": "webpack-dev-server --content-base ./debugger --hot --inline"
   },
   "repository": {
@@ -15,6 +15,7 @@
   "keywords": [
     "picker"
   ],
+  "main": "main.js",
   "author": "laden666666",
   "license": "MIT",
   "devDependencies": {
