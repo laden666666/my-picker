@@ -1,8 +1,8 @@
 /**
- * 根据坐标y、圆半径、总长度计算偏移角度
- * @param y
- * @param radius
- * @param wheelHeight
+ * 根据坐标y、圆半径、总长度计算偏移角度。用户触摸的是滚轮的div,而滚轮却被透视效果缩放了,这里要计算这个缩放比例,以模拟出是在触摸透视后的滚轮,而不是透视前的。
+ * @param y                 相对于滚轮高度2分之一处的坐标。这里将滚轮2分之一处设为x轴。所有参数坐标单位都是vmin
+ * @param radius            滚轮的半径。其实他是定值,根据滚轮高度计算而来
+ * @param wheelHeight       滚轮的高度
  * @returns {number}
  */
 module.exports = function (y, radius, wheelHeight) {

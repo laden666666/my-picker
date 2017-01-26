@@ -5,7 +5,7 @@
 var $ = require("./util/domUtil");
 var animationUtil = require("./util/animationUtil");
 var config = require("./config");
-var intersectionY = require("./wheel/intersectionY")
+var intersectionY = require("./wheel/intersectionCache")
 
 function Wheel(picker, col, option, index){
 

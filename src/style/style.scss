@@ -60,6 +60,7 @@
     }
     
     & .picker-body{
+        overflow: hidden;
         width: 100vmin;
         display: flex;
         justify-content: center;
