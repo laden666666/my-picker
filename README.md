@@ -3,10 +3,10 @@
 
 移动端demo效果图:
 -
-![image](https://github.com/laden666666/picker/blob/master/doc/images/mobileDemo.gif)
+![image](https://github.com/laden666666/picker/blob/master/docs/images/mobileDemo.gif)
 
 pc端demo效果图:
 -
-![image](https://github.com/laden666666/picker/blob/master/doc/images/pcDemo.gif)
+![image](https://github.com/laden666666/picker/blob/master/docs/images/pcDemo.gif)
 
-具体使用文档请查看：[使用文档](https://github.com/laden666666/picker/blob/master/doc/doc.md)
+具体使用文档请查看：[使用文档](https://github.com/laden666666/picker/blob/master/docs/doc.md)
