@@ -9,6 +9,4 @@ pc端demo效果图:
 -
 ![image](https://github.com/laden666666/picker/blob/master/doc/images/pcDemo.gif)
 
-实际demo路径为：[dome](https://github.com/laden666666)
-
 具体使用文档请查看：[使用文档](https://github.com/laden666666)

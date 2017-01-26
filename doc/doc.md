@@ -10,7 +10,7 @@ npm install git://github.com/laden666666/picker --save
 ```
 var myValidation = require("picker");
 ```
-如果是web环境直接script标签引用picker.js或者picker.js、link标签引用picker.css文件即可。
+如果是web环境直接script标签引用picker.js或者picker.min.js、link标签引用picker.css文件即可。
  ---
 ###使用方法:
 #####初始化：
@@ -19,7 +19,7 @@ new picker(option)
 ```
 option是控件的初始化配置，具体配置项有：
 ######cols:
-列的配置,是个数组,数组每项一列,一列的配置项的完整格式为一个json对象,最多支持3列。如:
+可选值列表的配置,是个数组,数组每项一列,一列的配置项的完整格式为一个json对象,最多支持3列。如:
 ```
 [{
 	options:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
@@ -54,15 +54,12 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。
 ######onSelectItem:
 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：
-```
-/**
- *用户转动滚轮停止时,响应的事件
- *@param level				被选值所在的层级,从0开始计数
- *@param selectedIndex		被选值在数组中的索引
- *@param selectedValue		被选值
- */
-onSelectItem : null,
-```
+
+ * index				被选值所在的层级,从0开始计数
+ * selectedIndex		被选值在数组中的索引
+ * selectedValue		被选值
+
+
 ######hasVoice
 转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。
 #####title
