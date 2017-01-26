@@ -49,8 +49,10 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 ```
 ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']
 ```
+
 #####setValues:
 已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。
+
 #####onSelectItem:
 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：
 
@@ -60,12 +62,16 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 
 #####hasVoice
 转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。
+
 #####title
 显示的标题。
+
 #####zIndex
 控件的z-index的属性值。
+
 #####onOkClick
 点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。接受一个返回值,如果返回值是false,picker不关闭,否则会关闭picker。
+
 #####onCancelClick
 点击取消按钮的事件。执行后会关闭picker。
 
@@ -73,8 +79,10 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 ###显示隐藏相关api：
 #####Picker.prototype.show 显示
 控件初始化完成后是隐藏状态，需要调用此接口显示。
+
 #####Picker.prototype.hide 隐藏
 将显示出来的控件隐藏起来。
+
 #####Picker.prototype.close 关闭
 删除控件，控件将不能再被打开。
 
@@ -83,18 +91,19 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 #####Picker.prototype.setOptions(index, list, defaultValue) 设置可选值
 这个函数可以动态地设置picker的可选值，参数含义如下：
  * index             滚轮的index,从0开始记录
- * list              滚轮的可选值列表
+ * list              滚轮的可选值列表，是个数组，和cols里面配置的列一样
  * defaultValue      默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值
 
 #####Picker.prototype.getOptions(index) 获得可选值
-略
+ * index             滚轮的index,从0开始记录
 
 ---
 ###被选值相关api：
-#####Picker.prototype.setValue(index, list, defaultValue) 设置可选值
-设置滚轮的可选值，参数含义如下：
+#####Picker.prototype.setValue(index, value) 设置被选值
+设置滚轮的被选值，参数含义如下：
  * param index             滚轮的index,从0开始记录
- * param value             设置的值，是个数组，和cols里面配置的列一样
+ * param value             设置被选的值
 
 #####Picker.prototype.getValue(index) 获取可选值
  获取滚轮的值,如果index为空表示获取所有滚轮的值。
+ * param index             滚轮的index,从0开始记录。如果index为空表示获取所有滚轮的值。
