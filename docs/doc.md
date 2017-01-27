@@ -20,18 +20,22 @@ option是控件的初始化配置，具体配置项有：
 #####cols:
 可选值列表的配置,是个数组,数组每项一列,一列的配置项的完整格式为一个json对象,最多支持3列。如:
 ```
-[{
-	options:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-},{
-	options:['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
-}]
+{
+    cols:[{
+        options:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+    },{
+        options:['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+    }]
+}
 ```
 如果cols的参数是一个json,将视为只有一列可选值列表,如:
 ```
 {
-	prefix: '第',
-	options: ['一', '二', '三', '四', '五'],
-	suffix: '章',
+    cols:{
+        prefix: '第',
+        options: ['一', '二', '三', '四', '五'],
+        suffix: '章',
+    }
 }
 ```
 prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
@@ -39,15 +43,17 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 同时options里面的值可以是一个字符串,也可以是一个json结构。如果是json结构,需要给出显示的key,和其值的key。如:
 ```
 {
-	labelKey: 'name',
-	valueKey: 'name',
-	options: [{name: '张三'},{name: '李四'},{name: '王五'}],
+    cols:{
+        labelKey: 'name',
+        valueKey: 'name',
+        options: [{name: '张三'},{name: '李四'},{name: '王五'}],
+    }
 }
 ```
 
 如果如果可选值列表只有一列,且是个字符串数组,可进一步简化配置为:
 ```
-['赵', '钱', '孙', '李', '周', '吴', '郑', '王']
+{cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']}
 ```
 
 #####setValues:
@@ -66,9 +72,12 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
  * selectedValue		被选值
 这个事件和Picker.prototype.setOptions一起使用,可以实现级联选择,如:
 ```
-onSelectItem: function(index, selectedIndex, selectedValue){
-    var options = [];// 根据selectedIndex或者selectedValue确定下一级的可选项
-    this.setOptions(index + 1, options)
+{
+    cols: ...,
+    onSelectItem: function(index, selectedIndex, selectedValue){
+        var options = [];// 根据selectedIndex或者selectedValue确定下一级的可选项
+        this.setOptions(index + 1, options)
+    }
 }
 ```
 
@@ -87,12 +96,15 @@ onSelectItem: function(index, selectedIndex, selectedValue){
  * values            一个数组,是各个滚轮被选的值
 同时回调函数可以有个返回值,如果返回值是false,picker将不关闭,否则会关闭picker。利用这个可以实现选择校验。如果:
 ```
-onOkClick: function(values){
-    if(values[0] is 错误){        //伪码,表示选项错误
-        alert("不可以选择这个选项!");
-        //返回false,不准关闭,继续选择
-        return false;
-    }
+{
+    cols: ...,
+    onOkClick: function(values){
+        if(values[0] is 错误){        //伪码,表示选项错误
+            alert("不可以选择这个选项!");
+            //返回false,不准关闭,继续选择
+            return false;
+        }
+    },
 }
 ```
 
