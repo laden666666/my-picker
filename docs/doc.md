@@ -51,14 +51,26 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 ```
 
 #####setValues:
-已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。
+已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。如:
+```
+{
+   cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王'],
+   setValues: ['钱'],
+}
+```
 
 #####onSelectItem:
 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：
-
  * index				被选值所在的层级,从0开始计数
  * selectedIndex		被选值在数组中的索引
  * selectedValue		被选值
+这个事件和Picker.prototype.setOptions一起使用,可以实现级联选择,如:
+```
+onSelectItem: function(index, selectedIndex, selectedValue){
+    var options = [];// 根据selectedIndex或者selectedValue确定下一级的可选项
+    this.setOptions(index + 1, options)
+}
+```
 
 #####hasVoice
 转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。
@@ -70,7 +82,19 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 控件的z-index的属性值。
 
 #####onOkClick
-点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。接受一个返回值,如果返回值是false,picker不关闭,否则会关闭picker。
+点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。
+回调函数的参数含义如下：
+ * values            一个数组,是各个滚轮被选的值
+同时回调函数可以有个返回值,如果返回值是false,picker将不关闭,否则会关闭picker。利用这个可以实现选择校验。如果:
+```
+onOkClick: function(values){
+    if(values[0] is 错误){        //伪码,表示选项错误
+        alert("不可以选择这个选项!");
+        //返回false,不准关闭,继续选择
+        return false;
+    }
+}
+```
 
 #####onCancelClick
 点击取消按钮的事件。执行后会关闭picker。
@@ -78,7 +102,7 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 ---
 ###显示隐藏相关api：
 #####Picker.prototype.show 显示
-控件初始化完成后是隐藏状态，需要调用此接口显示。
+new出picker对象后，是隐藏状态，需要调用此接口显示。
 
 #####Picker.prototype.hide 隐藏
 将显示出来的控件隐藏起来。
@@ -105,5 +129,5 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
  * param value             设置被选的值
 
 #####Picker.prototype.getValue(index) 获取可选值
- 获取滚轮的值,如果index为空表示获取所有滚轮的值。
- * param index             滚轮的index,从0开始记录。如果index为空表示获取所有滚轮的值。
+获取滚轮的值,如果index为空表示获取所有滚轮的值。
+ * param index             滚轮的index,从0开始记录。如果index是undefined或者null,则表示获取所有滚轮的值,会返回一个数组。
