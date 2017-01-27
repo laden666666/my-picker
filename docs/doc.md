@@ -8,7 +8,7 @@ npm install git://github.com/laden666666/picker --save
 ```
 然后直接用reqiure引用即可
 ```
-var myValidation = require("picker");
+var picker = require("picker");
 ```
 如果是web环境直接script标签引用picker.js或者picker.min.js、link标签引用picker.css文件即可。
  ---
