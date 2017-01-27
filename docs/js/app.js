@@ -190,7 +190,6 @@ document.querySelector('#example4_2').addEventListener('click', function () {
 // 实例五
 var picker5 = new picker({
   cols: [['选择A共0次','选择B共0次','选择C共0次'],['选择D共0次','选择E共0次','选择F共0次']],
-  setValues: [2],
   onSelectItem: function (level, selectedIndex, selectedValue) {
     //获取可选值列表
     var options = this.getOptions(level);

@@ -1,4 +1,4 @@
-// 实例1
+// 实例1  基本使用示例
 var picker1 = new picker({
   cols: ['java','c#','JavaScript','php','Python'],
   title:"请选择你喜欢的编程语言",
@@ -10,7 +10,7 @@ document.querySelector('#example1').addEventListener('click', function () {
   picker1.show();
 })
 
-// 实例2
+// 实例2  前缀和后缀使用示例
 var picker2 = new picker({
   cols: [{
     prefix: '  第',
@@ -26,7 +26,7 @@ document.querySelector('#example2').addEventListener('click', function () {
   picker2.show();
 })
 
-// 实例三
+// 实例三  多个选择项目(多滚轮)示例
 var picker3 = new picker({
   cols: [{
     options:["一","二","三","四","五","六"],
@@ -44,7 +44,7 @@ document.querySelector('#example3').addEventListener('click', function () {
   picker3.show();
 })
 
-// 实例四
+// 实例四  通过setValue设置值的示例
 var picker4_1 = new picker({
   cols: ['1','2','3','4','5'],
   setValues: [2],
@@ -70,10 +70,9 @@ document.querySelector('#example4_2').addEventListener('click', function () {
   picker4_2.show();
 })
 
-// 实例五
+// 实例五  通过getOptions设置可选值的实例
 var picker5 = new picker({
   cols: [['选择A共0次','选择B共0次','选择C共0次'],['选择D共0次','选择E共0次','选择F共0次']],
-  setValues: [2],
   onSelectItem: function (level, selectedIndex, selectedValue) {
     //获取可选值列表
     var options = this.getOptions(level);
@@ -93,7 +92,7 @@ document.querySelector('#example5').addEventListener('click', function () {
   picker5.show();
 })
 
-// 实例六
+// 实例六  通过labelKey、valueKey解析json可选项的实例
 var picker6 = new picker({
   cols: {
     options:[{
@@ -121,7 +120,7 @@ document.querySelector('#example6').addEventListener('click', function () {
   picker6.show();
 })
 
-// 实例七
+// 实例七   实现级联选择的示例
 var athlete = [{
   name:"足球",
   athlete: ['梅西','c罗','小贝','小罗']
@@ -154,7 +153,7 @@ document.querySelector('#example7').addEventListener('click', function () {
   picker7.show();
 })
 
-// 实例八
+// 实例八    简单日期示例
 var year = [];
 for(var i = 16; i < 30 ; i++){
   year.push(i + 2000);
