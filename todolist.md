@@ -17,3 +17,7 @@
 [y]增加对字体和标题及按钮的设置
 [y]对perspectiveConversion函数的优化,将perspectiveConversion的值缓存起来
 [y]增加点击选择功能
+[ ]去除对jquery的依赖
+[ ]兼容ie、欧朋和火狐浏览器
+[ ]提高移动端版本的效率
+[ ]发布1.0.0正式版
