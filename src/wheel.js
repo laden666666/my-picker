@@ -5,7 +5,7 @@
 var $ = require("./util/domUtil");
 var animationUtil = require("./util/animationUtil");
 var config = require("./config");
-var intersectionY = require("./wheel/intersectionCache")
+var perspectiveConversion = require("./wheel/perspectiveConversionCache")
 var tick = require("./tick/tick")();
 
 function Wheel(picker, col, option, index){
@@ -160,7 +160,7 @@ Wheel.prototype.drag = function (offsetY) {
 	var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
 	//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
-	var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
+	var changeAngle = (perspectiveConversion(this.lastY, this.radius, config.wheelHeight) - perspectiveConversion(y, this.radius, config.wheelHeight))
 		/ Math.PI * 180;
 	var angle = changeAngle + this.angle;
 

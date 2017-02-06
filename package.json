@@ -2,7 +2,7 @@
   "name": "picker",
   "version": "0.0.1",
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
-  "main": "dist/picker.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "webpack;mocha ./test/test.js",
     "build": "NODE_ENV=production webpack;node node_modules/uglify-js/bin/uglifyjs dist/picker.js --o dist/picker.min.js",
@@ -15,7 +15,6 @@
   "keywords": [
     "picker"
   ],
-  "main": "main.js",
   "author": "laden666666",
   "license": "MIT",
   "devDependencies": {

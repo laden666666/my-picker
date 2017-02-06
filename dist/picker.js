@@ -10707,7 +10707,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $ = __webpack_require__(3);
 	var animationUtil = __webpack_require__(7);
 	var config = __webpack_require__(5);
-	var intersectionY = __webpack_require__(8)
+	var perspectiveConversion = __webpack_require__(8)
 	var tick = __webpack_require__(10)();
 
 	function Wheel(picker, col, option, index){
@@ -10862,7 +10862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
 		//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
-		var changeAngle = (intersectionY(this.lastY, this.radius, config.wheelHeight) - intersectionY(y, this.radius, config.wheelHeight))
+		var changeAngle = (perspectiveConversion(this.lastY, this.radius, config.wheelHeight) - perspectiveConversion(y, this.radius, config.wheelHeight))
 			/ Math.PI * 180;
 		var angle = changeAngle + this.angle;
 
@@ -11303,7 +11303,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cacheData = __webpack_require__(9);
 
 	/**
-	 * 因为intersectionY是个纯函数,因此可以缓存,这样有利于减少计算,增加动画流畅度。尤其在移动端效果十分明显。
+	 * 因为perspectiveConversion是个纯函数,因此可以缓存,这样有利于减少计算,增加动画流畅度。尤其在移动端效果十分明显。
 	 * 计算工作由test/calcIntersectionCache完成,这里只是将其计算结果封装为一个函数
 	 */
 	module.exports = function (y, radius, wheelHeight) {
