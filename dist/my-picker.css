@@ -1,4 +1,4 @@
-.picker-cover {
+.my-picker-cover {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,7 +7,7 @@
   user-select: none;
   background: transparent;
   transition: 0.3s ease-out background; }
-  .picker-cover.s-open {
+  .my-picker-cover.s-open {
     background: rgba(0, 0, 0, 0.6); }
 
 .picker.picker-frame {

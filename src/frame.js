@@ -11,7 +11,7 @@ function  Frame(picker, option) {
 	this.option = option;
 
 	//构建cover
-	this.cover = $("<div class='picker-cover' style='z-index: " + option.zIndex + "'>").hide();
+	this.cover = $("<div class='my-picker-cover' style='z-index: " + option.zIndex + "'>").hide();
 	
 	this.frame =
 		$('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
