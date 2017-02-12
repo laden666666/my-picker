@@ -8,7 +8,7 @@ npm install git://github.com/laden666666/my-picker --save
 ```
 然后直接用reqiure引用即可
 ```
-var my-picker = require("my-picker");
+var myPicker = require("my-picker");
 ```
 如果是web环境直接script标签引用my-picker.js或者my-picker.min.js、link标签引用my-picker.css文件即可。
  ---
