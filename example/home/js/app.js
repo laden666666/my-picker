@@ -1,5 +1,5 @@
 // 实例1  基本使用示例
-var picker1 = new picker({
+var picker1 = new myPicker({
   cols: ['java','c#','JavaScript','php','Python'],
   title:"请选择你喜欢的编程语言",
   onOkClick: function (values) {
@@ -11,7 +11,7 @@ document.querySelector('#example1').addEventListener('click', function () {
 })
 
 // 实例2  前缀和后缀使用示例
-var picker2 = new picker({
+var picker2 = new myPicker({
   cols: [{
     prefix: '  第',
     options: ['一', '二', '三', '四', '五'],
@@ -27,7 +27,7 @@ document.querySelector('#example2').addEventListener('click', function () {
 })
 
 // 实例三  多个选择项目(多滚轮)示例
-var picker3 = new picker({
+var picker3 = new myPicker({
   cols: [{
     options:["一","二","三","四","五","六"],
     suffix: '年',
@@ -45,7 +45,7 @@ document.querySelector('#example3').addEventListener('click', function () {
 })
 
 // 实例四  通过setValue设置值的示例
-var picker4_1 = new picker({
+var picker4_1 = new myPicker({
   cols: ['1','2','3','4','5'],
   setValues: [2],
   onOkClick: function (values) {
@@ -57,7 +57,7 @@ var picker4_1 = new picker({
 document.querySelector('#example4_1').addEventListener('click', function () {
   picker4_1.show();
 })
-var picker4_2 = new picker({
+var picker4_2 = new myPicker({
   cols: ['1','2','3','4','5'],
   setValues: [2],
   onOkClick: function (values) {
@@ -71,7 +71,7 @@ document.querySelector('#example4_2').addEventListener('click', function () {
 })
 
 // 实例五  通过getOptions设置可选值的实例
-var picker5 = new picker({
+var picker5 = new myPicker({
   cols: [['选择A共0次','选择B共0次','选择C共0次'],['选择D共0次','选择E共0次','选择F共0次']],
   onSelectItem: function (level, selectedIndex, selectedValue) {
     //获取可选值列表
@@ -93,7 +93,7 @@ document.querySelector('#example5').addEventListener('click', function () {
 })
 
 // 实例六  通过labelKey、valueKey解析json可选项的实例
-var picker6 = new picker({
+var picker6 = new myPicker({
   cols: {
     options:[{
       userId:1,
@@ -128,7 +128,7 @@ var athlete = [{
   name:"篮球",
   athlete: ['科比','乔丹','詹姆斯']
 }]
-var picker7 = new picker({
+var picker7 = new myPicker({
   cols: [{
     options: athlete,
     labelKey: 'name',

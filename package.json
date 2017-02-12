@@ -1,19 +1,20 @@
 {
-  "name": "picker",
+  "name": "my-picker",
   "version": "0.0.1",
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
   "main": "src/main.js",
   "scripts": {
     "test": "webpack;mocha ./test/test.js",
-    "build": "NODE_ENV=production webpack;node node_modules/uglify-js/bin/uglifyjs dist/picker.js --o dist/picker.min.js",
+    "build": "NODE_ENV=production webpack;node node_modules/uglify-js/bin/uglifyjs dist/my-picker.js --o dist/my-picker.min.js",
     "debug": "webpack-dev-server --content-base ./debugger --hot --inline"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/laden666666/picker.git"
+    "url": "git+https://github.com/laden666666/my-picker.git"
   },
   "keywords": [
-    "picker"
+    "picker",
+    "my-picker"
   ],
   "author": "laden666666",
   "license": "MIT",
@@ -32,8 +33,8 @@
     "webpack-dev-server": "^1.16.2"
   },
   "bugs": {
-    "url": "https://github.com/laden666666/picker/issues"
+    "url": "https://github.com/laden666666/my-picker/issues"
   },
-  "homepage": "https://github.com/laden666666/picker#readme",
+  "homepage": "https://github.com/laden666666/my-picker#readme",
   "dependencies": {}
 }

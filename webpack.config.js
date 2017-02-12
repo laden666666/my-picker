@@ -11,7 +11,7 @@ if(process.env.NODE_ENV == 'production'){
         if(error){
             console.error('error',error)
         } else {
-            fs.writeFile( './dist/picker.css', result.css, function(err){
+            fs.writeFile( './dist/my-picker.css', result.css, function(err){
                 if(error){
                     console.error('error',error)
                 }
@@ -34,11 +34,11 @@ module.exports = {
     //输出的文件名,合并以后的js会命名为bundle.js
     output: {
         path: path.join(__dirname, "dist/"),
-        library: 'picker',
+        library: 'myPicker',
         libraryTarget: 'umd',
         publicPath: "http://localhost:8088/dist/",
 		// 生成的打包文件名  
-		filename: 'picker.js'
+		filename: 'my-picker.js'
     },
     plugins: [
         new webpack.optimize.MinChunkSizePlugin({})

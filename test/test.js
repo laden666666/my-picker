@@ -4,7 +4,7 @@
 var jsdom = require("jsdom");
 var fs = require("fs");
 var assert = require('chai').assert;
-var picker = fs.readFileSync("./dist/picker.js", "utf-8");
+var picker = fs.readFileSync("./dist/my-picker.js", "utf-8");
 
 var htmlTemplate = '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body></body></html>';
 
@@ -16,7 +16,7 @@ describe('picker基本功能测试', function () {
             html: htmlTemplate,
             src: [picker],
             done: function (error, window) {
-                assert.typeOf(window.picker, 'function');
+                assert.typeOf(window.myPicker, 'function');
                 done();
             }
         });
@@ -33,7 +33,7 @@ describe('picker基本配置测试', function () {
             done: function (error, window) {
 
                 //标准配置测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols: [{
                         options: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                     }, {
@@ -59,7 +59,7 @@ describe('picker基本配置测试', function () {
             src: [picker],
             done: function (error, window) {
                 //labelKey与valueKey测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols: [{
                         labelKey: 'name',
                         valueKey: 'name',
@@ -86,7 +86,7 @@ describe('picker基本配置测试', function () {
             done: function (error, window) {
 
                 //单数json测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols: {
                         options: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                     },
@@ -111,7 +111,7 @@ describe('picker基本配置测试', function () {
 
 
                 //单数数组测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols:  ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                     onOkClick: function (values) {
                         assert.equal(values.length, 1)
@@ -135,7 +135,7 @@ describe('picker测试基本api', function () {
             done: function (error, window) {
 
                 //单数json测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols: {
                         options: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                     },
@@ -162,7 +162,7 @@ describe('picker测试基本api', function () {
             done: function (error, window) {
 
                 //单数json测试
-                window._picker = window.picker({
+                window._picker = window.myPicker({
                     cols: [{
                         options: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                     }, {

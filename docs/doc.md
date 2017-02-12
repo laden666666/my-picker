@@ -1,20 +1,20 @@
-# picker
+# my-picker
 高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台。
 
 ###安装方法:
 webpack中使用:
 ```
-npm install git://github.com/laden666666/picker --save
+npm install git://github.com/laden666666/my-picker --save
 ```
 然后直接用reqiure引用即可
 ```
-var picker = require("picker");
+var my-picker = require("my-picker");
 ```
-如果是web环境直接script标签引用picker.js或者picker.min.js、link标签引用picker.css文件即可。
+如果是web环境直接script标签引用my-picker.js或者my-picker.min.js、link标签引用my-picker.css文件即可。
  ---
 ###初始化：
 ```
-new picker(option)
+new myPicker(option)
 ```
 option是控件的初始化配置，具体配置项有：
 #####cols:
