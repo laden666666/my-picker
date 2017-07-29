@@ -1,48 +1,68 @@
-var path = require('path')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack');
+var path = require('path');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var autoprefixer = require('autoprefixer');
 
-// webpack配置
 module.exports = {
-
-    entry: '../src/picker.js',
+    //页面入口文件配置
+    entry: {
+        index: path.join(__dirname, "../src/picker"),
+    },
     output: {
         path: path.join(__dirname, "../dist/"),
         library: 'myPicker',
         libraryTarget: 'umd',
-        filename: 'my-picker.js'
+        // 生成的打包文件名  
+        filename: 'my-picker.js',
     },
+    module: {
+        //加载器配置
+        loaders: [{
+            test: /\.(js)$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }, {
+            test: /\.(png|jpg|gif|wav)$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 1024 * 10,
+                        name: 'images/[name].[ext]?[hash:8]'
+                    }
+                }
+            ]
+        }, {
+            test: /\.(scss|sass|css)$/,  // pack sass and css files
+            loader: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: [
+                    'css-loader?minimize',
+                    'sass-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.join(__dirname, 'postcss.config.js')
+                            }
+                        }
+                    },
+                ],
+            })
+        },]
+    },
+    //插件项
     plugins: [
-        //压缩
+        // 单独抽离 CSS
+        new ExtractTextPlugin("my-picker.css"),
+
+        // JS 压缩插件
         new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: false
+                warnings: false,
             },
+            sourceMap: true
         }),
-        //css独立打包
-        new ExtractTextPlugin("my-picker.css"),
     ],
-    module: {
-        loaders: [{
-            test: /\.scss$/,
-            loader: "style!css!sass",
-        },{
-            test: /\.(css)$/,
-            // 多个加载器通过“!”连接
-            loader: 'style-loader!css-loader'
-        }, {
-            test: /\.(png|jpg)$/,
-            // url-loader 支持base64 编码的行内资源
-            loader: 'url-loader?size=8192'
-        }, {
-            test: /\.(wav|mp3)?$/,
-            loader: 'url-loader?limit=8192'
-        }]
-    },
-    postcss: [
-        autoprefixer({
-            browsers: ['last 3 versions', '> 1%']
-        })
-    ],
+    devtool: 'source-map'
 };

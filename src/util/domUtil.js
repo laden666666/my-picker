@@ -1,2 +1,2 @@
 var $ = require("my-jquery");
-module.exports = $;
+module.exports = $(document);

@@ -23,7 +23,7 @@ function Wheel(picker, col, option, index){
 		+ '<div class="picker-label"></div>'
 		+ '<ul></ul>'
 		+ '<div class="picker-label"></div>'
-		+ '</div>').height((config.wheelHeight) + 'vmin');
+		+ '</div>').css('height',(config.wheelHeight) + 'vmin');
 
 	//转轮上面标签的容器，同时也是转动的轴
 	this.contains = this.dom.find('ul');

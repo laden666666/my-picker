@@ -22,7 +22,7 @@ function  Frame(picker, option) {
 				+ '<a class="picker-btn-ok"></a>'
 			+ '</header>'
 			+ '<div class="picker-body"></div>'
-		+ '</div>').height((config.wheelHeight + 15) + "vmin").hide();
+		+ '</div>').css('height', (config.wheelHeight + 15) + "vmin").hide();
 	this.frame.find(".picker-body").css("perspective",(config.wheelHeight) + "vmin")[0].addEventListener('touchstart', function (event) {
 		event.preventDefault();
 		event.stopPropagation();
