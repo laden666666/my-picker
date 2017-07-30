@@ -23,14 +23,11 @@
         background: #fff;
         width: 100vmin;
         margin: 0 auto;
-        -webkit-user-select: none;
         user-select: none;
-        -webkit-transform: translate3d(0,100vmin,0);
         transform: translate3d(0,100vmin,0);
         transition: 0.3s ease-out transform;
 
         &.s-open{
-            -webkit-transform: translate3d(0,0,0);
             transform: translate3d(0,0,0);
         }
     }
@@ -75,6 +72,7 @@
     }
     
     & .picker-body{
+        backface-visibility: hidden;
         overflow: hidden;
         width: 100vmin;
         display: flex;
@@ -82,18 +80,8 @@
         position: relative;
         padding: 0 calc(100vmin * 0.220);
         box-sizing: border-box;
-        -webkit-mask-box-image:
-                -webkit-linear-gradient(bottom,
-                        rgba(255,255,255,0.3),
-                        rgba(255,255,255,0.3) 5%,
-                        rgba(255,255,255,0.5) 41.6%,
-                        #fff 41.7%,
-                        #fff 58.3%,
-                        rgba(255,255,255,0.5) 58.4%,
-                        rgba(255,255,255,0.3) 95%,
-                        rgba(255,255,255,0.3));
-        -webkit-mask-box-image:
-                linear-gradient(bottom,
+        mask-box-image:
+                linear-gradient(to top,
                         rgba(255,255,255,0.3),
                         rgba(255,255,255,0.3) 5%,
                         rgba(255,255,255,0.5) 41.6%,
@@ -111,7 +99,6 @@
         border-bottom: 1px solid  rgba(0, 0, 0, 0.1);
         content: '';
         height: 0;
-        -webkit-pointer-events: none;
         pointer-events: none;
     }
     & .picker-body::after{
@@ -139,6 +126,7 @@
         height: 100%;
         top: 0;
         left: calc(100vmin * -0.220);
+        pointer-events: none;
     }
 
     & .picker-wheel:last-child::after{
@@ -148,6 +136,7 @@
         height: 100%;
         top: 0;
         right: calc(100vmin * -0.220);
+        pointer-events: none;
     }
 
     & .picker-wheel:first-child .picker-label:first-child{
@@ -159,6 +148,7 @@
     }
 
     & .picker-label{
+        zoom: 2;
         vertical-align: middle;
         height: 100%;
     }
@@ -176,7 +166,6 @@
         flex: 1;
         height: 100%;
         position: relative;
-        -webkit-transform-style: preserve-3d;
         transform-style: preserve-3d;
     }
     
@@ -193,10 +182,16 @@
         margin: auto auto;
         //background: black;
         //color: #fff;
-        -webkit-user-select: none;
+        user-select: none;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        zoom: 2;
+    }
+    
+    & .picker-wheel span{
+        backface-visibility: hidden;
+        -webkit-font-smoothing: subpixel-antialiased;
     }
 
     & .picker-wheel:first-child li{

@@ -3,6 +3,7 @@ var Wheel = require("./wheel");
 var Col = require("./wheel/col");
 var util = require("./util/util");
 var defaultOption = require("./option");
+require("./style/style.scss");
 
 
 
