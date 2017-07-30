@@ -72,6 +72,7 @@
     }
     
     & .picker-body{
+        backface-visibility: hidden;
         overflow: hidden;
         width: 100vmin;
         display: flex;
@@ -125,6 +126,7 @@
         height: 100%;
         top: 0;
         left: calc(100vmin * -0.220);
+        pointer-events: none;
     }
 
     & .picker-wheel:last-child::after{
@@ -134,6 +136,7 @@
         height: 100%;
         top: 0;
         right: calc(100vmin * -0.220);
+        pointer-events: none;
     }
 
     & .picker-wheel:first-child .picker-label:first-child{
@@ -145,6 +148,7 @@
     }
 
     & .picker-label{
+        zoom: 2;
         vertical-align: middle;
         height: 100%;
     }
@@ -182,6 +186,12 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        zoom: 2;
+    }
+    
+    & .picker-wheel span{
+        backface-visibility: hidden;
+        -webkit-font-smoothing: subpixel-antialiased;
     }
 
     & .picker-wheel:first-child li{
