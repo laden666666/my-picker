@@ -80,7 +80,7 @@
         position: relative;
         padding: 0 calc(100vmin * 0.220);
         box-sizing: border-box;
-        mask-box-image:
+        -webkit-mask-box-image:
                 linear-gradient(to top,
                         rgba(255,255,255,0.3),
                         rgba(255,255,255,0.3) 5%,
@@ -187,11 +187,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         zoom: 2;
-    }
-    
-    & .picker-wheel span{
-        backface-visibility: hidden;
-        -webkit-font-smoothing: subpixel-antialiased;
     }
 
     & .picker-wheel:first-child li{
