@@ -26,6 +26,7 @@
         user-select: none;
         transform: translate3d(0,100vmin,0);
         transition: 0.3s ease-out transform;
+        transform-style: preserve-3d;
 
         &.s-open{
             transform: translate3d(0,0,0);
@@ -90,6 +91,7 @@
                         rgba(255,255,255,0.5) 58.4%,
                         rgba(255,255,255,0.3) 95%,
                         rgba(255,255,255,0.3));
+        transform-style: preserve-3d;
     }
     & .picker-body::before,& .picker-body::after{
         display: block;
@@ -117,6 +119,7 @@
         flex-direction: row;
         position: relative;
         font-size: 0.553rem;
+        transform-style: preserve-3d;
     }
 
     & .picker-wheel:first-child::before{
@@ -166,7 +169,7 @@
         flex: 1;
         height: 100%;
         position: relative;
-        transform-style: preserve-3d;
+        transform-style: inherit;
     }
     
     & .picker-wheel li{
@@ -187,13 +190,16 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         zoom: 2;
+        transform-style: preserve-3d;
     }
 
     & .picker-wheel:first-child li{
         margin-right: 0;
+        transform-style: preserve-3d;
     }
 
     & .picker-wheel:last-child li{
         margin-left: 0;
+        transform-style: preserve-3d;
     }
 }
