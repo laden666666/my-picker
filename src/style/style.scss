@@ -116,7 +116,7 @@
         align-items: center;
         flex-direction: row;
         position: relative;
-        font-size: 0.553rem;
+        font-size: 12px;
     }
 
     & .picker-wheel:first-child::before{
@@ -148,7 +148,6 @@
     }
 
     & .picker-label{
-        zoom: 2;
         vertical-align: middle;
         height: 100%;
     }
@@ -186,7 +185,6 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        zoom: 2;
     }
 
     & .picker-wheel:first-child li{
