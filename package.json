@@ -4,7 +4,7 @@
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
   "main": "src/main.js",
   "scripts": {
-    "test": "webpack;mocha ./test/test.js",
+    "test": "mocha ./test/test.js",
     "build": "webpack --config ./build/webpack.prod.conf.js --progress --hide-modules",
     "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --hot --inline"
   },
@@ -28,7 +28,6 @@
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.29.0",
-    "jsdom": "^11.1.0",
     "mocha": "^3.4.2",
     "mocha-cli": "^1.0.1",
     "my-jquery": "^0.1.1",
@@ -44,5 +43,7 @@
     "url": "https://github.com/laden666666/my-picker/issues"
   },
   "homepage": "https://laden666666.github.io/my-picker/",
-  "dependencies": {}
+  "dependencies": {
+    "jsdom": "^9.12.0"
+  }
 }
