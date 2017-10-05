@@ -1,6 +1,6 @@
 //设置背景
 particlesJS('header-background',
-
+  
   {
     "particles": {
       "number": {
@@ -283,7 +283,7 @@ for(var i = 1; i <= 12 ; i++){
 
 var today = new Date();
 
-var picker8  = new myPicker({
+var picker8  = window.picker({
   cols : [{
     options: year,
     suffix: "年",

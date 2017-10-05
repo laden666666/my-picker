@@ -113,7 +113,7 @@ function Wheel(picker, col, option, index){
 	}
 	this.dom[0].addEventListener("touchend", endDrag);
 	this.dom[0].addEventListener("mouseup", endDrag);
-	this.dom[0].addEventListener("mouseleave", endDrag);
+	// this.dom[0].addEventListener("mouseleave", endDrag);
 
 	//初始化标签
 	this.dom.find(".picker-label").css("transform",`translateZ(${this.radius}vmin) scale(1)`);

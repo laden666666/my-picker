@@ -12,8 +12,8 @@ module.exports = {
         path: path.join(__dirname, "../dist/"),
         library: 'myPicker',
         libraryTarget: 'umd',
-        // 生成的打包文件名
-        filename: 'my-picker.min.js',
+        // 生成的打包文件名  
+        filename: 'my-picker.js',
     },
     module: {
         //加载器配置
