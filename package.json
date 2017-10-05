@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "mocha ./test/test.js",
-    "build": "webpack --config ./build/webpack.prod.conf.js --progress --hide-modules",
+    "build": "webpack --config ./build/webpack.prod.conf.js --progress --hide-modules && webpack --config ./build/webpack.prod.min.conf.js --progress --hide-modules",
     "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --hot --inline"
   },
   "repository": {

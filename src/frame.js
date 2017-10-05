@@ -12,7 +12,7 @@ function  Frame(picker, option) {
 
 	//构建cover
 	this.cover = $("<div class='my-picker-cover' style='z-index: " + option.zIndex + "'>").hide();
-	
+
 	this.frame =
 		$('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
 			+ '<header class="picker-head">'
@@ -96,6 +96,8 @@ Frame.prototype = {
 	},
 	//移除
 	remove:function () {
+        alert()
+        debugger
 		this.frame.remove();
 	}
 }

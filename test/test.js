@@ -4,7 +4,8 @@
 var jsdom = require("jsdom");
 var fs = require("fs");
 var assert = require('chai').assert;
-var picker = fs.readFileSync("./dist/my-picker.js", "utf-8");
+var path = require('path')
+var picker = fs.readFileSync(path.resolve(__dirname, "../dist/my-picker.js") , "utf-8");
 
 var htmlTemplate = '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body></body></html>';
 

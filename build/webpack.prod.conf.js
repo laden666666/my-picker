@@ -13,7 +13,7 @@ module.exports = {
         library: 'myPicker',
         libraryTarget: 'umd',
         // 生成的打包文件名
-        filename: 'my-picker.min.js',
+        filename: 'my-picker.js',
     },
     module: {
         //加载器配置
@@ -60,14 +60,6 @@ module.exports = {
     plugins: [
         // 单独抽离 CSS
         new ExtractTextPlugin("my-picker.css"),
-
-        // JS 压缩插件
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            sourceMap: true
-        }),
     ],
     devtool: 'source-map'
 };

@@ -20,7 +20,7 @@ var KEY_COLS = Symbol("cols");
 function Picker(option) {
     //用用户配置,覆盖默认配置,生成当前控件的实例的配置
     this[KEY_OPTION] = util.extends({} , defaultOption ,option);
-    
+
     //主架
     this[KEY_FRAME] = new Frame(this, this[KEY_OPTION]);
 
@@ -100,6 +100,7 @@ Picker.prototype.hide = function () {
  * 关闭
  */
 Picker.prototype.close = function () {
+    debugger
     this[KEY_FRAME].remove();
     this[KEY_OPTION] = null;
     this[KEY_WHEELS] = null;
