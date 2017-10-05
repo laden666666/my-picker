@@ -1,0 +1,22 @@
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var baseConfig = require('./webpack.prod.conf')
+
+var webpackConfig = merge(baseConfig, {
+    module: {
+        loaders: [{
+            test: /\.css$/,
+            use: [{
+                loader: 'style-loader',
+            }, {
+                loader: 'css-loader',
+            }]
+        }]
+    },
+})
+
+delete webpackConfig.entry
+delete webpackConfig.externals
+
+
+module.exports = webpackConfig

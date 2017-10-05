@@ -49,6 +49,7 @@ function  Frame(picker, option) {
 		that.picker.hide();
 	});
 	this.frame.find(".picker-btn-ok").on("click", function (event) {
+        console.log(1111)
 		if(typeof that.option.onOkClick == 'function'){
 			var result = that.option.onOkClick.call(that.picker, picker.getValue());
 			if(result === false){

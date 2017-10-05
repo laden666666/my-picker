@@ -153,7 +153,6 @@ Picker.prototype.getValue = function(index){
             return this[KEY_WHEELS][index].getValue();
     } else {
         var values = [];
-        var i;
         for(i = 0; i < this[KEY_COLS].length ; i++){
             values.push(this[KEY_WHEELS][i].getValue());
         }

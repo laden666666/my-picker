@@ -45,7 +45,7 @@ function Picker(option) {
 
     //构造滚轮
     this[KEY_WHEELS] = [];
-    var wheel, col, i;
+    var wheel, col;
     for(i = 0; i < cols.length ; i++){
         var col = cols[i];
 
@@ -68,7 +68,6 @@ function Picker(option) {
 
     }
 
-    var i;
     for(i = 0; i < cols.length ; i++) {
 
         //设置滚轮的选项
@@ -102,7 +101,6 @@ Picker.prototype.hide = function () {
  */
 Picker.prototype.close = function () {
     this[KEY_FRAME].remove();
-    this[KEY_FRAME].hideCover();
     this[KEY_OPTION] = null;
     this[KEY_WHEELS] = null;
     this[KEY_FRAME] = null;
@@ -153,7 +151,6 @@ Picker.prototype.getValue = function(index){
             return this[KEY_WHEELS][index].getValue();
     } else {
         var values = [];
-        var i;
         for(i = 0; i < this[KEY_COLS].length ; i++){
             values.push(this[KEY_WHEELS][i].getValue());
         }

@@ -208,6 +208,7 @@ Picker.prototype.hide = function () {
  */
 Picker.prototype.close = function () {
     this[KEY_FRAME].remove();
+    this[KEY_FRAME].hideCover();
     this[KEY_OPTION] = null;
     this[KEY_WHEELS] = null;
     this[KEY_FRAME] = null;
@@ -420,7 +421,14 @@ module.exports = Frame;
 		})
 	}
 
-	//克隆dom
+    //短横线隔开式命名转驼峰命名
+    function toCamelCase(name) {
+        return name.replace(/-\S/g, function (splitChar) {
+            return splitChar[1].toUpperCase();
+        });
+    }
+
+    //克隆dom
 	function domClone(item, hasSystem) {
 		var dom = item.cloneNode(true);
 		hasSystem && item[dataKey] && (dom[dataKey] = item[dataKey]);
@@ -530,7 +538,7 @@ module.exports = Frame;
 			},selector)
 		},
 
-		//用于将
+		//用于将文档增添于
 		append : function(child){
 			insertDom(this, $(child), function ( parent,child) {
 				parent.appendChild(child);
@@ -575,7 +583,7 @@ module.exports = Frame;
 			$(parent).before(this);
 			return $(this[0]);
 		},
-
+		
 		clone: function () {
 			var arr = [];
 			this.each(function (i, item) {
@@ -584,6 +592,16 @@ module.exports = Frame;
 			return $(arr);
 		},
 
+		/**
+		 * 删除dom
+		 */
+		remove: function () {
+			this.each(function (i, item) {
+				item.parentElement && item.parentElement.removeChild(item)
+			})
+			return this;
+		},
+				
 		data: function (key, value) {
 			return access(this, function (item, key, value) {
 				if(!item[dataKey]){
@@ -689,9 +707,9 @@ module.exports = Frame;
 		},
 		css: function (key, value) {
 			return access(this, function (item, key, value) {
-				item.style[key] = value;
+				item.style[toCamelCase(key)] = value;
 			}, function (item, key) {
-				return item.style[key];
+				return item.style[toCamelCase(key)];
 			}, key, value)
 		},
 
