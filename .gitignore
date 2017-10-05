@@ -29,6 +29,7 @@ $RECYCLE.BIN/
 # App specific
 
 unpackage/
+coverage/
 node_modules/
 .tmp
 *.log

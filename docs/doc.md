@@ -1,11 +1,11 @@
 # my-picker
 高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台。
 
-### 安装
-##### 浏览器环境
+## 安装
+### 浏览器环境
 浏览器环境直接导入dist下的**my-picker.js**和**my-picker.css**文件即可
 
-##### webpack环境
+### webpack环境
 执行cli命令
 ```
 npm i my-picker -S
@@ -17,12 +17,12 @@ import myPicker form 'my-picker'
 import 'my-picker/my-picker.css'
 ```
 ---
-### 初始化：
+## 初始化：
 ```
 new myPicker(option)
 ```
 option是控件的初始化配置，具体配置项有：
-##### cols:
+### cols:
 可选值列表的配置,是个数组,数组每项一列,一列的配置项的完整格式为一个json对象,最多支持3列。如:
 ```
 {
@@ -61,7 +61,7 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 {cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']}
 ```
 
-##### setValues:
+### setValues:
 已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。如:
 ```
 {
@@ -70,7 +70,7 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 }
 ```
 
-##### onSelectItem:
+### onSelectItem:
 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：
  * index				被选值所在的层级,从0开始计数
  * selectedIndex		被选值在数组中的索引
@@ -86,16 +86,16 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 }
 ```
 
-##### hasVoice
+### hasVoice
 转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。
 
-##### title
+### title
 显示的标题。
 
-##### zIndex
+### zIndex
 控件的z-index的属性值。
 
-##### onOkClick
+### onOkClick
 点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。
 回调函数的参数含义如下：
 *  values            一个数组,是各个滚轮被选的值
@@ -113,38 +113,38 @@ prefix是前缀,suffix是后缀,他们会显示在滚轮两侧。
 }
 ```
 
-##### onCancelClick
+### onCancelClick
 点击取消按钮的事件。执行后会关闭picker。
 
 -------
-### 显示隐藏相关api：
-##### Picker.prototype.show 显示
+## 显示隐藏相关api：
+### Picker.prototype.show 显示
 new出picker对象后，是隐藏状态，需要调用此接口显示。
 
-##### Picker.prototype.hide 隐藏
+### Picker.prototype.hide 隐藏
 将显示出来的控件隐藏起来。
 
-##### Picker.prototype.close 关闭
+### Picker.prototype.close 关闭
 删除控件，控件将不能再被打开。
 
 -------
-### 可选值列表相关api：
-##### Picker.prototype.setOptions(index, list, defaultValue) 设置可选值
+## 可选值列表相关api：
+### Picker.prototype.setOptions(index, list, defaultValue) 设置可选值
 这个函数可以动态地设置picker的可选值，参数含义如下：
 *  index             滚轮的index,从0开始记录
 *  list              滚轮的可选值列表，是个数组，和cols里面配置的列一样
 *  defaultValue      默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值
 
-##### Picker.prototype.getOptions(index) 获得可选值
+### Picker.prototype.getOptions(index) 获得可选值
 *  index             滚轮的index,从0开始记录
 
 -----
-### 被选值相关api：
-##### Picker.prototype.setValue(index, value) 设置被选值
+## 被选值相关api：
+### Picker.prototype.setValue(index, value) 设置被选值
 设置滚轮的被选值，参数含义如下：
 *  param index             滚轮的index,从0开始记录
 *  param value             设置被选的值
 
-##### Picker.prototype.getValue(index) 获取可选值
+### Picker.prototype.getValue(index) 获取可选值
 获取滚轮的值,如果index为空表示获取所有滚轮的值。
 *  param index             滚轮的index,从0开始记录。如果index是undefined或者null,则表示获取所有滚轮的值,会返回一个数组。
