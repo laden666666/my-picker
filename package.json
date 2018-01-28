@@ -1,8 +1,8 @@
 {
   "name": "my-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
-  "main": "src/main.js",
+  "main": "dist/my-picker.min.js",
   "scripts": {
     "test": "cross-env BABEL_ENV=test karma start",
     "build": "node ./build/build.js",

@@ -6,11 +6,11 @@
 
 移动端demo效果图:
 
-![image](https://github.com/laden666666/my-picker/blob/master/docs/images/mobileDemo.gif)
+![image](./docs/images/mobileDemo.gif)
 
 pc端demo效果图:
 
-![image](https://github.com/laden666666/my-picker/blob/master/docs/images/pcDemo.gif)
+![image](./docs/images/pcDemo.gif)
 
 ## 安装
 
