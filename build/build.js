@@ -21,6 +21,8 @@ webpack(webpackConfig, function (err, stats) {
         output: {
             path: path.join(__dirname, "../dist/"),
             filename: 'my-picker.min.js',
+            libraryTarget: 'umd',
+            library: 'myPicker',
         },
         //插件项
         plugins: [

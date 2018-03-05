@@ -21,9 +21,9 @@ function Wheel(picker, col, option, index){
 	//转轮主体
 	this.dom = $(
 		'<div class="picker-wheel">'
-		+ '<div class="picker-label"></div>'
+		+ '<div class="picker-label"><span class="picker-text"></span></div>'
 		+ '<ul></ul>'
-		+ '<div class="picker-label"></div>'
+		+ '<div class="picker-label"><span class="picker-text"></span></div>'
 		+ '</div>').css('height', config.wheelHeight + 'vmin');
 
 	//转轮上面标签的容器，同时也是转动的轴
@@ -116,7 +116,7 @@ function Wheel(picker, col, option, index){
 	this.dom[0].addEventListener("mouseleave", endDrag);
 
 	//初始化标签
-	this.dom.find(".picker-label").css("transform",`translateZ(${this.radius}vmin) scale(1)`);
+	this.dom.find(".picker-label").css("transform",`translateZ(${this.radius}vmin) scale(0.75)`);
 
 	//设置标签
 	this.setSuffix(col.suffix);
@@ -252,11 +252,12 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 
 		//创建label的显示dom,并计算他在容器中的位置(角度)
 		var li = $("<li></li>");
-		li.append($("<span></span>").text(label));
+		li.append($('<span class="picker-text"></span>').text(label));
 		var angle = config.wheelItemAngle * -index;
 
 		//为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin)")
+		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin) scale(0.75)")
+			.css("padding",  `${height / 5.9}vmin 0`)
 			.css("height",  height + "vmin")
 			.css("line-height", height + "vmin");
 		//将标签的角度保存到其dom中
@@ -492,14 +493,14 @@ Wheel.prototype.getValue = function(){
  * @param text			后缀显示的文本
  */
 Wheel.prototype.setSuffix = function (text) {
-	$(this.dom.find('.picker-label')[1]).text(text);
+	$(this.dom.find('.picker-label span')[1]).text(text);
 }
 /**
  * 设置前缀
  * @param text			前缀显示的文本
  */
 Wheel.prototype.setPrefix = function (text) {
-	$(this.dom.find('.picker-label')[0]).text(text);
+	$(this.dom.find('.picker-label span')[0]).text(text);
 }
 
 /////////////////////////////wheel事件相关

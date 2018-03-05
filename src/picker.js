@@ -166,5 +166,5 @@ module.exports = function(option){
     return new Picker(option);
 };
 
-
+module.exports.version = '0.1.2'
 

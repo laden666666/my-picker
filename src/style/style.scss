@@ -150,6 +150,11 @@
     & .picker-label{
         vertical-align: middle;
         height: 100%;
+        padding-top: 10px;
+    }
+    & .picker-text{
+        text-shadow: 0 0px #040404, 0px 0 black, 0px 0 black, 0 0px black;
+        font-size: 4vmin;
     }
     & .picker-label::before{
         display: inline-block;
@@ -171,13 +176,12 @@
     & .picker-wheel li{
         cursor: pointer;
         display: block;
-        width: 100%;
         text-align: center;
         position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        top: -16.666666666%;
+        right: -16.666666666%;
+        bottom: -16.666666666%;
+        left: -16.666666666%;
         margin: auto auto;
         //background: black;
         //color: #fff;
