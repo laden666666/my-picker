@@ -19,6 +19,9 @@ module.exports = {
 		filename: 'my-picker.js',
         publicPath: publicPath
 	},
+    resolve: {
+		extensions: ['.js', '.ts', '.vue', '.json'],
+	},
 	module: {
         //加载器配置
         loaders: [{
@@ -31,6 +34,15 @@ module.exports = {
 				}
 			}
         }, {
+			test: /\.ts(x?)$/,
+			include: path.join(__dirname, '../src'),
+			exclude: /node_modules/,
+			use: [{
+				loader: 'babel-loader',
+			}, {
+				loader: 'ts-loader',
+			}]
+		}, {
             test: /\.(png|jpg|gif|wav)$/,
             use: [
                 {
@@ -61,8 +73,6 @@ module.exports = {
 	//插件项
 	plugins: [
 		// 启用作用域提升（scope hoisting）
-		new webpack.optimize.ModuleConcatenationPlugin(),
-		// 作用域提升
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		// 代码热替换
 		new webpack.HotModuleReplacementPlugin(),

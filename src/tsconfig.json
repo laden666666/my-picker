@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "allowJs": false,
+        "declaration": true,
+        "target": "es2017"
+    }
+}
