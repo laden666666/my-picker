@@ -16,27 +16,27 @@ function  Frame(picker, option) {
 	this.frame =
 		$('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">'
 			+ '<header class="picker-head">'
-				+ '<a class="picker-btn-cancel"></a>'
-				+ '<h4 class="picker-title"></h4>'
+				+ '<a class="picker-btn-cancel"><span class="picker-header-text"></span></a>'
+				+ '<h4 class="picker-title"><span class="picker-header-text"></span></h4>'
 				+ '<span class="picker-selected">已选0</span>'
-				+ '<a class="picker-btn-ok"></a>'
+				+ '<a class="picker-btn-ok"><span class="picker-header-text"></span></a>'
 			+ '</header>'
 			+ '<div class="picker-body"></div>'
-		+ '</div>').css('height', (config.wheelHeight + 15) + "vmin").hide();
+		+ '</div>').css('height', (config.wheelHeight + 15) / 100 + "em").hide();
 	this.frame.find(".picker-body")
-	.css("webkitPerspective",(config.wheelHeight) + "vmin")
-	.css("mozPerspective",(config.wheelHeight) + "vmin")
-	.css("msPerspective",(config.wheelHeight) + "vmin")
-	.css("perspective",(config.wheelHeight) + "vmin")
+	.css("webkitPerspective",(config.wheelHeight) / 100 + "em")
+	.css("mozPerspective",(config.wheelHeight) / 100 + "em")
+	.css("msPerspective",(config.wheelHeight) / 100 + "em")
+	.css("perspective",(config.wheelHeight) / 100 + "em")
 	[0].addEventListener('touchstart', function (event) {
 		event.preventDefault();
 		event.stopPropagation();
 	});
 
 	//设置标题按钮名
-	this.frame.find(".picker-title").text(option.title);
-	this.frame.find(".picker-btn-cancel").text( option.buttons[1] || '取消');
-	this.frame.find(".picker-btn-ok").text( option.buttons[0] || '确定');
+	this.frame.find(".picker-title .picker-header-text").text(option.title);
+	this.frame.find(".picker-btn-cancel .picker-header-text").text( option.buttons[1] || '取消');
+	this.frame.find(".picker-btn-ok .picker-header-text").text( option.buttons[0] || '确定');
 
 	$("body").append(this.frame).append(this.cover);
 
@@ -58,6 +58,12 @@ function  Frame(picker, option) {
 		that.picker.hide();
 	});
 
+	this._resizeHandle = function(){
+		this.frame.css('fontSize', Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight) + 'px')
+	}.bind(this)
+
+	window.addEventListener('resize', this._resizeHandle)
+	this._resizeHandle()
 }
 
 
@@ -93,6 +99,11 @@ Frame.prototype = {
 	},
 	body: function(){
 		return this.frame.find('.picker-body');
+	},
+	//关闭
+	close:function () {
+		this.remove();
+		window.removeEventListener('resize', this._resizeHandle)
 	},
 	//移除
 	remove:function () {

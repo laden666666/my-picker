@@ -6,7 +6,7 @@ var path = require('path');
  */
 var perspectiveConversion = require('../src/wheel/perspectiveConversion');
 
-//将原来根据vmin的计算,全部改为基于百分比的,因为半径和滚轮高度比例是定值,触摸坐标的范围不超出滚轮高度,所有设滚轮高度wheelHeight是2
+//将原来根据em的计算,全部改为基于百分比的,因为半径和滚轮高度比例是定值,触摸坐标的范围不超出滚轮高度,所有设滚轮高度wheelHeight是2
 var wheelHeight = 2;
 var radius = wheelHeight / Math.sqrt(5);
 

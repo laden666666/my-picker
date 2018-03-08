@@ -24,7 +24,7 @@ function Wheel(picker, col, option, index){
 		+ '<div class="picker-label"><span class="picker-text"></span></div>'
 		+ '<ul></ul>'
 		+ '<div class="picker-label"><span class="picker-text"></span></div>'
-		+ '</div>').css('height', config.wheelHeight + 'vmin');
+		+ '</div>').css('height', config.wheelHeight / 100 + 'em');
 
 	//转轮上面标签的容器，同时也是转动的轴
 	this.contains = this.dom.find('ul');
@@ -40,8 +40,8 @@ function Wheel(picker, col, option, index){
 	this.visibleAngle = 90 - (Math.acos(this.radius / config.wheelHeight * 2) / Math.PI * 180);
 	//是否使用水平透视,使用水平透视后,显示时滚轮水平方向有透视效果
 	this.isPerspective = this.option.isPerspective;
-	//获取1vmin的实际像素值
-	this.vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
+	//获取0.01em的实际像素值
+	this.em = Math.min(window.innerWidth, window.innerHeight) / 100;
 	//获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
 	this.offsetTop = 0;
 
@@ -116,7 +116,7 @@ function Wheel(picker, col, option, index){
 	this.dom[0].addEventListener("mouseleave", endDrag);
 
 	//初始化标签
-	this.dom.find(".picker-label").css("transform",`translateZ(${this.radius}vmin) scale(0.75)`);
+	this.dom.find(".picker-label").css("transform",`translateZ(${this.radius / 100}em) scale(0.75)`);
 
 	//设置标签
 	this.setSuffix(col.suffix);
@@ -132,7 +132,7 @@ function Wheel(picker, col, option, index){
  */
 Wheel.prototype.startDrag = function (offsetY) {
 	//记录触摸相关信息,为下一步计算用.计算时候,要将坐标系移至中心,并将单位转为vm
-	this.lastY = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1 ;
+	this.lastY = (config.wheelHeight / 2 -  offsetY / this.em) * -1 ;
 	this.timeStamp = Date.now();
 	this.isDraging = true;
 	this.offsetTop = this.dom[0].offsetTop;
@@ -159,7 +159,7 @@ Wheel.prototype.drag = function (offsetY) {
 
 	//根据触摸位移(鼠标移动位移)计算转角变化量
 	//现将坐标系移植中心,并将单位转为vm
-	var y = (config.wheelHeight / 2 -  offsetY / this.vmin) * -1;
+	var y = (config.wheelHeight / 2 -  offsetY / this.em) * -1;
 	//计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
 	var changeAngle = (perspectiveConversion(this.lastY, this.radius, config.wheelHeight) - perspectiveConversion(y, this.radius, config.wheelHeight))
@@ -256,10 +256,10 @@ Wheel.prototype.setOptions = function (list, selectedValue, isInti) {
 		var angle = config.wheelItemAngle * -index;
 
 		//为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius + "vmin) scale(0.75)")
-			.css("padding",  `${height / 5.9}vmin 0`)
-			.css("height",  height + "vmin")
-			.css("line-height", height + "vmin");
+		li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)")
+			.css("padding",  `${height / 5.9 / 100}em 0`)
+			.css("height",  height / 100 + "em")
+			.css("line-height", height / 100 + "em");
 		//将标签的角度保存到其dom中
 		li.data("angle", angle);
 		//将标签的index保存到其dom中
@@ -493,14 +493,14 @@ Wheel.prototype.getValue = function(){
  * @param text			后缀显示的文本
  */
 Wheel.prototype.setSuffix = function (text) {
-	$(this.dom.find('.picker-label span')[1]).text(text);
+	this.dom.find('.picker-label .picker-text').eq(1).text(text);
 }
 /**
  * 设置前缀
  * @param text			前缀显示的文本
  */
 Wheel.prototype.setPrefix = function (text) {
-	$(this.dom.find('.picker-label span')[0]).text(text);
+	this.dom.find('.picker-label .picker-text').eq(0).text(text);
 }
 
 /////////////////////////////wheel事件相关

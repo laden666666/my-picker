@@ -5,8 +5,6 @@ var util = require("./util/util");
 var defaultOption = require("./option");
 require("./style/style.scss");
 
-
-
 //Picker的私有成员的key
 //配置
 var KEY_OPTION = Symbol("option");
@@ -64,8 +62,6 @@ function Picker(option) {
                 }
             }
         })(i)
-
-
     }
 
     var i;
@@ -101,7 +97,7 @@ Picker.prototype.hide = function () {
  * 关闭
  */
 Picker.prototype.close = function () {
-    this[KEY_FRAME].remove();
+    this[KEY_FRAME].close();
     this[KEY_FRAME].hideCover();
     this[KEY_OPTION] = null;
     this[KEY_WHEELS] = null;
