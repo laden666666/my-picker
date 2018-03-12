@@ -9,7 +9,7 @@ var publicPath = 'http://' + host + ':' + port + '/';
 module.exports = {
 	//页面入口文件配置
 	entry: {
-		index: path.join(__dirname, "../src/picker"),
+		index: path.join(__dirname, "../src/index.ts"),
 	},
 	output: {
 		path: path.join(__dirname, "../dist/"),
@@ -20,13 +20,13 @@ module.exports = {
         publicPath: publicPath
 	},
     resolve: {
-		extensions: ['.js', '.ts', '.vue', '.json'],
+		extensions: ['.ts', '.js', '.vue', '.json'],
 	},
 	module: {
         //加载器配置
         loaders: [{
             test: /\.(js)$/,
-            exclude: /node_modules/,
+			include: path.join(__dirname, '../src'),
 			use: {
 				loader: 'babel-loader',
 				options: {
@@ -39,6 +39,9 @@ module.exports = {
 			exclude: /node_modules/,
 			use: [{
 				loader: 'babel-loader',
+				options: {
+					"presets": ["es2015", "stage-3"],
+				}
 			}, {
 				loader: 'ts-loader',
 			}]

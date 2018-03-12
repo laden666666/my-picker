@@ -6,7 +6,7 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
     //页面入口文件配置
     entry: {
-        index: path.join(__dirname, "../src/picker"),
+        index: path.join(__dirname, "../src/index"),
     },
     output: {
         path: path.join(__dirname, "../dist/"),
@@ -15,11 +15,14 @@ module.exports = {
         // 生成的打包文件名
         filename: 'my-picker.js',
     },
-    module: {
+    resolve: {
+		extensions: ['.ts', '.js', '.vue', '.json'],
+	},
+	module: {
         //加载器配置
         loaders: [{
             test: /\.(js)$/,
-            exclude: /node_modules/,
+			include: path.join(__dirname, '../src'),
 			use: {
 				loader: 'babel-loader',
 				options: {
@@ -27,6 +30,18 @@ module.exports = {
 				}
 			}
         }, {
+			test: /\.ts(x?)$/,
+			include: path.join(__dirname, '../src'),
+			exclude: /node_modules/,
+			use: [{
+				loader: 'babel-loader',
+				options: {
+					"presets": ["es2015", "stage-3"],
+				}
+			}, {
+				loader: 'ts-loader',
+			}]
+		}, {
             test: /\.(png|jpg|gif|wav)$/,
             use: [
                 {
@@ -37,7 +52,7 @@ module.exports = {
                     }
                 }
             ]
-        }, {
+        },  {
             test: /\.(scss|sass|css)$/,  // pack sass and css files
             loader: ExtractTextPlugin.extract({
                 fallback: "style-loader",
@@ -55,7 +70,7 @@ module.exports = {
                 ],
             })
         },]
-    },
+	},
     //插件项
     plugins: [
         // 单独抽离 CSS

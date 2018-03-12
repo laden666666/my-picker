@@ -1,6 +1,5 @@
-var $ = require("./util/domUtil");
-var config = require("./config");
-
+import $ from './util/domUtil';
+import constant from './constant';
 
 //构建主框架
 function  Frame(picker, option) {
@@ -22,12 +21,12 @@ function  Frame(picker, option) {
 				+ '<a class="picker-btn-ok"><span class="picker-header-text"></span></a>'
 			+ '</header>'
 			+ '<div class="picker-body"></div>'
-		+ '</div>').css('height', (config.wheelHeight + 15) / 100 + "em").hide();
+		+ '</div>').css('height', (constant.WHEEL_HEIGHT + 15) / 100 + "em").hide();
 	this.frame.find(".picker-body")
-	.css("webkitPerspective",(config.wheelHeight) / 100 + "em")
-	.css("mozPerspective",(config.wheelHeight) / 100 + "em")
-	.css("msPerspective",(config.wheelHeight) / 100 + "em")
-	.css("perspective",(config.wheelHeight) / 100 + "em")
+	.css("webkitPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+	.css("mozPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+	.css("msPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+	.css("perspective",(constant.WHEEL_HEIGHT) / 100 + "em")
 	[0].addEventListener('touchstart', function (event) {
 		event.preventDefault();
 		event.stopPropagation();

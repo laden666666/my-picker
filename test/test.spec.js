@@ -1,7 +1,7 @@
 /**
  * Created by njz on 17/1/22.
  */
-var myPicker = require('../src/picker');
+var myPicker = require('../src/index.ts');
 
 describe('picker基本配置测试', function () {
 
