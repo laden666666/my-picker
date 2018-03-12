@@ -18,9 +18,12 @@
 - [x]对perspectiveConversion函数的优化,将perspectiveConversion的值缓存起来
 - [x]增加点击选择功能
 - [x]去除对jquery的依赖
-- [ ]解决文字模糊问题
+- [x]解决文字模糊问题
 - [x]集成webpack3
 - [x]集成autoprefixer
 - [ ]兼容ie、欧朋和火狐浏览器
 - [ ]提高移动端版本的效率
 - [ ]发布1.0.0正式版
+- [x]用typescript重构项目
+- [ ]rollup打包项目，使打包后的文件更小
+- [ ]使用my-doc-jsx重新readme和api文档
