@@ -13,11 +13,9 @@ import {Picker} from '../Picker'
 import {IOptions} from '../IOptions'
 
 declare function require<T>(name: string): T
-
-const perspectiveConversion = require<{(y: number, radius: number, wheelHeight: number): number}>("./perspectiveConversionCache")
 const tick = require<{(): {play()}}>("../tick/tick")();
 
-export class Wheel3D implements IWheel{
+export class Wheel implements IWheel{
 
     //picker对象
     picker: Picker;
@@ -90,7 +88,7 @@ export class Wheel3D implements IWheel{
         this.index = index;
         //转轮主体
         this.dom = $(
-            '<div class="picker-wheel3d">'
+            '<div class="picker-wheel">'
             + '<div class="picker-label"><span class="picker-text"></span></div>'
             + '<ul></ul>'
             + '<div class="picker-label"><span class="picker-text"></span></div>'
@@ -183,9 +181,6 @@ export class Wheel3D implements IWheel{
         this.dom[0].addEventListener("mouseup", endDrag);
         this.dom[0].addEventListener("mouseleave", endDrag);
 
-        //初始化标签
-        this.dom.find(".picker-label").css("transform",`translateZ(${this.radius / 100}em) scale(0.75)`);
-
         //设置标签
         this.setSuffix(col.suffix);
         this.setPrefix(col.prefix);
@@ -228,7 +223,7 @@ export class Wheel3D implements IWheel{
         var y = (constant.WHEEL_HEIGHT / 2 -  offsetY / this.em()) * -1;
         //计算位移,因为z轴有透视,所以位移量不是真正的曲面的位移量,要做一次透视变换
 
-        var changeAngle = (perspectiveConversion(this.lastY, this.radius, constant.WHEEL_HEIGHT) - perspectiveConversion(y, this.radius, constant.WHEEL_HEIGHT))
+        var changeAngle = 0
             / Math.PI * 180;
         var angle = changeAngle + this.angle;
 
@@ -321,9 +316,7 @@ export class Wheel3D implements IWheel{
             li.append($('<span class="picker-text"></span>').text(label));
             var angle = constant.WHEEL_ITEM_ANGLE * -index;
 
-            //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-            li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)")
-                .css("padding",  `${height / 5.9 / 100}em 0`)
+            li.css("padding",  `${height / 5.9 / 100}em 0`)
                 .css("height",  height / 100 + "em")
                 .css("line-height", height / 100 + "em");
             //将标签的角度保存到其dom中
@@ -488,7 +481,7 @@ export class Wheel3D implements IWheel{
             this.lastIndexAngle = index;
         }
 
-        this.contains.css("transform","rotateX(" + angle + "deg)");
+        this.contains.css("transform","translate(0, " + -angle * this.em() * 8.5 / 100 + "px)");
         this.angle = angle;
         this.flushLabel();
 

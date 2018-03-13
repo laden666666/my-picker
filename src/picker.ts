@@ -3,6 +3,7 @@ import {Col} from './Col'
 import {IPicker} from './IPicker'
 import defaultOption from './defaultOption'
 import {Wheel3D} from './wheel/wheel3D'
+import {Wheel} from './wheel/wheel'
 
 declare function require(name: string): any
 var Frame = require("./frame");
@@ -56,7 +57,7 @@ export class Picker implements IPicker{
             let col = cols[i];
 
             //设置滚轮
-            wheel = new Wheel3D(this, col, this._option, i);
+            wheel = new Wheel(this, col, this._option, i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.dom );
 

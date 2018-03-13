@@ -23,14 +23,19 @@ function  Frame(picker, option) {
 			+ '<div class="picker-body"></div>'
 		+ '</div>').css('height', (constant.WHEEL_HEIGHT + 15) / 100 + "em").hide();
 	this.frame.find(".picker-body")
-	.css("webkitPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
-	.css("mozPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
-	.css("msPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
-	.css("perspective",(constant.WHEEL_HEIGHT) / 100 + "em")
 	[0].addEventListener('touchstart', function (event) {
 		event.preventDefault();
 		event.stopPropagation();
 	});
+
+	//如果是3d透视模式，增加3d透视的样式
+	if(option.isPerspective){
+		this.frame.addClass('s-3d').find(".picker-body")
+			.css("perspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+			.css("webkitPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+			.css("mozPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+			.css("msPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")
+	}
 
 	//设置标题按钮名
 	this.frame.find(".picker-title .picker-header-text").text(option.title);
