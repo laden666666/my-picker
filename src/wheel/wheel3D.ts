@@ -20,65 +20,68 @@ const tick = require<{(): {play()}}>("../tick/tick")();
 export class Wheel3D implements IWheel{
 
     //picker对象
-    picker: Picker;
+    private picker: Picker;
     //option对象
-    option: IOptions;
+    private option: IOptions;
     //记录当前滚轮是容器中第几个滚轮
-    index: number;
+    private index: number;
     //转轮主体
-    dom: MyJQuery;
+    private dom: MyJQuery;
     //转轮上面标签的容器，同时也是转动的轴
-    contains: MyJQuery;
+    private contains: MyJQuery;
 
     ///////////////////滚轮显示属性
     //最大转角
-    maxAngle = 0;
+    private maxAngle = 0;
     //最小转角,设置可选项列表后需重新计算
-    minAngle = 0;
+    private minAngle = 0;
     //滚轮的实际半径,因为有透视效果,所以滚轮实际半径比容器的高度的一半还小。根据勾股定理,计算得实际半径是容器高度的根号5分之1
-    radius = 0;
+    private radius = constant.WHEEL_HEIGHT / Math.sqrt(5);
     //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
-    visibleAngle = 0;
+    private visibleAngle = 0;
     //获取0.01em的实际像素值
-    em: () => number;
+    private em: () => number = ()=>Math.min(window.innerWidth, window.innerHeight) / 100;
     //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
-    offsetTop = 0;
+    private offsetTop = 0;
 
     ////////////////////滚动属性
     //滚轮转动前初始的转角,用于计算滚轮是否转动过
-    originalAngle = 0;
+    private originalAngle = 0;
     //一次拖动过程中滚轮被转动的最大角度
-    lastIndexAngle = 0;
+    private lastIndexAngle = 0;
     //当前的刻度,计算发声时候会用到。发声要进过一个刻度线或者达到一个新刻度新才会发声。所以需要记录上一次的刻度线。
-    changeMaxAngle = 0;
+    private changeMaxAngle = 0;
     //当前滚轮转角
-    angle = 0;
+    private angle = 0;
     //当前被选值的index
-    selectedIndex = -1;
+    private selectedIndex = -1;
     //被选值的值
-    selectedValue;
+    private selectedValue;
     //记录惯性滑动动画的id
-    animationId = -1;
+    private animationId = -1;
     //速度，供触摸离开时候的惯性滑动动画使用
-    speed = 0;
+    private speed = 0;
     //当前时间戳,主要是计算转动速度使用的
-    timeStamp = 0;
+    private timeStamp = 0;
     //记录上一次触摸节点的offsetY,主要是是计算转动速度使用的
-    lastY = 0;
+    private lastY = 0;
     //是否开始触摸,主要给鼠标事件使用
-    isDraging = false;
+    private isDraging = false;
     //正在播放的刻度音
-    audio = null;
+    private audio = null;
 
     ////////////////////可选项属性
     //可选项列表
-    list = [];
+    private list = [];
     //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
-    valueHashMap = {};
+    private valueHashMap = {};
     //如果items数组里的值是对象,其中显示的key
-    labelKey: string;
+    private labelKey: string;
     //如果items数组里的值是对象,其中值的key
-    itemValueKey: string;
+    private itemValueKey: string;
+
+    ////////////////////事件
+    private onSelectItemCallbackList: {(index:number, value:any):void}[] = []
 
     constructor(picker: Picker, col: Col, option: IOptions, index: number){
         ///////////////////主要属性
@@ -100,50 +103,10 @@ export class Wheel3D implements IWheel{
         this.contains = this.dom.find('ul');
 
         ///////////////////滚轮显示属性
-        //最大转角
-        this.maxAngle = 0;
-        //最小转角,设置可选项列表后需重新计算
-        this.minAngle = 0;
-        //滚轮的实际半径,因为有透视效果,所以滚轮实际半径比容器的高度的一半还小。根据勾股定理,计算得实际半径是容器高度的根号5分之1
-        this.radius = constant.WHEEL_HEIGHT / Math.sqrt(5);
         //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
         this.visibleAngle = 90 - (Math.acos(this.radius / constant.WHEEL_HEIGHT * 2) / Math.PI * 180);
-        //获取0.01em的实际像素值
-        this.em = ()=>Math.min(window.innerWidth, window.innerHeight) / 100;
-        //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
-        this.offsetTop = 0;
-
-        ////////////////////滚动属性
-        //滚轮转动前初始的转角,用于计算滚轮是否转动过
-        this.originalAngle = 0;
-        //一次拖动过程中滚轮被转动的最大角度
-        this.lastIndexAngle = 0;
-        //当前的刻度,计算发声时候会用到。发声要进过一个刻度线或者达到一个新刻度新才会发声。所以需要记录上一次的刻度线。
-        this.changeMaxAngle = 0;
-        //当前滚轮转角
-        this.angle = 0;
-        //当前被选值的index
-        this.selectedIndex = -1;
-        //被选值的值
-        this.selectedValue;
-        //记录惯性滑动动画的id
-        this.animationId = -1;
-        //速度，供触摸离开时候的惯性滑动动画使用
-        this.speed = 0;
-        //当前时间戳,主要是计算转动速度使用的
-        this.timeStamp = 0;
-        //记录上一次触摸节点的offsetY,主要是是计算转动速度使用的
-        this.lastY = 0;
-        //是否开始触摸,主要给鼠标事件使用
-        this.isDraging = false;
-        //正在播放的刻度音
-        this.audio = null;
 
         ////////////////////可选项属性
-        //可选项列表
-        this.list = [];
-        //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
-        this.valueHashMap = {};
         //如果items数组里的值是对象,其中显示的key
         this.labelKey = col.labelKey;
         //如果items数组里的值是对象,其中值的key
@@ -196,7 +159,7 @@ export class Wheel3D implements IWheel{
      * 开始拖拽
      * @param {number} offsetY  当前用户手指(鼠标)的y坐标
      */
-    startDrag(offsetY: number) {
+    private startDrag(offsetY: number) {
         //记录触摸相关信息,为下一步计算用.计算时候,要将坐标系移至中心,并将单位转为em
         this.lastY = (constant.WHEEL_HEIGHT / 2 -  offsetY / this.em()) * -1 ;
         this.timeStamp = Date.now();
@@ -217,7 +180,7 @@ export class Wheel3D implements IWheel{
      * 拖拽
      * @param {number} offsetY			当前用户手指(鼠标)的y坐标
      */
-    drag(offsetY: number) {
+    private drag(offsetY: number) {
 
         if(!this.isDraging){
             return;
@@ -251,7 +214,7 @@ export class Wheel3D implements IWheel{
     /**
      * 拖拽结束
      */
-    endDrag(): void {
+    private endDrag(): void {
         if(!this.isDraging){
             return;
         }
@@ -412,7 +375,7 @@ export class Wheel3D implements IWheel{
     * @param index					要选择的index
     * @param showAnimation			是否显示动画,如果显示动画,会用100帧来显示动画
     */
-    selectIndex(index: number, showAnimation = false){
+    private selectIndex(index: number, showAnimation = false){
 
         var angle = this.calcAngleBySelectedIndex(index);
         animationUtil.stopAnimation(this.animationId);
@@ -474,7 +437,7 @@ export class Wheel3D implements IWheel{
     * @param {number} angle		要转到的角度
     * @returns {number}			修正后的角度,即最终的实际角度
     */
-    setAngle(angle: number): number{
+    private setAngle(angle: number): number{
 
         //修正转角,要求转角不能大于maxAngle,不能小于minAngle
         angle = this.rangeAngle(angle);
@@ -500,7 +463,7 @@ export class Wheel3D implements IWheel{
     * @param angle {number}		要计算的角度
     * @returns {number}		    被选项id
     */
-    calcSelectedIndexByAngle(angle: number): number{
+    private calcSelectedIndexByAngle(angle: number): number{
         angle = this.rangeAngle(angle);
         return Math.round(Math.abs(angle / constant.WHEEL_ITEM_ANGLE));
     }
@@ -510,7 +473,7 @@ export class Wheel3D implements IWheel{
     * @param angle {number}		要计算的角度
     * @returns {number}		    被选项id
     */
-    calcAngleBySelectedIndex(index: number): number {
+    private calcAngleBySelectedIndex(index: number): number {
         return index * constant.WHEEL_ITEM_ANGLE;
     }
 
@@ -519,7 +482,7 @@ export class Wheel3D implements IWheel{
     * @param angle {number}		要计算的角度
     * @returns {number}		    被选项id
     */
-    rangeAngle(angle: number): number {
+    private rangeAngle(angle: number): number {
         //修正转角,要求转角不能大于maxAngle,不能小于minAngle
         angle = Math.max(this.minAngle, angle);
         angle = Math.min(this.maxAngle, angle);
@@ -529,7 +492,7 @@ export class Wheel3D implements IWheel{
     /**
     * 刷新各个标签的状态,确定应该显示哪些标签
     */
-    flushLabel(){
+    private flushLabel(){
         var that = this;
         this.dom.find("li").each(function(index, li){
             li = $(li);
@@ -558,14 +521,14 @@ export class Wheel3D implements IWheel{
     * 设置后缀
     * @param text			后缀显示的文本
     */
-    setSuffix(text) {
+    private setSuffix(text) {
         this.dom.find('.picker-label .picker-text').eq(1).text(text);
     }
     /**
     * 设置前缀
     * @param text			前缀显示的文本
     */
-    setPrefix(text) {
+    private setPrefix(text) {
         this.dom.find('.picker-label .picker-text').eq(0).text(text);
     }
 
@@ -575,15 +538,37 @@ export class Wheel3D implements IWheel{
     * @param index			当前被选值的索引
     * @param value			当前被选值的值
     */
-    toggleSelected(index, value) {
-        this.$onSelectItem(index, value);
+    private toggleSelected(index, value) {
+        this.onSelectItemCallbackList.forEach(fn=>{
+            fn.call(this, index, value)
+        })
     }
+   
     /**
-    * 选择后的默认回调。会被packer覆盖掉
-    * @param index			当前被选值的索引
-    * @param value			当前被选值的值
-    */
-    $onSelectItem(index, value) {
+     * 注册SelectItem的回调事件
+     * @param {{(index:number, value:any):void}} fn 
+     */
+    addSelectItemListener(fn: {(index:number, value:any):void}){
+        this.onSelectItemCallbackList.push(fn)
+    }
 
+    /**
+     * 移除注册的SelectItem回调事件
+     * @param {{(index:number, value:any):void}} fn 
+     */
+    removeSelectItemListener(fn: {(index:number, value:any):void}){
+        this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(_fn=>_fn !== fn)
+    }
+
+    /**
+     * 销毁
+     */
+    destroy(){
+        this.onSelectItemCallbackList = null
+    }
+
+    ////////////////////////////DOM相关
+    getDOM(){
+        return this.dom
     }
 }

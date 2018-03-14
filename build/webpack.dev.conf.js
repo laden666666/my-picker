@@ -95,7 +95,6 @@ module.exports = {
 	],
 	devtool: 'source-map',
 	devServer: {
-		host: host,
 		port: port,
 		// gzip
 		compress: true,

@@ -4,6 +4,7 @@ import {IPicker} from './IPicker'
 import defaultOption from './defaultOption'
 import {Wheel3D} from './wheel/wheel3D'
 import {Wheel} from './wheel/wheel'
+import {IWheel} from './IWheel'
 
 declare function require(name: string): any
 var Frame = require("./frame");
@@ -13,7 +14,7 @@ export class Picker implements IPicker{
     //用户配置
     private _option: IOptions
     //滚轮列表
-    private _wheels: any[] = []
+    private _wheels: IWheel[] = []
     //主框架
     private _frame: any
     //主框架
@@ -52,25 +53,25 @@ export class Picker implements IPicker{
 
         //构造滚轮
         this._wheels = [];
-        var wheel, col;
+        var wheel:IWheel, col:Col;
         for(let i = 0; i < cols.length ; i++){
             let col = cols[i];
 
             //设置滚轮
-            wheel = new Wheel(this, col, this._option, i);
+            wheel = this._option.isPerspective ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
             this._wheels.push(wheel);
-            this._frame.body().append(wheel.dom );
+            this._frame.body().append(wheel.getDOM() );
 
             //重写wheel的onSelectItem事件
             var that = this;
-            wheel.$onSelectItem = (function (i) {
+            wheel.addSelectItemListener((function (i) {
                 return function (index, value) {
                     //如果用户注册了onSelectItem
                     if(typeof that._option.onSelectItem == 'function'){
                         that._option.onSelectItem.call(that, i, index, value);
                     }
                 }
-            })(i)
+            })(i))
         }
 
         for(let i = 0; i < cols.length ; i++) {
@@ -110,6 +111,7 @@ export class Picker implements IPicker{
         this._frame.close();
         this._frame.hideCover();
         this._option = null;
+        this._wheels.forEach(wheel=>wheel.destroy())
         this._wheels = null;
         this._frame = null;
         this._cols = null;

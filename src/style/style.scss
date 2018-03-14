@@ -101,11 +101,10 @@
                         rgba(255,255,255,0.5) 58.4%,
                         rgba(255,255,255,0.3) 95%,
                         rgba(255,255,255,0.3));
-        
-        .s-3d &{
-            transform-style: preserve-3d;
-            padding: 0 calc(1em * 0.220);
-        }
+    }
+    &.s-3d .picker-body{
+        transform-style: preserve-3d;
+        padding: 0 calc(1em * 0.220);
     }
     & .picker-body::before,& .picker-body::after{
         display: block;
@@ -225,15 +224,12 @@
         position: relative;
     }
 
-    & .picker-label{
+    & .picker-wheel .picker-label{
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    & .picker-text{
-        font-size: .04em;
-        display: block;
+        padding: 0 .02em;
     }
     & .picker-wheel ul{
         list-style: none;
@@ -249,12 +245,10 @@
         cursor: pointer;
         display: block;
         text-align: center;
-        position: absolute;
-        top: -16.666666666%;
-        right: -16.666666666%;
-        bottom: -16.666666666%;
-        left: -16.666666666%;
         margin: auto auto;
+        width: 100%;
+        height: 0.1428em;
+        line-height: 0.1428em;
         //background: black;
         //color: #fff;
         user-select: none;
