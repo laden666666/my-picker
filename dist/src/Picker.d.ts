@@ -32,7 +32,7 @@ export declare class Picker implements IPicker {
      * 获取滚轮的可选值列表
      * @param {number} index    滚轮的index,从0开始记录
      */
-    getOptions(index: number): any;
+    getOptions(index: number): any[];
     /**
      * 设置滚轮的可选值
      * @param {number} index    滚轮的index,从0开始记录

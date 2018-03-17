@@ -3,22 +3,20 @@ import { IWheel } from '../IWheel';
 import { Col } from '../Col';
 import { Picker } from '../Picker';
 import { IOptions } from '../IOptions';
-export declare class Wheel3D implements IWheel {
+export declare class Wheel implements IWheel {
     private picker;
     private option;
     private index;
     private dom;
     private contains;
-    private maxAngle;
-    private minAngle;
-    private radius;
-    private visibleAngle;
+    private maxDistance;
+    private minDistance;
     private em;
     private offsetTop;
-    private originalAngle;
-    private lastIndexAngle;
-    private changeMaxAngle;
-    private angle;
+    private originalDistance;
+    private lastIndexDistance;
+    private changeMaxDistance;
+    private distance;
     private selectedIndex;
     private selectedValue;
     private animationId;
@@ -69,33 +67,29 @@ export declare class Wheel3D implements IWheel {
     */
     private selectIndex(index, showAnimation?);
     /**
-    * 给定指定角度,自动设定标签的各个位置
-    * @param {number} angle		要转到的角度
-    * @returns {number}			修正后的角度,即最终的实际角度
+    * 给定指定位移,自动设定标签的各个位置
+    * @param {number} distance		要转到的位移
+    * @returns {number}			修正后的位移,即最终的实际位移
     */
-    private setAngle(angle);
+    private setDistance(distance);
     /**
-    * 通过角度计算被选项的id
-    * @param angle {number}		要计算的角度
+    * 通过位移计算被选项的id
+    * @param distance {number}		要计算的位移
     * @returns {number}		    被选项id
     */
-    private calcSelectedIndexByAngle(angle);
+    private calcSelectedIndexByDistance(distance);
     /**
-    * 通过角度计算被选项的id
-    * @param angle {number}		要计算的角度
+    * 通过位移计算被选项的id
+    * @param Distance {number}		要计算的位移
     * @returns {number}		    被选项id
     */
-    private calcAngleBySelectedIndex(index);
+    private calcDistanceBySelectedIndex(index);
     /**
-    * 限制转角超过极限值
-    * @param angle {number}		要计算的角度
+    * 限制位移超过极限值
+    * @param distance {number}		要计算的位移
     * @returns {number}		    被选项id
     */
-    private rangeAngle(angle);
-    /**
-    * 刷新各个标签的状态,确定应该显示哪些标签
-    */
-    private flushLabel();
+    private rangeDistance(distance);
     /**
     * 获取被选值
     */
