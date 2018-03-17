@@ -1,8 +1,9 @@
 import $ from './util/domUtil';
 import constant from './constant';
+import browserUtil from './util/browserUtil'
 
 //构建主框架
-function  Frame(picker, option) {
+function Frame(picker, option) {
 
 	//picker对象
 	this.picker = picker;
@@ -29,7 +30,7 @@ function  Frame(picker, option) {
 	});
 
 	//如果是3d透视模式，增加3d透视的样式
-	if(option.isPerspective){
+	if( (!browserUtil.isIE && this._option.isPerspective)){
 		this.frame.addClass('s-3d').find(".picker-body")
 			.css("perspective",(constant.WHEEL_HEIGHT) / 100 + "em")
 			.css("webkitPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")

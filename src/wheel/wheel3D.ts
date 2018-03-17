@@ -299,7 +299,7 @@ export class Wheel3D implements IWheel{
 
             //增加点击选择功能
             var clickHandle = function (event) {
-                if(that.changeMaxAngle < 10) {
+                if(that.changeMaxAngle < 1) {
                     //计算完成,清空速度相关变量,并去除之前的动画效果
                     that.isDraging = false;
                     that.lastY = 0;
@@ -446,7 +446,9 @@ export class Wheel3D implements IWheel{
             var lastIndexAngle = this.lastIndexAngle;
             var index = this.calcSelectedIndexByAngle(angle);
             if(lastIndexAngle != index){
-                tick.play()
+                if(this.option.hasVoice){
+                    tick.play()
+                }
             }
             this.lastIndexAngle = index;
         }

@@ -30,6 +30,7 @@
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.29.0",
+    "jsdom": "^9.12.0",
     "karma": "^1.7.1",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chai": "^0.1.0",
@@ -39,6 +40,7 @@
     "karma-mocha-reporter": "^2.2.4",
     "karma-webpack": "^2.0.4",
     "mocha": "^3.4.2",
+    "my-jquery": "^0.2.5",
     "node-sass": "^4.5.3",
     "ora": "^1.3.0",
     "postcss-loader": "^2.0.6",
@@ -54,9 +56,5 @@
   "bugs": {
     "url": "https://github.com/laden666666/my-picker/issues"
   },
-  "homepage": "https://laden666666.github.io/my-picker/",
-  "dependencies": {
-    "jsdom": "^9.12.0",
-    "my-jquery": "^0.2.4"
-  }
+  "homepage": "https://laden666666.github.io/my-picker/"
 }

@@ -89,11 +89,11 @@ export class Wheel implements IWheel{
         this.index = index;
         //转轮主体
         this.dom = $(
-            '<div class="picker-wheel">'
-            + '<div class="picker-label"><span class="picker-text"></span></div>'
-            + '<ul></ul>'
-            + '<div class="picker-label"><span class="picker-text"></span></div>'
-            + '</div>').css('height', constant.WHEEL_HEIGHT / 100 + 'em');
+            `<div class="picker-wheel">
+                <div class="picker-label"><span class="picker-text"></span></div>
+                <ul></ul>
+                <div class="picker-label"><span class="picker-text"></span></div>
+            </div>`).css('height', constant.WHEEL_HEIGHT / 100 + 'em');
 
         //转轮上面标签的容器，同时也是转动的轴
         this.contains = this.dom.find('ul');
@@ -142,6 +142,7 @@ export class Wheel implements IWheel{
         this.setSuffix(col.suffix);
         this.setPrefix(col.prefix);
         this.setOptions(col.options, null, true)
+
     }
 
     /**
@@ -266,7 +267,7 @@ export class Wheel implements IWheel{
             }
 
             //创建label的显示dom,并计算他在容器中的位置(位移)
-            var li = $("<li></li>");
+            var li = $("<li></li>").css('top', `${constant.WHEEL_ITEM_HIGHT / 100 * i}em`);
             li.append($('<span class="picker-text"></span>').text(label));
             var distance = constant.WHEEL_ITEM_HIGHT * -index;
 
@@ -280,7 +281,7 @@ export class Wheel implements IWheel{
 
             //增加点击选择功能
             var clickHandle = function (event) {
-                if(that.changeMaxDistance < 10) {
+                if(that.changeMaxDistance < 0.1) {
                     //计算完成,清空速度相关变量,并去除之前的动画效果
                     that.isDraging = false;
                     that.lastY = 0;
@@ -321,7 +322,7 @@ export class Wheel implements IWheel{
             } else if(this.valueHashMap[this.selectedValue] != null){
                 this.selectOption(this.selectedValue);
             } else {
-                this.selectIndex( 0);
+                this.selectIndex(0);
             }
         } else {
             this.selectedIndex = -1;
@@ -423,8 +424,10 @@ export class Wheel implements IWheel{
         if(this.option.hasVoice && this.picker.visible){
             var lastIndexDistance = this.lastIndexDistance;
             var index = this.calcSelectedIndexByDistance(distance);
-            if(lastIndexDistance != index){
-                tick.play()
+            if(lastIndexDistance != index && !browserUtil.isIE){
+                if(this.option.hasVoice){
+                    tick.play()
+                }
             }
             this.lastIndexDistance = index;
         }

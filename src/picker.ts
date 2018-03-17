@@ -5,6 +5,7 @@ import defaultOption from './defaultOption'
 import {Wheel3D} from './wheel/wheel3D'
 import {Wheel} from './wheel/wheel'
 import {IWheel} from './IWheel'
+import browserUtil from './util/browserUtil'
 
 declare function require(name: string): any
 var Frame = require("./frame");
@@ -58,7 +59,7 @@ export class Picker implements IPicker{
             let col = cols[i];
 
             //设置滚轮
-            wheel = this._option.isPerspective ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
+            wheel = (!browserUtil.isIE && this._option.isPerspective) ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.getDOM() );
 
