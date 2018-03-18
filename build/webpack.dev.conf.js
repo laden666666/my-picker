@@ -4,7 +4,6 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var host = '127.0.0.1';
 var port = '8088';
-var publicPath = 'http://' + host + ':' + port + '/';
 
 module.exports = {
 	//页面入口文件配置
@@ -17,7 +16,7 @@ module.exports = {
 		libraryTarget: 'umd',
 		// 生成的打包文件名  
 		filename: 'my-picker.js',
-        publicPath: publicPath
+        publicPath: '/'
 	},
     resolve: {
 		extensions: ['.ts', '.js', '.vue', '.json'],

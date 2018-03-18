@@ -7,7 +7,7 @@
   "scripts": {
     "test": "cross-env BABEL_ENV=test karma start",
     "build": "node ./build/build.js",
-    "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --hot --inline"
+    "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --hot --inline --host 0.0.0.0"
   },
   "repository": {
     "type": "git",
