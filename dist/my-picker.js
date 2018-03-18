@@ -336,6 +336,7 @@ var Picker = function () {
         this._wheels = [];
         //主框架
         this._cols = [];
+        this.version = '0.1.4';
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
         this._option = util_1.default.assign({}, defaultOption_1.default, options);
         //主架
