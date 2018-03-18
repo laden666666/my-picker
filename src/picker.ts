@@ -2,10 +2,11 @@ import {IOptions, StringCol} from './IOptions'
 import {Col} from './Col'
 import {IPicker} from './IPicker'
 import defaultOption from './defaultOption'
-import {Wheel3D} from './wheel/wheel3D'
-import {Wheel} from './wheel/wheel'
+import {Wheel3D} from './wheel/Wheel3D'
+import {Wheel} from './wheel/Wheel'
 import {IWheel} from './IWheel'
 import browserUtil from './util/browserUtil'
+import util from './util/util'
 
 declare function require(name: string): any
 var Frame = require("./frame");
@@ -28,7 +29,7 @@ export class Picker implements IPicker{
 
     constructor(options: IOptions){
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
-        this._option = {...defaultOption, ...options};
+        this._option = util.assign({}, defaultOption, options) as IOptions<any>;
 
         //主架
         this._frame = new Frame(this, this._option);
@@ -59,7 +60,7 @@ export class Picker implements IPicker{
             let col = cols[i];
 
             //设置滚轮
-            wheel = (!browserUtil.isIE && this._option.isPerspective) ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
+            wheel = (!browserUtil.isIE() && this._option.isPerspective) ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.getDOM() );
 

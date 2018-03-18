@@ -97,6 +97,7 @@ export class Wheel implements IWheel{
 
         //转轮上面标签的容器，同时也是转动的轴
         this.contains = this.dom.find('ul');
+        this.setDistance(0)
 
         ////////////////////可选项属性
         //如果items数组里的值是对象,其中显示的key
@@ -424,7 +425,7 @@ export class Wheel implements IWheel{
         if(this.option.hasVoice && this.picker.visible){
             var lastIndexDistance = this.lastIndexDistance;
             var index = this.calcSelectedIndexByDistance(distance);
-            if(lastIndexDistance != index && !browserUtil.isIE){
+            if(lastIndexDistance != index ){
                 if(this.option.hasVoice){
                     tick.play()
                 }

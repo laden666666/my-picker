@@ -2,6 +2,7 @@ var webpack = require('webpack')
 var webpackConfig = require('./webpack.prod.conf')
 var path = require('path')
 var ora = require('ora')
+var shelljs = require('shelljs')
 
 var spinner = ora('building for production...')
 spinner.start()
@@ -63,6 +64,9 @@ webpack(webpackConfig, function (err, stats) {
             console.log(chalk.red('    Build failed with errors.\n'))
             process.exit(1)
         }
+
+        shelljs.cp(path.join(__dirname, '../dist/my-picker.min.js'), path.join(__dirname, '../docs/my-picker.min.js'))
+        shelljs.cp(path.join(__dirname, '../dist/my-picker.css'), path.join(__dirname, '../docs/my-picker.css'))
 
     })
 })

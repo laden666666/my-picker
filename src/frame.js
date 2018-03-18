@@ -30,7 +30,7 @@ function Frame(picker, option) {
 	});
 
 	//如果是3d透视模式，增加3d透视的样式
-	if( (!browserUtil.isIE && this._option.isPerspective)){
+	if( (!browserUtil.isIE() && this.option.isPerspective)){
 		this.frame.addClass('s-3d').find(".picker-body")
 			.css("perspective",(constant.WHEEL_HEIGHT) / 100 + "em")
 			.css("webkitPerspective",(constant.WHEEL_HEIGHT) / 100 + "em")

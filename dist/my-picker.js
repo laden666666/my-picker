@@ -112,63 +112,6 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var _isIE = void 0;
-var userAgent = navigator.userAgent;
-exports.default = {
-    /**
-     * 是否是IE
-     * @returns
-     */
-    isIE: function isIE() {
-        if (_isIE == null) {
-            _isIE = function () {
-                var matches = void 0;
-                var tridentMap = {
-                    '4': 8,
-                    '5': 9,
-                    '6': 10,
-                    '7': 11
-                };
-                matches = userAgent.match(/MSIE (\d+)/i);
-                if (matches && matches[1]) {
-                    return !!+matches[1];
-                }
-                matches = userAgent.match(/Trident\/(\d+)/i);
-                if (matches && matches[1]) {
-                    return !!tridentMap[matches[1]] || false;
-                }
-                //we did what we could
-                return false;
-            }();
-        }
-        return _isIE;
-    },
-
-    /**
-     * 是否是webkit
-     * @returns
-     */
-    isWebKit: function isWebKit() {
-        return userAgent.indexOf('AppleWebKit') > -1;
-    },
-
-    /**
-     * 是否是火狐
-     * @returns
-     */
-    isFirefox: function isFirefox() {
-        return userAgent.indexOf('Gecko') > -1 && userAgent.indexOf('KHTML') == -1;
-    }
-};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var animationUtil = __webpack_require__(12);
 exports.default = {
     /**
@@ -222,7 +165,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -244,29 +187,40 @@ module.exports = function (y, radius, wheelHeight) {
 };
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _domUtil = __webpack_require__(0);
+
+var _domUtil2 = _interopRequireDefault(_domUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * 滚轮滚动时候发声的函数,是一个单例模式
  */
 var tick = __webpack_require__(14);
 
+
 function AudioImpl() {
-    if (Audio) {
-        this.audio = new Audio(tick);
-        this.audio.volume = 0.2;
-    }
+    var _this = this;
+
+    this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
+    this.audio.src = tick;
+    (0, _domUtil2.default)(this.audio).on('loadedmetadata', function () {
+        _this.audio.volume = 0.2;
+    });
+    window.aa = this.audio;
 }
 
 AudioImpl.prototype.play = function () {
     try {
         if (this.audio) {
-            this.audio.currentTime = 0;
             this.audio.play();
+            this.audio.currentTime = 0;
         }
     } catch (e) {
         console.error(e);
@@ -281,6 +235,63 @@ module.exports = function () {
     } else {
         audioImpl = new AudioImpl();
         return audioImpl;
+    }
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _isIE = void 0;
+var userAgent = navigator.userAgent;
+exports.default = {
+    /**
+     * 是否是IE
+     * @returns
+     */
+    isIE: function isIE() {
+        if (_isIE == null) {
+            _isIE = function () {
+                var matches = void 0;
+                var tridentMap = {
+                    '4': 8,
+                    '5': 9,
+                    '6': 10,
+                    '7': 11
+                };
+                matches = userAgent.match(/MSIE (\d+)/i);
+                if (matches && matches[1]) {
+                    return !!+matches[1];
+                }
+                matches = userAgent.match(/Trident\/(\d+)/i);
+                if (matches && matches[1]) {
+                    return !!tridentMap[matches[1]] || false;
+                }
+                //we did what we could
+                return false;
+            }();
+        }
+        return _isIE;
+    },
+
+    /**
+     * 是否是webkit
+     * @returns
+     */
+    isWebKit: function isWebKit() {
+        return userAgent.indexOf('AppleWebKit') > -1;
+    },
+
+    /**
+     * 是否是火狐
+     * @returns
+     */
+    isFirefox: function isFirefox() {
+        return userAgent.indexOf('Gecko') > -1 && userAgent.indexOf('KHTML') == -1;
     }
 };
 
@@ -310,11 +321,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 Object.defineProperty(exports, "__esModule", { value: true });
 var Col_1 = __webpack_require__(8);
 var defaultOption_1 = __webpack_require__(9);
-var wheel3D_1 = __webpack_require__(10);
-var wheel_1 = __webpack_require__(15);
-var browserUtil_1 = __webpack_require__(2);
-var Frame = __webpack_require__(16);
-__webpack_require__(17);
+var Wheel3D_1 = __webpack_require__(10);
+var Wheel_1 = __webpack_require__(15);
+var browserUtil_1 = __webpack_require__(5);
+var util_1 = __webpack_require__(16);
+var Frame = __webpack_require__(17);
+__webpack_require__(18);
 
 var Picker = function () {
     function Picker(options) {
@@ -325,7 +337,7 @@ var Picker = function () {
         //主框架
         this._cols = [];
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
-        this._option = Object.assign({}, defaultOption_1.default, options);
+        this._option = util_1.default.assign({}, defaultOption_1.default, options);
         //主架
         this._frame = new Frame(this, this._option);
         //解析cols属性,将其转换为Cols的数组
@@ -352,7 +364,7 @@ var Picker = function () {
         for (var _i = 0; _i < cols.length; _i++) {
             var _col = cols[_i];
             //设置滚轮
-            wheel = !browserUtil_1.default.isIE && this._option.isPerspective ? new wheel3D_1.Wheel3D(this, _col, this._option, _i) : new wheel_1.Wheel(this, _col, this._option, _i);
+            wheel = !browserUtil_1.default.isIE() && this._option.isPerspective ? new Wheel3D_1.Wheel3D(this, _col, this._option, _i) : new Wheel_1.Wheel(this, _col, this._option, _i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.getDOM());
             //重写wheel的onSelectItem事件
@@ -616,10 +628,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
-var animationUtil_1 = __webpack_require__(3);
+var animationUtil_1 = __webpack_require__(2);
 var constant_1 = __webpack_require__(1);
-var perspectiveConversion = __webpack_require__(4);
-var tick = __webpack_require__(5)();
+var perspectiveConversion = __webpack_require__(3);
+var tick = __webpack_require__(4)();
 
 var Wheel3D = function () {
     function Wheel3D(picker, col, option, index) {
@@ -1182,7 +1194,7 @@ exports.Wheel3D = Wheel3D;
 	function buildHTML(selector) {
 		selector = selector.trim();
 		//如果是构建字符串，需要判断是否是<>格式，如果不是表示是选择器
-		if(selector.startsWith("<")){
+		if(selector[0] === "<"){
 			//用于使用innerHTML生成dom的div
 			var div = document.createElement("DIV");
 			div.innerHTML = selector;
@@ -1279,7 +1291,7 @@ exports.Wheel3D = Wheel3D;
 				//如果是字符串，表示可能是选择器，或者是构建字符串
 				selector = selector.trim();
 				//如果是构建字符串，需要判断是否是<>格式，如果不是表示是选择器
-				if(selector.startsWith("<")){
+				if(selector[0] === "<"){
 					return $(buildHTML(selector));
 				} else {
 					//如果不是，说明是选择器，直接选择
@@ -1671,7 +1683,7 @@ module.exports = { "0": 0, "1": 0.006180474730027776, "2": 0.012361758667979887,
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = "data:audio/x-wav;base64,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bP4X/4//vf+d/4n/Wf8V//n+A/8o/zb/PP8Q/+T+zf7R/hT/Kv8m/xr/Cv8C/+r+/P4K/y//jf/D//b/3//U/9P/3v/u/+b/6//K/8j/xf/A/8j/2/+1/0r/v/5s/nD+4P4W/yX/F/85/23/iP+V/4//sv8TAE4AagBuAJUAoABSACUA/f/Q/7r/0v/q/9T/g/8r/7X+ZP4g/hX+X/6q/gX/M/8y/+j+r/7R/gL/RP97/5j/xP/I/6j/mP/E//X/CwAZAPz/vf+0/67/n/9q/zz/HP/4/uT+4f4K/xz/Iv8x/yr/JP9B/2f/j/+b/43/Zv9a/2f/mf+f/6b/c/9T/y3/DP/s/r7+j/5g/mv+iP7A/hr/Zf+V/6r/vP+w/8T/l/9z/3z/iv9p/wr/qv5f/o/+zf76/h3/Q/9j/1//Gf+r/of+fv7X/hr/Vf+I/4n/d/9p/2v/XP99/5X/pf+b/2z/Kf8G/+7+8v7+/hr/Rf94/2T/Hf/U/rL+tP7E/tT+0f70/l7/7f8VADEAQQA+ACIArv8x/9H+gv4p/g7+Tv7I/hj/EP8C/wn/Ev/3/tT+wv7D/vf+G/8N/wr/W//Q////1/+//6f/bv8M/7j+x/4M/yz/Gv/6/t7+zf4C/2T/rP+z/33/Rf8C/+T+u/7Y/gr/P/9e/z3/DP8w/2n/Zv81/x3/Gv8F/+T+2f7t/vz+6f7K/q3+yP7o/gz/Ov9h/2P/K//R/on+mv6s/sj+4P4S/1P/hP+Q/23/Wv8y/xH/0f6G/mr+ev7A/lL/rP/f/7//jv8x/wr/+v4r/07/Sv9P/2L/fv+1/8P/k/9n/0f/Pf9l/3L/cv9a/x//+/4m/0r/Vv8j/xb/Df8o/zn/Sf8u/xr/Lf9F/1X/U/99/8X/8v/1/93/wP+m/4H/Qf8N//v+2v7O/sP+0f4P/zT/P/9M/0b/J/8v/y3/QP9Y/3j/if+E/3z/ZP8i//v+6v4B/xb/I/8q/x//N/9D/yH/Bf8H/w7/Mv9q/4X/d/+S/3D/O/8W/x//Kf9H/33/qf+h/1T/A//6/hT/Iv9I/2T/sP/u/+X/1v+b/1v/Nf80/1j/Zf9c/0P/Q/9h/37/mP+Z/3z/XP9a/1n/YP9n/33/XP8z/+r+vf7H/uP+Mv92/6v/wf+r/6P/bf9E/w//HP9S/0j/E/8H/yX/Qf8Y/wL/Iv8c/+7+pP6u/v3+Sv+d/+z/DQARANH/ef9B/wb/+f7U/qf+mv6u/uL+Af8i/0f/e/8="
+module.exports = "data:audio/mpeg;base64,SUQzAwAAAAACPVRBTEIAAAABAAAAVENPTgAAAAEAAABUSVQyAAAAAQAAAFRQRTEAAAABAAAAVFJDSwAAAAEAAABUWUVSAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAEAAAGuQCPj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+urq6urq6urq6urq6urq6urq6urq6urq6u6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6/////////////////////////////////8AAAAeTEFNRTMuOTlyBJwAAAAALhMAADUgJANyQQABrgAABrkfUWHWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//vAxAAAA5gBQ3QAAArvJu6/M4BIhIKgoegEQ8/8DMz/Pgf+Yf8BwB+Z+b+ADgDw/8+o7VqAHMDBTAEFQenlPGADeAWECp4LYcVu9VS9CSRlFhkxw1oMkWM4jYWZOwux2kYYKQWsQ/2ZaUwdEtrLj/YqSyOwMh4qeJUr7XMoYikU+IQ0Fl0qjk87jLrdekgfWb+RhON84zDsakKgs3Zou0k5nT9ylE43Waiz7cwfWGpbM3rXMP1hzuFJScikNSFdLvQXPWYEqZ4yq3KaWd1zPOx//nn+cHSnUZqZYyWap5ZWy7/41ioa/pDolQNStZm24myAA0oAUsytJS4qVtLyfMrafUJqVaJSmQrtBIraqcZqrtu95KNI5Tb+dX71Vet2iXNymBj6gporC+5XVsSQTKC2K/35teC8/0KL/Ff/DEEyiT8rZKIyGuoyeRCzI7wpna5Q2KpYgzmMbLM2XlUCNv/oaWZSlouqkB3Zb7aW79MPu16Zr2jv1vKHhqqZmIaHhnb/SsKAAAAAnUXYNay0jZfhQ+kLcL/BQ6ZSJ0DwHKktA4gjBzi4QMDNC+5PGxEWWbh40wv+9jpbNzzEOEnImHyHThqblErKOHjUUkLlFjHeHR6Nq1opOiMmMmikPRZ/u/x0Cth2kTD7P+kpMxMPLuzvDuzxt5IyAAAAAT4RIEE6AqAAYh4w4CYYcQCEJbMcTOkDjlQ4CXbZKsEICzN+AkpphSMMLBX4hBMIAvInATJvUotAhWGpsGVGrKHEJUEr6wj7S4DFigYJAEKqhw1KjypsnuPCUiwz6RR9m+iRb5Fxo0DuEj06kR1A1DDs5jIKWtturEoLjFDV5jvHH8cef///1e28q4udUp5b876l8u22Gw9HwtDYAAAAAADQL1KAwBl18Zc1OLY7qQ/Dtb/YVtTHz+dBb4SUL6wf9iQ0E6aaWnOVk//Zl9dJdnet0b1//9sX76evxGZ3NZ//+zDE9oBKCIFfvPMACOsSai6eIAXrTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+3DE9IAOXMFX+ZiAAoaaKj81kABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxPwACcCNT7mngAAAAD/DgAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUQUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/w=="
 
 /***/ }),
 /* 15 */
@@ -1691,11 +1703,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
-var animationUtil_1 = __webpack_require__(3);
-var browserUtil_1 = __webpack_require__(2);
+var animationUtil_1 = __webpack_require__(2);
 var constant_1 = __webpack_require__(1);
-var perspectiveConversion = __webpack_require__(4);
-var tick = __webpack_require__(5)();
+var perspectiveConversion = __webpack_require__(3);
+var tick = __webpack_require__(4)();
 
 var Wheel = function () {
     function Wheel(picker, col, option, index) {
@@ -1753,6 +1764,7 @@ var Wheel = function () {
         this.dom = domUtil_1.default("<div class=\"picker-wheel\">\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n                <ul></ul>\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n            </div>").css('height', constant_1.default.WHEEL_HEIGHT / 100 + 'em');
         //转轮上面标签的容器，同时也是转动的轴
         this.contains = this.dom.find('ul');
+        this.setDistance(0);
         ////////////////////可选项属性
         //如果items数组里的值是对象,其中显示的key
         this.labelKey = col.labelKey;
@@ -2059,7 +2071,7 @@ var Wheel = function () {
             if (this.option.hasVoice && this.picker.visible) {
                 var lastIndexDistance = this.lastIndexDistance;
                 var index = this.calcSelectedIndexByDistance(distance);
-                if (lastIndexDistance != index && !browserUtil_1.default.isIE) {
+                if (lastIndexDistance != index) {
                     if (this.option.hasVoice) {
                         tick.play();
                     }
@@ -2205,6 +2217,54 @@ exports.Wheel = Wheel;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    /**
+     * 兼容es7的assign方法，这样可以省略polyfill
+     * @param {object} target
+     * @param {...object[]} source
+     * @returns {object}
+     */
+    assign: function assign(target) {
+        for (var _len = arguments.length, source = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            source[_key - 1] = arguments[_key];
+        }
+
+        // 第一个参数为空，则抛错
+        if (target === undefined || target === null) {
+            throw new TypeError('Cannot convert first argument to object');
+        }
+        var to = Object(target);
+        // 遍历剩余所有参数
+        for (var i = 1; i < arguments.length; i++) {
+            var nextSource = arguments[i];
+            // 参数为空，则跳过，继续下一个
+            if (nextSource === undefined || nextSource === null) {
+                continue;
+            }
+            nextSource = Object(nextSource);
+            // 获取改参数的所有key值，并遍历
+            var keysArray = Object.keys(nextSource);
+            for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+                var nextKey = keysArray[nextIndex];
+                var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+                // 如果不为空且可枚举，则直接浅拷贝赋值
+                if (desc !== undefined && desc.enumerable) {
+                    to[nextKey] = nextSource[nextKey];
+                }
+            }
+        }
+        return to;
+    }
+};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _domUtil = __webpack_require__(0);
 
 var _domUtil2 = _interopRequireDefault(_domUtil);
@@ -2213,7 +2273,7 @@ var _constant = __webpack_require__(1);
 
 var _constant2 = _interopRequireDefault(_constant);
 
-var _browserUtil = __webpack_require__(2);
+var _browserUtil = __webpack_require__(5);
 
 var _browserUtil2 = _interopRequireDefault(_browserUtil);
 
@@ -2237,7 +2297,7 @@ function Frame(picker, option) {
 	});
 
 	//如果是3d透视模式，增加3d透视的样式
-	if (!_browserUtil2.default.isIE && this._option.isPerspective) {
+	if (!_browserUtil2.default.isIE() && this.option.isPerspective) {
 		this.frame.addClass('s-3d').find(".picker-body").css("perspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("webkitPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("mozPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("msPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em");
 	}
 
@@ -2321,7 +2381,7 @@ Frame.prototype = {
 module.exports = Frame;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,20 +1,23 @@
 /**
  * 滚轮滚动时候发声的函数,是一个单例模式
  */
-var tick = require('./tick.wav');
+var tick = require('./tick.mp3');
+import $ from '../util/domUtil'
 
 function AudioImpl() {
-    if(Audio) {
-        this.audio = new Audio(tick);
-        this.audio.volume=0.2;
-    }
+    this.audio = $('<audio></audio>')[0];
+    this.audio.src = tick
+    $(this.audio).on('loadedmetadata', ()=> {  
+        this.audio.volume = 0.2;
+    })
+    window.aa = this.audio
 }
 
 AudioImpl.prototype.play = function () {
     try {
         if(this.audio){
-            this.audio.currentTime = 0;
             this.audio.play();
+            this.audio.currentTime = 0;
         }
     } catch (e){
         console.error(e);
