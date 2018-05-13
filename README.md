@@ -1,5 +1,5 @@
 # my-picker
-高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。目前仅支持chrome及移动端默认浏览器，后续增加ie、火狐浏览器的支持
+高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器
 
 ## 高仿ios的PickerView控件
 控件使用了**transform-style: preserve-3d**，有一种立体3d的效果。同时增加了滑动的声音，使其更接近原生控件的拖动效果。
