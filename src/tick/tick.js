@@ -7,7 +7,7 @@ import $ from '../util/domUtil'
 function AudioImpl() {
     this.audio = $('<audio></audio>')[0];
     this.audio.src = tick
-    $(this.audio).on('loadedmetadata', ()=> {  
+    $(this.audio).on('loadedmetadata', ()=> {
         this.audio.volume = 0.2;
     })
     window.aa = this.audio
@@ -16,8 +16,13 @@ function AudioImpl() {
 AudioImpl.prototype.play = function () {
     try {
         if(this.audio){
-            this.audio.play();
-            this.audio.currentTime = 0;
+            // #6 参考https://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
+            var isPlaying = this.audio.currentTime > 0 && !this.audio.paused
+                && !this.audio.ended && this.audio.readyState > 2;
+
+            if (!isPlaying) {
+                this.audio.play();
+            }
         }
     } catch (e){
         console.error(e);
