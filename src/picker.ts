@@ -60,7 +60,7 @@ export class Picker implements IPicker{
             let col = cols[i];
 
             //设置滚轮
-            wheel = (!browserUtil.isIE() && this._option.isPerspective) ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
+            wheel = (!browserUtil.isIE() && !(browserUtil.isAndroid() && browserUtil.androidVersion() < 4.4) && this._option.isPerspective) ? new Wheel3D(this, col, this._option, i) : new Wheel(this, col, this._option, i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.getDOM() );
 

@@ -147,7 +147,8 @@ export class Wheel3D implements IWheel{
         this.dom[0].addEventListener("mouseleave", endDrag);
 
         //初始化标签
-        this.dom.find(".picker-label").css("transform",`translateZ(${this.radius / 100}em) scale(0.75)`);
+        let transformValue = `translateZ(${this.radius / 100}em) scale(0.75)`
+        this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
 
         //设置标签
         this.setSuffix(col.suffix);
@@ -285,7 +286,8 @@ export class Wheel3D implements IWheel{
             var angle = constant.WHEEL_ITEM_ANGLE * -index;
 
             //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-            li.css("transform","rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)")
+            var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)"
+            li.css("-webkit-transform", transformValue).css("transform", transformValue)
                 .css("padding",  `${height / 5.9 / 100}em 0`)
                 .css("height",  height / 100 + "em")
                 .css("line-height", height / 100 + "em");
@@ -453,7 +455,7 @@ export class Wheel3D implements IWheel{
             this.lastIndexAngle = index;
         }
 
-        this.contains.css("transform","rotateX(" + angle + "deg)");
+        this.contains.css("-webkit-transform","rotateX(" + angle + "deg)").css("transform","rotateX(" + angle + "deg)");
         this.angle = angle;
         this.flushLabel();
 
@@ -545,10 +547,10 @@ export class Wheel3D implements IWheel{
             fn.call(this, index, value)
         })
     }
-   
+
     /**
      * 注册SelectItem的回调事件
-     * @param {{(index:number, value:any):void}} fn 
+     * @param {{(index:number, value:any):void}} fn
      */
     addSelectItemListener(fn: {(index:number, value:any):void}){
         this.onSelectItemCallbackList.push(fn)
@@ -556,7 +558,7 @@ export class Wheel3D implements IWheel{
 
     /**
      * 移除注册的SelectItem回调事件
-     * @param {{(index:number, value:any):void}} fn 
+     * @param {{(index:number, value:any):void}} fn
      */
     removeSelectItemListener(fn: {(index:number, value:any):void}){
         this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(_fn=>_fn !== fn)

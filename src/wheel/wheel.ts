@@ -433,7 +433,8 @@ export class Wheel implements IWheel{
             this.lastIndexDistance = index;
         }
 
-        this.contains.css("transform", "translateY(" + (constant.WHEEL_HEIGHT / 2 - constant.WHEEL_ITEM_HIGHT / 2 - distance)  / 100 + "em)")
+        var translateValue = "translate3d(0, " + (constant.WHEEL_HEIGHT / 2 - constant.WHEEL_ITEM_HIGHT / 2 - distance)  / 100 + "em, 0)"
+        this.contains.css("-webkit-transform", translateValue).css("transform", translateValue)
         this.distance = distance;
 
         return distance;
@@ -504,10 +505,10 @@ export class Wheel implements IWheel{
             fn.call(this, index, value)
         })
     }
-   
+
     /**
      * 注册SelectItem的回调事件
-     * @param {{(index:number, value:any):void}} fn 
+     * @param {{(index:number, value:any):void}} fn
      */
     addSelectItemListener(fn: {(index:number, value:any):void}){
         this.onSelectItemCallbackList.push(fn)
@@ -515,7 +516,7 @@ export class Wheel implements IWheel{
 
     /**
      * 移除注册的SelectItem回调事件
-     * @param {{(index:number, value:any):void}} fn 
+     * @param {{(index:number, value:any):void}} fn
      */
     removeSelectItemListener(fn: {(index:number, value:any):void}){
         this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(_fn=>_fn !== fn)

@@ -14,6 +14,8 @@
 }
 
 .picker{
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
     &.picker-frame{
         position: fixed;
         bottom: 0;
@@ -26,7 +28,7 @@
         user-select: none;
         transform: translate3d(0,1em,0);
         transition: 0.3s ease-out transform;
-        
+
         .s-3d &{
             transform-style: preserve-3d;
         }
@@ -35,7 +37,7 @@
             transform: translate3d(0,0,0);
         }
     }
-    
+
     & .picker-head{
         width: 1em;
         height: .15em;
@@ -82,7 +84,7 @@
         display: none;
         margin-right: .02em;
     }
-    
+
     & .picker-body{
         backface-visibility: hidden;
         overflow: hidden;
@@ -118,11 +120,11 @@
     }
     & .picker-body::after{
         bottom:41.6%;
-    } 
+    }
     & .picker-body::before{
         top:41.6%;
     }
-    
+
     //使用3d透视的滚轮
     & .picker-wheel3d{
         flex-grow: 1;
@@ -183,7 +185,7 @@
         position: relative;
         transform-style: inherit;
     }
-    
+
     & .picker-wheel3d li{
         cursor: pointer;
         display: block;
@@ -239,7 +241,7 @@
         position: relative;
         transform-style: inherit;
     }
-    
+
     & .picker-wheel li{
         position: absolute;
         left: 0;
