@@ -86,7 +86,7 @@ export class Picker implements IPicker{
         this._visible = false;
     }
 
-    version: string = '0.1.4'
+    version: string = '0.1.5'
 
     /**
      * 显示

@@ -3,6 +3,7 @@
  */
 
 import $ from '../util/domUtil';
+import {em} from '../em';
 import {MyJQuery} from 'my-jquery/types/MyJQuery'
 import animationUtil from '../util/animationUtil';
 import browserUtil from '../util/browserUtil';
@@ -36,7 +37,7 @@ export class Wheel implements IWheel{
     //最小位移,设置可选项列表后需重新计算
     private minDistance = 0;
     //获取0.01em的实际像素值
-    private em: () => number = ()=>Math.min(window.innerWidth, window.innerHeight) / 100;
+    private em: () => number = em;
     //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
     private offsetTop = 0;
 

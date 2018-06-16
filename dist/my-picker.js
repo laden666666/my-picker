@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,11 +81,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var myJquery = __webpack_require__(11);
+var myJquery = __webpack_require__(12);
 exports.default = myJquery(document);
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @file 获取0.01em的实际像素值
+ */
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function em() {
+    //根据屏幕的dpr判断em大小。如果dpr不是1，说明不是pc屏幕，此时选取window.innerWidth和window.innerHeight最小值的100分之一做1em。
+    //如果dpr是1，表示可能是pc屏幕，此时要求控件不能过大，所以去window.innerWidth、window.innerHeight、650当中的最小值的100分之一做1em
+    if (window.devicePixelRatio && window.devicePixelRatio > 1) {
+        return Math.min(window.innerWidth, window.innerHeight) / 100;
+    } else {
+        return Math.min(window.innerWidth, window.innerHeight, 650) / 100;
+    }
+}
+exports.em = em;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105,14 +127,107 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var animationUtil = __webpack_require__(12);
+var _isIE = void 0;
+var _androidVersion = void 0;
+var userAgent = navigator.userAgent;
+exports.default = {
+    /**
+     * 是否是IE
+     * @returns
+     */
+    isIE: function isIE() {
+        if (_isIE == null) {
+            _isIE = function () {
+                var matches = void 0;
+                var tridentMap = {
+                    '4': 8,
+                    '5': 9,
+                    '6': 10,
+                    '7': 11
+                };
+                matches = userAgent.match(/MSIE (\d+)/i);
+                if (matches && matches[1]) {
+                    return !!+matches[1];
+                }
+                matches = userAgent.match(/Trident\/(\d+)/i);
+                if (matches && matches[1]) {
+                    return !!tridentMap[matches[1]] || false;
+                }
+                //we did what we could
+                return false;
+            }();
+        }
+        return _isIE;
+    },
+
+    /**
+     * 是否是webkit
+     * @returns
+     */
+    isWebKit: function isWebKit() {
+        return userAgent.indexOf('AppleWebKit') > -1;
+    },
+
+    /**
+     * 是否是火狐
+     * @returns
+     */
+    isFirefox: function isFirefox() {
+        return userAgent.indexOf('Gecko') > -1 && userAgent.indexOf('KHTML') == -1;
+    },
+
+    /**
+     * 判断是否是本安卓
+     */
+    isAndroid: function isAndroid() {
+        return (/Android/i.test(userAgent)
+        );
+    },
+
+    /**
+     * 判断是否是老版本安卓（小于安卓4.4）
+     */
+    androidVersion: function androidVersion() {
+        if (!_androidVersion) {
+            var webkitVersionMap = /AppleWebKit\/([\d.]+)/i.exec(userAgent);
+            var appleWebkitVersion = webkitVersionMap ? parseFloat(webkitVersionMap.pop()) : null;
+            _androidVersion = function () {
+                // This matches Android Major.Minor.Patch versions
+                // ANDROID_VERSION is Major.Minor as a Number, if Minor isn't available, then only Major is returned
+                var match = userAgent.match(/Android (\d+)(?:\.(\d+))?(?:\.(\d+))*/i);
+                if (!match) {
+                    return null;
+                }
+                var major = match[1] && parseFloat(match[1]);
+                var minor = match[2] && parseFloat(match[2]);
+                if (major && minor) {
+                    return parseFloat(match[1] + '.' + match[2]);
+                } else if (major) {
+                    return major;
+                }
+                return null;
+            }();
+        }
+        return _androidVersion;
+    }
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var animationUtil = __webpack_require__(13);
 exports.default = {
     /**
      * 动画开始函数
@@ -165,13 +280,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var cacheData = __webpack_require__(13);
+var cacheData = __webpack_require__(14);
 
 /**
  * 因为perspectiveConversion是个纯函数,因此可以缓存,这样有利于减少计算,增加动画流畅度。尤其在移动端效果十分明显。
@@ -187,7 +302,7 @@ module.exports = function (y, radius, wheelHeight) {
 };
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -197,30 +312,58 @@ var _domUtil = __webpack_require__(0);
 
 var _domUtil2 = _interopRequireDefault(_domUtil);
 
+var _browserUtil = __webpack_require__(3);
+
+var _browserUtil2 = _interopRequireDefault(_browserUtil);
+
+var _dataURLtoU8arr = __webpack_require__(15);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * 滚轮滚动时候发声的函数,是一个单例模式
  */
-var tick = __webpack_require__(14);
+var tick = __webpack_require__(16);
 
 
 function AudioImpl() {
     var _this = this;
 
+    //#4，如果支持mse优先使用mse，这样解决base64禁止发音的问题
     this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
-    this.audio.src = tick;
+
+    var MediaSource = window.MediaSource || window.WebkitMediaSource;
+    if (MediaSource && MediaSource.isTypeSupported('audio/mpeg')) {
+        var mediaSource = new MediaSource();
+        this.audio.src = URL.createObjectURL(mediaSource);
+        mediaSource.addEventListener('sourceopen', function (e) {
+            var sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+            sourceBuffer.addEventListener('updateend', function () {
+                mediaSource.endOfStream();
+            });
+            sourceBuffer.appendBuffer((0, _dataURLtoU8arr.dataURLtoU8arr)(tick));
+        });
+    } else {
+        this.audio.src = tick;
+    }
     (0, _domUtil2.default)(this.audio).on('loadedmetadata', function () {
         _this.audio.volume = 0.2;
     });
-    window.aa = this.audio;
 }
 
 AudioImpl.prototype.play = function () {
     try {
         if (this.audio) {
-            this.audio.play();
-            this.audio.currentTime = 0;
+            // #5 参考https://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
+            var isPlaying = this.audio.currentTime > 0 && !this.audio.paused && !this.audio.ended && this.audio.readyState > 2;
+
+            if (!isPlaying) {
+                this.audio.play();
+                if (_browserUtil2.default.isAndroid() && _browserUtil2.default.androidVersion() < 5) {
+                    this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
+                    this.audio.src = tick;
+                }
+            }
         }
     } catch (e) {
         console.error(e);
@@ -239,76 +382,19 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var _isIE = void 0;
-var userAgent = navigator.userAgent;
-exports.default = {
-    /**
-     * 是否是IE
-     * @returns
-     */
-    isIE: function isIE() {
-        if (_isIE == null) {
-            _isIE = function () {
-                var matches = void 0;
-                var tridentMap = {
-                    '4': 8,
-                    '5': 9,
-                    '6': 10,
-                    '7': 11
-                };
-                matches = userAgent.match(/MSIE (\d+)/i);
-                if (matches && matches[1]) {
-                    return !!+matches[1];
-                }
-                matches = userAgent.match(/Trident\/(\d+)/i);
-                if (matches && matches[1]) {
-                    return !!tridentMap[matches[1]] || false;
-                }
-                //we did what we could
-                return false;
-            }();
-        }
-        return _isIE;
-    },
-
-    /**
-     * 是否是webkit
-     * @returns
-     */
-    isWebKit: function isWebKit() {
-        return userAgent.indexOf('AppleWebKit') > -1;
-    },
-
-    /**
-     * 是否是火狐
-     * @returns
-     */
-    isFirefox: function isFirefox() {
-        return userAgent.indexOf('Gecko') > -1 && userAgent.indexOf('KHTML') == -1;
-    }
-};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Picker_1 = __webpack_require__(7);
+var Picker_1 = __webpack_require__(8);
 module.exports = function (option) {
     return new Picker_1.Picker(option);
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -319,14 +405,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Col_1 = __webpack_require__(8);
-var defaultOption_1 = __webpack_require__(9);
-var Wheel3D_1 = __webpack_require__(10);
-var Wheel_1 = __webpack_require__(15);
-var browserUtil_1 = __webpack_require__(5);
-var util_1 = __webpack_require__(16);
-var Frame = __webpack_require__(17);
-__webpack_require__(18);
+var Col_1 = __webpack_require__(9);
+var defaultOption_1 = __webpack_require__(10);
+var Wheel3D_1 = __webpack_require__(11);
+var Wheel_1 = __webpack_require__(17);
+var browserUtil_1 = __webpack_require__(3);
+var util_1 = __webpack_require__(18);
+var Frame = __webpack_require__(19);
+__webpack_require__(20);
 
 var Picker = function () {
     function Picker(options) {
@@ -336,7 +422,7 @@ var Picker = function () {
         this._wheels = [];
         //主框架
         this._cols = [];
-        this.version = '0.1.4';
+        this.version = '0.1.5';
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
         this._option = util_1.default.assign({}, defaultOption_1.default, options);
         //主架
@@ -365,7 +451,7 @@ var Picker = function () {
         for (var _i = 0; _i < cols.length; _i++) {
             var _col = cols[_i];
             //设置滚轮
-            wheel = !browserUtil_1.default.isIE() && this._option.isPerspective ? new Wheel3D_1.Wheel3D(this, _col, this._option, _i) : new Wheel_1.Wheel(this, _col, this._option, _i);
+            wheel = !browserUtil_1.default.isIE() && !(browserUtil_1.default.isAndroid() && browserUtil_1.default.androidVersion() < 4.4) && this._option.isPerspective ? new Wheel3D_1.Wheel3D(this, _col, this._option, _i) : new Wheel_1.Wheel(this, _col, this._option, _i);
             this._wheels.push(wheel);
             this._frame.body().append(wheel.getDOM());
             //重写wheel的onSelectItem事件
@@ -497,7 +583,7 @@ var Picker = function () {
 exports.Picker = Picker;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -586,7 +672,7 @@ var Col = function () {
 exports.Col = Col;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -612,7 +698,7 @@ var defaultOptions = {
 exports.default = defaultOptions;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -629,10 +715,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
-var animationUtil_1 = __webpack_require__(2);
-var constant_1 = __webpack_require__(1);
-var perspectiveConversion = __webpack_require__(3);
-var tick = __webpack_require__(4)();
+var em_1 = __webpack_require__(1);
+var animationUtil_1 = __webpack_require__(4);
+var constant_1 = __webpack_require__(2);
+var perspectiveConversion = __webpack_require__(5);
+var tick = __webpack_require__(6)();
 
 var Wheel3D = function () {
     function Wheel3D(picker, col, option, index) {
@@ -648,9 +735,7 @@ var Wheel3D = function () {
         //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
         this.visibleAngle = 0;
         //获取0.01em的实际像素值
-        this.em = function () {
-            return Math.min(window.innerWidth, window.innerHeight) / 100;
-        };
+        this.em = em_1.em;
         //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
         this.offsetTop = 0;
         ////////////////////滚动属性
@@ -733,7 +818,8 @@ var Wheel3D = function () {
         this.dom[0].addEventListener("mouseup", endDrag);
         this.dom[0].addEventListener("mouseleave", endDrag);
         //初始化标签
-        this.dom.find(".picker-label").css("transform", "translateZ(" + this.radius / 100 + "em) scale(0.75)");
+        var transformValue = "translateZ(" + this.radius / 100 + "em) scale(0.75)";
+        this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
         //设置标签
         this.setSuffix(col.suffix);
         this.setPrefix(col.prefix);
@@ -863,7 +949,8 @@ var Wheel3D = function () {
                 li.append(domUtil_1.default('<span class="picker-text"></span>').text(label));
                 var angle = constant_1.default.WHEEL_ITEM_ANGLE * -index;
                 //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-                li.css("transform", "rotateX(" + angle + "deg) translateZ(" + that.radius / 100 + "em) scale(0.75)").css("padding", height / 5.9 / 100 + "em 0").css("height", height / 100 + "em").css("line-height", height / 100 + "em");
+                var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius / 100 + "em) scale(0.75)";
+                li.css("-webkit-transform", transformValue).css("transform", transformValue).css("padding", height / 5.9 / 100 + "em 0").css("height", height / 100 + "em").css("line-height", height / 100 + "em");
                 //将标签的角度保存到其dom中
                 li.data("angle", angle);
                 //将标签的index保存到其dom中
@@ -1019,7 +1106,7 @@ var Wheel3D = function () {
                 }
                 this.lastIndexAngle = index;
             }
-            this.contains.css("transform", "rotateX(" + angle + "deg)");
+            this.contains.css("-webkit-transform", "rotateX(" + angle + "deg)").css("transform", "rotateX(" + angle + "deg)");
             this.angle = angle;
             this.flushLabel();
             return angle;
@@ -1175,7 +1262,7 @@ var Wheel3D = function () {
 exports.Wheel3D = Wheel3D;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 (function (global, factory) {
@@ -1595,7 +1682,7 @@ exports.Wheel3D = Wheel3D;
 })
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1672,7 +1759,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1681,13 +1768,36 @@ module.exports = {
 module.exports = { "0": 0, "1": 0.006180474730027776, "2": 0.012361758667979887, "3": 0.01854466178595427, "4": 0.024729995586343003, "5": 0.030918573871856408, "6": 0.03711121352142655, "7": 0.043308735273995536, "8": 0.04951196452223301, "9": 0.05572173211827738, "10": 0.06193887519365582, "11": 0.06816423799561012, "12": 0.07439867274213974, "13": 0.08064304049816978, "14": 0.08689821207536214, "15": 0.0931650689582126, "16": 0.09944450425921704, "17": 0.1057374237060475, "18": 0.11204474666385271, "19": 0.11836740719599605, "20": 0.12470635516675682, "21": 0.13106255738976524, "22": 0.13743699882620672, "23": 0.1438306838371266, "24": 0.1502446374944947, "25": 0.15667990695605222, "26": 0.163137562909363, "27": 0.16961870109094018, "28": 0.1761244438868085, "29": 0.18265594202141244, "30": 0.189214376342388, "31": 0.1958009597093892, "32": 0.20241693899591295, "33": 0.20906359721390222, "34": 0.21574225577183714, "35": 0.2224542768780669, "36": 0.22920106610229693, "37": 0.23598407510944647, "38": 0.24280480458155373, "39": 0.24966480734504126, "40": 0.2565656917224997, "41": 0.26350912513022323, "42": 0.2704968379450743, "43": 0.27753062766690556, "44": 0.28461236340577195, "45": 0.2917439907265723, "46": 0.298927536887646, "47": 0.30616511651426775, "48": 0.3134589377530486, "49": 0.3208113089590395, "50": 0.32822464597399087, "51": 0.3357014800618854, "52": 0.3432444665767064, "53": 0.3508563944476478, "54": 0.35854019657886727, "55": 0.3662989612747276, "56": 0.37413594481766604, "57": 0.38205458534478537, "58": 0.39005851819157766, "59": 0.3981515928975172, "60": 0.4063378920994586, "61": 0.41462175257587425, "62": 0.42300778874928274, "63": 0.4315009190073606, "64": 0.4401063952672662, "65": 0.4488298362852176, "66": 0.45767726530766856, "67": 0.4666551527757603, "68": 0.47577046493656705, "69": 0.4850307193901132, "70": 0.4944440488195467, "71": 0.5040192744255141, "72": 0.5137659909310855, "73": 0.523694665462527, "74": 0.5338167531736872, "75": 0.5441448332086339, "76": 0.5546927695451231, "77": 0.5654759025098686, "78": 0.5765112784180985, "79": 0.5878179270265199, "80": 0.5994171995371129, "81": 0.6113331840998124, "82": 0.6235932216642447, "83": 0.6362285534378791, "84": 0.6492751433974548, "85": 0.6627747373240171, "86": 0.6767762470698537, "87": 0.6913375909489355, "88": 0.7065281883018284, "89": 0.7224324166263504, "90": 0.7391545276252866, "91": 0.7568258524516188, "92": 0.7756157498195769, "93": 0.7957489855645078, "94": 0.8175348626997212, "95": 0.8414195586288256, "96": 0.8680892494981647, "97": 0.8987014263951989, "98": 0.935517870959519, "99": 0.9843911534692572, "100": 1.1071487177940906 };
 
 /***/ }),
-/* 14 */
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.dataURLtoU8arr = dataURLtoU8arr;
+function dataURLtoU8arr(dataurl) {
+  var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return u8arr;
+}
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = "data:audio/mpeg;base64,SUQzAwAAAAACPVRBTEIAAAABAAAAVENPTgAAAAEAAABUSVQyAAAAAQAAAFRQRTEAAAABAAAAVFJDSwAAAAEAAABUWUVSAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAEAAAGuQCPj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+urq6urq6urq6urq6urq6urq6urq6urq6u6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6/////////////////////////////////8AAAAeTEFNRTMuOTlyBJwAAAAALhMAADUgJANyQQABrgAABrkfUWHWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//vAxAAAA5gBQ3QAAArvJu6/M4BIhIKgoegEQ8/8DMz/Pgf+Yf8BwB+Z+b+ADgDw/8+o7VqAHMDBTAEFQenlPGADeAWECp4LYcVu9VS9CSRlFhkxw1oMkWM4jYWZOwux2kYYKQWsQ/2ZaUwdEtrLj/YqSyOwMh4qeJUr7XMoYikU+IQ0Fl0qjk87jLrdekgfWb+RhON84zDsakKgs3Zou0k5nT9ylE43Waiz7cwfWGpbM3rXMP1hzuFJScikNSFdLvQXPWYEqZ4yq3KaWd1zPOx//nn+cHSnUZqZYyWap5ZWy7/41ioa/pDolQNStZm24myAA0oAUsytJS4qVtLyfMrafUJqVaJSmQrtBIraqcZqrtu95KNI5Tb+dX71Vet2iXNymBj6gporC+5XVsSQTKC2K/35teC8/0KL/Ff/DEEyiT8rZKIyGuoyeRCzI7wpna5Q2KpYgzmMbLM2XlUCNv/oaWZSlouqkB3Zb7aW79MPu16Zr2jv1vKHhqqZmIaHhnb/SsKAAAAAnUXYNay0jZfhQ+kLcL/BQ6ZSJ0DwHKktA4gjBzi4QMDNC+5PGxEWWbh40wv+9jpbNzzEOEnImHyHThqblErKOHjUUkLlFjHeHR6Nq1opOiMmMmikPRZ/u/x0Cth2kTD7P+kpMxMPLuzvDuzxt5IyAAAAAT4RIEE6AqAAYh4w4CYYcQCEJbMcTOkDjlQ4CXbZKsEICzN+AkpphSMMLBX4hBMIAvInATJvUotAhWGpsGVGrKHEJUEr6wj7S4DFigYJAEKqhw1KjypsnuPCUiwz6RR9m+iRb5Fxo0DuEj06kR1A1DDs5jIKWtturEoLjFDV5jvHH8cef///1e28q4udUp5b876l8u22Gw9HwtDYAAAAAADQL1KAwBl18Zc1OLY7qQ/Dtb/YVtTHz+dBb4SUL6wf9iQ0E6aaWnOVk//Zl9dJdnet0b1//9sX76evxGZ3NZ//+zDE9oBKCIFfvPMACOsSai6eIAXrTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+3DE9IAOXMFX+ZiAAoaaKj81kABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxPwACcCNT7mngAAAAD/DgAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUQUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/w=="
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1704,10 +1814,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
-var animationUtil_1 = __webpack_require__(2);
-var constant_1 = __webpack_require__(1);
-var perspectiveConversion = __webpack_require__(3);
-var tick = __webpack_require__(4)();
+var em_1 = __webpack_require__(1);
+var animationUtil_1 = __webpack_require__(4);
+var constant_1 = __webpack_require__(2);
+var perspectiveConversion = __webpack_require__(5);
+var tick = __webpack_require__(6)();
 
 var Wheel = function () {
     function Wheel(picker, col, option, index) {
@@ -1719,9 +1830,7 @@ var Wheel = function () {
         //最小位移,设置可选项列表后需重新计算
         this.minDistance = 0;
         //获取0.01em的实际像素值
-        this.em = function () {
-            return Math.min(window.innerWidth, window.innerHeight) / 100;
-        };
+        this.em = em_1.em;
         //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
         this.offsetTop = 0;
         ////////////////////滚动属性
@@ -2079,7 +2188,8 @@ var Wheel = function () {
                 }
                 this.lastIndexDistance = index;
             }
-            this.contains.css("transform", "translateY(" + (constant_1.default.WHEEL_HEIGHT / 2 - constant_1.default.WHEEL_ITEM_HIGHT / 2 - distance) / 100 + "em)");
+            var translateValue = "translate3d(0, " + (constant_1.default.WHEEL_HEIGHT / 2 - constant_1.default.WHEEL_ITEM_HIGHT / 2 - distance) / 100 + "em, 0)";
+            this.contains.css("-webkit-transform", translateValue).css("transform", translateValue);
             this.distance = distance;
             return distance;
         }
@@ -2212,7 +2322,7 @@ var Wheel = function () {
 exports.Wheel = Wheel;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2260,7 +2370,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2270,11 +2380,13 @@ var _domUtil = __webpack_require__(0);
 
 var _domUtil2 = _interopRequireDefault(_domUtil);
 
-var _constant = __webpack_require__(1);
+var _em = __webpack_require__(1);
+
+var _constant = __webpack_require__(2);
 
 var _constant2 = _interopRequireDefault(_constant);
 
-var _browserUtil = __webpack_require__(5);
+var _browserUtil = __webpack_require__(3);
 
 var _browserUtil2 = _interopRequireDefault(_browserUtil);
 
@@ -2298,7 +2410,7 @@ function Frame(picker, option) {
 	});
 
 	//如果是3d透视模式，增加3d透视的样式
-	if (!_browserUtil2.default.isIE() && this.option.isPerspective) {
+	if (!_browserUtil2.default.isIE() && !(_browserUtil2.default.isAndroid() && _browserUtil2.default.androidVersion() < 4.4) && this.option.isPerspective) {
 		this.frame.addClass('s-3d').find(".picker-body").css("perspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("webkitPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("mozPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("msPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em");
 	}
 
@@ -2328,7 +2440,7 @@ function Frame(picker, option) {
 	});
 
 	this._resizeHandle = function () {
-		this.frame.css('fontSize', Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight) + 'px');
+		this.frame.css('fontSize', (0, _em.em)() * 100 + 'px');
 	}.bind(this);
 
 	window.addEventListener('resize', this._resizeHandle);
@@ -2338,8 +2450,12 @@ function Frame(picker, option) {
 Frame.prototype = {
 	//显示cover
 	showCover: function showCover() {
+		var _this = this;
+
 		this.cover.show();
-		this.cover.addClass('s-open');
+		setTimeout(function () {
+			_this.cover.addClass('s-open');
+		}, 0);
 	},
 	//隐藏cover
 	hideCover: function hideCover() {
@@ -2347,12 +2463,16 @@ Frame.prototype = {
 		var that = this;
 		setTimeout(function () {
 			that.cover.hide();
-		}, 500);
+		}, 200);
 	},
 	//显示frame
 	showFrame: function showFrame() {
+		var _this2 = this;
+
 		this.frame.show();
-		this.frame.addClass('s-open');
+		setTimeout(function () {
+			_this2.frame.addClass('s-open');
+		}, 0);
 	},
 	//显示frame
 	hideFrame: function hideFrame() {
@@ -2360,7 +2480,7 @@ Frame.prototype = {
 		var that = this;
 		setTimeout(function () {
 			that.frame.hide();
-		}, 500);
+		}, 200);
 	},
 	dom: function dom() {
 		return this.frame;
@@ -2382,7 +2502,7 @@ Frame.prototype = {
 module.exports = Frame;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -3,6 +3,7 @@
  */
 
 import $ from '../util/domUtil';
+import {em} from '../em';
 import {MyJQuery} from 'my-jquery/types/MyJQuery'
 import animationUtil from '../util/animationUtil';
 import browserUtil from '../util/browserUtil';
@@ -40,7 +41,7 @@ export class Wheel3D implements IWheel{
     //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
     private visibleAngle = 0;
     //获取0.01em的实际像素值
-    private em: () => number = ()=>Math.min(window.innerWidth, window.innerHeight) / 100;
+    private em: () => number = em;
     //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
     private offsetTop = 0;
 

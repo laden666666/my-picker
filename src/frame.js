@@ -1,4 +1,5 @@
 import $ from './util/domUtil';
+import {em} from './em';
 import constant from './constant';
 import browserUtil from './util/browserUtil'
 
@@ -64,7 +65,7 @@ function Frame(picker, option) {
 	});
 
 	this._resizeHandle = function(){
-		this.frame.css('fontSize', Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight) + 'px')
+		this.frame.css('fontSize', em() * 100 + 'px')
 	}.bind(this)
 
 	window.addEventListener('resize', this._resizeHandle)
@@ -76,7 +77,9 @@ Frame.prototype = {
 	//显示cover
 	showCover : function(){
 		this.cover.show();
-		this.cover.addClass('s-open');
+		setTimeout(()=>{
+            this.cover.addClass('s-open');
+		}, 0);
 	},
 	//隐藏cover
 	hideCover : function(){
@@ -84,12 +87,14 @@ Frame.prototype = {
 		var that = this;
 		setTimeout(function () {
 			that.cover.hide();
-		},500);
+		}, 200);
 	},
 	//显示frame
 	showFrame : function(){
 		this.frame.show();
-		this.frame.addClass('s-open');
+		setTimeout(()=>{
+            this.frame.addClass('s-open');
+		}, 0);
 	},
 	//显示frame
 	hideFrame : function(){
@@ -97,7 +102,7 @@ Frame.prototype = {
 		var that = this;
 		setTimeout(function () {
 			that.frame.hide();
-		},500);
+		}, 200);
 	},
 	dom: function(){
 		return this.frame;
