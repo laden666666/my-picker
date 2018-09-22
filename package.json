@@ -8,6 +8,7 @@
     "test": "cross-env BABEL_ENV=test karma start",
     "build": "node ./build/build.js",
     "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --hot --inline --host 0.0.0.0",
+    "doc": "docjsx c md -p api ./doc-jsx/doc.jsx ./docs && docjsx c md -p api ./doc-jsx/README.jsx ./",
     "master": "git checkout master && git merge develop && git push origin master && git checkout develop && git push origin develop"
   },
   "repository": {
@@ -41,6 +42,8 @@
     "karma-mocha-reporter": "^2.2.4",
     "karma-webpack": "^2.0.4",
     "mocha": "^3.4.2",
+    "my-doc-jsx": "^0.4.2",
+    "my-doc-jsx-plugin-api": "^0.1.1",
     "my-jquery": "^0.2.6",
     "node-sass": "^4.5.3",
     "ora": "^1.3.0",
