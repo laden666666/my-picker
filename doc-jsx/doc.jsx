@@ -150,7 +150,7 @@ import 'my-picker/my-picker.css'`
 * 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数
 * @param {number}  level				被选值所在的层级,从0开始计数
 * @param {number}  selectedIndex		被选值在数组中的索引
-* @param {*}       selectedValue		被选值
+* @param {any}       selectedValue		被选值
 `}</api>
     <code>{
         `new myPicker({
@@ -198,7 +198,7 @@ import 'my-picker/my-picker.css'`
 `* 设置滚轮的可选值列表
 * @param {number} index    滚轮的index,从0开始记录
 * @param {any[]} list      滚轮的可选值列表，是个数组，和cols里面配置的列一样
-* @param {*} defaultValue  默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值`}</api>
+* @param {any} defaultValue  默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值`}</api>
 
     <h4>Picker.prototype.getOptions</h4>
     <api>{
@@ -210,7 +210,7 @@ import 'my-picker/my-picker.css'`
     <api>{
 `* 设置滚轮的可选值
 * @param {number} index    滚轮的index,从0开始记录
-* @param {*} value         设置的值`}</api>
+* @param {any} value         设置的值`}</api>
 
     <h4>Picker.prototype.getValue(index)</h4>
     <api>{
