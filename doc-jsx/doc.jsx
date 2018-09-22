@@ -80,19 +80,14 @@ import 'my-picker/my-picker.css'`
             <td>onSelectItem</td>
             <td>Function</td>
             <td>无</td>
-            <td>用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：
-                <li> index				被选值所在的层级,从0开始计数</li>
-                <li> selectedIndex		被选值在数组中的索引</li>
-                <li> selectedValue		被选值</li>
+            <td>用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。
             </td>
         </tr>
         <tr>
             <td>onOkClick</td>
             <td>Function</td>
             <td>无</td>
-            <td>点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。回调函数的参数含义如下：
-                <li> values            一个数组,是各个滚轮被选的值</li>
-                同时回调函数可以有个返回值,如果返回值是false,picker将不关闭,否则会关闭picker。利用这个可以实现选择校验。如果:
+            <td>点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。
             </td>
         </tr>
         <tr>

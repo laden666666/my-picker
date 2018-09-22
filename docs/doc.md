@@ -44,8 +44,8 @@ option是控件的初始化配置，具体配置项有：
 |isPerspective|Boolean|随浏览器变化|是否以3D透视显示picker的滚轮。如果为true，picker的滚轮会以3D的形式显示，否则会以一个平面的模式显示。如果浏览器支持3D模式，默认值会优先显示3D模式。|
 |fontSize|Number|15|显示的字体大小，只支持数字，单位是px|
 |buttons|Array|[&quot;确定&quot;, &quot;取消&quot;]|显示按钮的名称，第一个是按钮是确定，第二个是取消。|
-|onSelectItem|Function|无|用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。参数如下：|
-|onOkClick|Function|无|点击&quot;确定按钮&quot;的事件函数,函数会返回一个数组,数组里面是被选值。回调函数的参数含义如下：同时回调函数可以有个返回值,如果返回值是false,picker将不关闭,否则会关闭picker。利用这个可以实现选择校验。如果:|
+|onSelectItem|Function|无|用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。|
+|onOkClick|Function|无|点击&quot;确定按钮&quot;的事件函数,函数会返回一个数组,数组里面是被选值。|
 |onCancelClick|Function|无|点击取消按钮的事件。执行后会关闭picker。|
 这里对几个主要配置项做解释
 
