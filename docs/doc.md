@@ -1,4 +1,5 @@
-<h2 align="center">my-picker</h2>
+<h1 align="center">my-picker</h1>
+
 高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器
 
 
@@ -47,6 +48,7 @@ option是控件的初始化配置，具体配置项有：
 |onSelectItem|Function|无|用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。|
 |onOkClick|Function|无|点击&quot;确定按钮&quot;的事件函数,函数会返回一个数组,数组里面是被选值。|
 |onCancelClick|Function|无|点击取消按钮的事件。执行后会关闭picker。|
+
 这里对几个主要配置项做解释
 
 
@@ -120,7 +122,8 @@ new myPicker({
 ##### 参数
 |参数名|参数类型|参数说明|
 |-|-|-|
-|level|number|被选值所在的层级,从0开始计数||selectedIndex|number|被选值在数组中的索引|
+|level|number|被选值所在的层级,从0开始计数|
+|selectedIndex|number|被选值在数组中的索引|
 
 
 
@@ -198,7 +201,8 @@ new出picker对象后，是隐藏状态，需要调用此接口显示。
 ##### 参数
 |参数名|参数类型|参数说明|
 |-|-|-|
-|index|number|滚轮的index,从0开始记录||list|any[]|滚轮的可选值列表，是个数组，和cols里面配置的列一样|
+|index|number|滚轮的index,从0开始记录|
+|list|any[]|滚轮的可选值列表，是个数组，和cols里面配置的列一样|
 
 
 
