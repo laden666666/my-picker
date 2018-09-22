@@ -74,5 +74,8 @@ import 'my-picker/my-picker.css'
 
 
 
-## 主要api
+## 使用文档
+
+请参考[doc.md](./docs/doc.md "") 
+
 

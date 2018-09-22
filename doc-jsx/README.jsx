@@ -31,5 +31,6 @@
 import 'my-picker/my-picker.css'`
     }</code>
 
-    <h2>主要api</h2>
+    <h2>使用文档</h2>
+    <p>请参考<a href="./docs/doc.md">doc.md</a></p>
 </doc>
