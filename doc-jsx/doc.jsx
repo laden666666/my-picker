@@ -203,7 +203,8 @@ import 'my-picker/my-picker.css'`
     <h4>Picker.prototype.getOptions</h4>
     <api>{
 `* 获取滚轮的可选值列表
-* @param {number} index    滚轮的index,从0开始记录`}</api>
+* @param {number} index    滚轮的index,从0开始记录
+* @returns {any[]}         滚轮的可选值列表`}</api>
 
     <h3>选项列表相关api：</h3>
     <h4>Picker.prototype.setValue(index, value)</h4>
@@ -215,5 +216,6 @@ import 'my-picker/my-picker.css'`
     <h4>Picker.prototype.getValue(index)</h4>
     <api>{
 `* 获取滚轮的值,如果index为空表示获取所有滚轮的值
-* @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值`}</api>
+* @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值
+* @returns {any}             设置的值`}</api>
 </doc>

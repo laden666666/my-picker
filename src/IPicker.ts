@@ -37,7 +37,9 @@ export interface IPicker {
     /**
      * 获取滚轮的可选值列表
      * @param {number} index    滚轮的index,从0开始记录
+     * @returns {any[]}         滚轮的可选值列表
      */
+
     getOptions(index: number): any[]
 
     /**
@@ -50,6 +52,7 @@ export interface IPicker {
     /**
      * 获取滚轮的值,如果index为空表示获取所有滚轮的值
      * @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值
+     * @returns {*}             设置的值
      */
     getValue(index: number): any;
 }
