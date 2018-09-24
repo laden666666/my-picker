@@ -30,7 +30,7 @@ import 'my-picker/my-picker.css'`
         </tr>
         <tr>
             <td>cols</td>
-            <td>Object | Array</td>
+            <td>Object 或 Array</td>
             <td>必须配置</td>
             <td>可选值列表的配置，是个数组,，数组每项一列，一列的配置项的完整格式为一个json对象，最多支持3列</td>
         </tr>
