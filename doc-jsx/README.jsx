@@ -2,46 +2,46 @@
     <title>my-picker</title>
     <npm-info version downloads license name="my-picker"></npm-info>
 
-    <p>高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。<a href="https://laden666666.github.io/my-picker/">demo</a></p>
+    <p>High imitation IOS PickerView JavaScript plug-in, 3D form wheel selector, support for up to three levels of linkage selection, support both the device side and the mobile side of the platform browser. Support for Chrome and mobile default browsers, ie, (9-11), Firefox.<a href="https://laden666666.github.io/my-picker/">demo</a></p>
 
-    <h3>功能</h3>
+    <h3>Features</h3>
 
-    <li>0、3D形式的滚轮选择器，带有透视效果</li>
-    <li>1、选择器的前缀与后缀</li>
-    <li>2、级联选择器</li>
-    <li>3、提供选择音效，更接近原生控件</li>
-    <li>4、支持手机和pc</li>
+    <li>Roller selector in the form of 0, 3D with perspective effect</li>
+    <li>1. The prefix and suffix of the selector</li>
+    <li>2, cascade selector</li>
+    <li>3, provide selection sound, closer to native controls</li>
+    <li>4, support mobile phones and pc</li>
 
-    <h2>源码</h2>
+    <h2>Source</h2>
     <p><a href="https://github.com/laden666666/my-picker">github</a>，<a href="https://gitee.com/laden666666/my-picker">码云</a></p>
 
-    <h2>兼容性</h2>
-    <p>3D模式</p>
+    <h2>Compatibility</h2>
+    <p>3D mode</p>
     <browser-list Android=">=5" Firefox Chrome iPhone Edge Safari/>
 
-    <p>非3D模式</p>
+    <p>Non-3D mode</p>
     <browser-list Android=">=4.4" Firefox Chrome IE=">=9" iPhone Edge Safari/>
 
-    <p>移动端demo效果图:</p>
+    <p>Effect chart (mobile phone):</p>
     <img src="./docs/images/mobileDemo.gif"/>
 
-    <p>pc端demo效果图:</p>
+    <p>Effect chart (PC):</p>
     <img src="./docs/images/pcDemo.gif"/>
 
-    <h2>安装</h2>
-    <h3>浏览器环境</h3>
-    <p>浏览器环境直接导入dist下的**my-picker.js**和**my-picker.css**文件即可</p>
-    <h3>webpack环境</h3>
-    <p>执行cli命令</p>
+    <h2>Installation</h2>
+    <h3>Browser</h3>
+    <p>Directly import the **my-picker.js** and **my-picker.css** file under dist in the browser.</p>
+    <h3>webpack</h3>
+    <p>Executive cli</p>
     <code lang="javascript">{
 `npm i my-picker -S`
     }</code>
-    <p>并在js文件中引用</p>
+    <p>Referenced in the js file</p>
     <code lang="javascript">{
 `import myPicker form 'my-picker'
 import 'my-picker/my-picker.css'`
     }</code>
 
-    <h2>使用文档</h2>
-    <p>请参考<a href="./docs/doc.md">doc.md</a></p>
+    <h2>documents</h2>
+    <p>Please refer to <a href="./docs/doc.md">doc.md</a></p>
 </doc>
