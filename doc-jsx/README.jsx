@@ -2,7 +2,7 @@
     <title>my-picker</title>
     <npm-info version downloads license name="my-picker"></npm-info>
 
-    <p>High imitation IOS PickerView JavaScript plug-in, 3D form wheel selector, support for up to three levels of linkage selection, support both the device side and the mobile side of the platform browser. Support for Chrome and mobile default browsers, ie, (9-11), Firefox.<a href="https://laden666666.github.io/my-picker/">demo</a></p>
+    <p>A picker that mimics the IOS PickerView JavaScript. It offers 3D selectors and supports up to three levels of linkage. It supports both a PC-side browser and a mobile browser.<a href="https://laden666666.github.io/my-picker/">demo</a></p>
 
     <h3>Features</h3>
 
@@ -42,6 +42,6 @@
 import 'my-picker/my-picker.css'`
     }</code>
 
-    <h2>documents</h2>
+    <h2>Documents</h2>
     <p>Please refer to <a href="./docs/doc.md">doc.md</a></p>
 </doc>
