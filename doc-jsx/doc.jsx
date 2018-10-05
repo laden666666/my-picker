@@ -147,7 +147,7 @@ import 'my-picker/my-picker.css'`
     <h3>onSelectItem</h3>
     <api>{
 `
-* 用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数
+* The event that responds when the user rolls the wheel to stop. When you stop, you will choose an option. The index and value of this option will be passed as a callback to the callback function of this event.
 * @param {number}  level				被选值所在的层级,从0开始计数
 * @param {number}  selectedIndex		被选值在数组中的索引
 * @param {any}       selectedValue		被选值
