@@ -148,15 +148,16 @@ import 'my-picker/my-picker.css'`
     <api>{
 `
 * The event that responds when the user rolls the wheel to stop. When you stop, you will choose an option. The index and value of this option will be passed as a callback to the callback function of this event.
-* @param {number}  level				被选值所在的层级,从0开始计数
-* @param {number}  selectedIndex		被选值在数组中的索引
-* @param {any}       selectedValue		被选值
+* @param {number}  level				The level at which the selected value is located, counting from 0
+* @param {number}  selectedIndex		The index of the selected value in the array
+* @param {any}       selectedValue		Selected value
 `}</api>
     <code>{
         `new myPicker({
     cols: ...,
     onSelectItem: function(index, selectedIndex, selectedValue){
-        var options = [];// 根据selectedIndex或者selectedValue确定下一级的可选项
+        // Determine the next level of options based on "selectedIndex" or "selectedValue"
+        var options = [];
         this.setOptions(index + 1, options)
     }
 })`}</code>
@@ -164,58 +165,58 @@ import 'my-picker/my-picker.css'`
     <h3>onOkClick</h3>
     <api>{
 `
-* 点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。
-* @param {any[]} values         一个数组，对应每个滚轮当前已经选择的值
-* @returns {boolean}            如果返回值是false,picker不关闭,否则会关闭picker
+* Click on the "OK button" event function, the function will return an array, the selected value inside the array.
+* @param {any[]} values         The value currently selected by each wheel
+* @returns {boolean}            If the return value is false, the selector does not close, otherwise the selector will be closed
 `}</api>
     <code>{
         `new myPicker({
-    cols: ...,
+    cols: ['Not selected', 'Tom', 'John', 'Smith'],
     onOkClick: function(values){
-        if(values[0] is 错误){        //伪码,表示选项错误
-            alert("不可以选择这个选项!");
-            //返回false,不准关闭,继续选择
+        if(values[0] == 'Not selected'){
+            alert('Must choose a value');
+            // return false, not allowed to close, continue to choose
             return false;
         }
     },
 })`}</code>
 
-    <h2>方法</h2>
-    <h3>显示隐藏相关api：</h3>
+    <h2>Methods</h2>
+    <h3>Show hidden related apis:</h3>
 
     <h4>Picker.prototype.show</h4>
-    <p>new出picker对象后，是隐藏状态，需要调用此接口显示。</p>
+    <p>After the picker object is new, it is hidden and needs to be called to display this interface.</p>
 
     <h4>Picker.prototype.hide</h4>
-    <p>将显示出来的picker隐藏起来。</p>
+    <p>Hide the displayed picker.</p>
 
     <h4>Picker.prototype.close</h4>
-    <p>删除picker，picker将不能再被打开。</p>
+    <p>Deleting the picker, the picker will no longer be opened.</p>
 
-    <h3>已选值相关api：</h3>
+    <h3>Selected value related API:</h3>
     <h4>Picker.prototype.setOptions</h4>
     <api>{
-`* 设置滚轮的可选值列表
-* @param {number} index    滚轮的index,从0开始记录
-* @param {any[]} list      滚轮的可选值列表，是个数组，和cols里面配置的列一样
-* @param {any} defaultValue  默认值,如果为空会以当前值作为默认值。如果没有当前值会以第一个值作为默认值`}</api>
+`* Set the optional list of values for the scroll wheel
+* @param {number} index    The index of the scroll wheel, starting from 0
+* @param {any[]} list      The list of optional values for the scroll wheel is an array, just like the column configured in cols.
+* @param {any} defaultValue  The default value, if empty, will use the current value as the default. If there is no current value, the first value will be used as the default value.`}</api>
 
     <h4>Picker.prototype.getOptions</h4>
     <api>{
-`* 获取滚轮的可选值列表
-* @param {number} index    滚轮的index,从0开始记录
-* @returns {any[]}         滚轮的可选值列表`}</api>
+`* Get the list of optional values for the scroll wheel
+* @param {number} index    The index of the scroll wheel, starting from 0
+* @returns {any[]}         List of optional values for the scroll wheel`}</api>
 
     <h3>选项列表相关api：</h3>
     <h4>Picker.prototype.setValue(index, value)</h4>
     <api>{
-`* 设置滚轮的可选值
-* @param {number} index    滚轮的index,从0开始记录
-* @param {any} value         设置的值`}</api>
+`* Set the optional value of the wheel
+* @param {number} index    The index of the scroll wheel, starting from 0
+* @param {any} value         Value`}</api>
 
     <h4>Picker.prototype.getValue(index)</h4>
     <api>{
-`* 获取滚轮的值,如果index为空表示获取所有滚轮的值
-* @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值
-* @returns {any}             设置的值`}</api>
+`* Get the value of the scroll wheel. If index is empty, it means to get the value of all the scroll wheels.
+* @param {number} index    The index of the scroll wheel is recorded from 0. If it is empty, it means to get the value of all the wheels.
+* @returns {any}             Value`}</api>
 </doc>
