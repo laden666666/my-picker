@@ -45,15 +45,6 @@
             </table>
         </center>
 
-        
-移动端demo效果图:
-
-![Alt](./docs/images/mobileDemo.gif)
-
-pc端demo效果图:
-
-![Alt](./docs/images/pcDemo.gif)
-
 
 
         <P>下载整个工程，然后执行：</p>

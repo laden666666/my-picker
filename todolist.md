@@ -26,4 +26,4 @@
 - [ ]发布1.0.0正式版
 - [x]用typescript重构项目
 - [ ]rollup打包项目，使打包后的文件更小
-- [ ]使用my-doc-jsx重新readme和api文档
+- [x]使用my-doc-jsx重新readme和api文档
