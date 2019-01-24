@@ -14,7 +14,7 @@
     <p>Referenced in the js file</p>
     <code lang="javascript">{
 `import myPicker form 'my-picker'
-import 'my-picker/my-picker.css'`
+import 'my-picker/dist/my-picker.css'`
     }</code>
 
     <h2>Start</h2>

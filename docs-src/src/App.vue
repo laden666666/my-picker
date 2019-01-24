@@ -22,7 +22,7 @@
 </template>
 <script>
 import app from './app.json'
-import package from '../package.json'
+import package1 from '../../package.json'
 
 var isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
 
@@ -46,7 +46,7 @@ export default {
         return {
             isScrolling: false,
             app,
-            version: package.version
+            version: package1.version
         }
     },
     computed: {
@@ -182,5 +182,42 @@ html, body{
 }
 *:hover::-webkit-scrollbar-track{
     background:hsla(0,0%,53%,.1)
+}
+
+.selector{
+  margin-bottom: 1rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.3rem;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  padding: 10px;
+  width: auto;
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+.selector:empty::before{
+  color: #999;
+  content: attr(placeholder);
+}
+.selector::after{
+  position: absolute;
+  right: 10px;
+  top:12px;
+  width: 10px;
+  height: 10px;
+  content: "";
+  display: block;
+  border: solid;
+  border-width: 0 0 2px 2px;
+  border-color: #000;
+  transform: rotate(-45deg);
+}
+.selector:hover {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.3);
 }
 </style>

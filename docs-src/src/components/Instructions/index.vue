@@ -1,27 +1,25 @@
 <template>
     <div class="props">
-        <div class="props_table" v-if="type === 'table'">
-            <table class="mydoc_api_table">
-                <tr>
-                    <th>属性名</th>
-                    <th v-if="calcPropskey['type']">类型</th>
-                    <th v-if="calcPropskey['required']">必填</th>
-                    <th v-if="calcPropskey['default']">默认值</th>
-                    <th>说明</th>
-                </tr>
-                <tr v-for="(param, index) in calcPropsData" :key="index">
-                    <td><strong>{{param.name}}</strong></td>
-                    <td v-if="calcPropskey['type']" v-html="param.type || ''"></td>
-                    <td v-if="calcPropskey['required']">{{param.required ? '是' : '否'}}</td>
-                    <td v-if="calcPropskey['default']" v-html="param.default || '-'"></td>
-                    <td>
-                        <Code :code="param.demo" v-if="calcPropskey['demo']"></Code>
-                        <pre>{{param.describe || ''}}</pre>
-                        <slot :name="param.name"></slot>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <Table v-if="type === 'table'">
+            <Tr>
+                <Th>属性名</Th>
+                <Th v-if="calcPropskey['type']">类型</Th>
+                <Th v-if="calcPropskey['required']">必填</Th>
+                <Th v-if="calcPropskey['default']">默认值</Th>
+                <Th>说明</Th>
+            </Tr>
+            <Tr v-for="(param, index) in calcPropsData" :key="index">
+                <Td><strong>{{param.name}}</strong></Td>
+                <Td v-if="calcPropskey['type']" v-html="param.type || ''"></Td>
+                <Td v-if="calcPropskey['required']">{{param.required ? '是' : '否'}}</Td>
+                <Td v-if="calcPropskey['default']" v-html="param.default || '-'"></Td>
+                <Td>
+                    <Code :code="param.demo" v-if="calcPropskey['demo']"></Code>
+                    <pre>{{param.describe || ''}}</pre>
+                    <slot :name="param.name"></slot>
+                </Td>
+            </Tr>
+        </Table>
         <template v-else>
             <template v-for="(param, index) in calcPropsData">
                 <H3 :key="'h3' + index">{{param.name}}</H3>
@@ -31,7 +29,7 @@
                 <Li :key="'li' + index">用法：</Li>
                 <div style="padding-left: 10px;" :key="'div' + index">
                     <Code :code="param.demo" v-if="calcPropskey['demo']"></Code>
-                    <P style="white-space: pre;" :key="i" v-for="(txt, i) in param.describe.split('\n')">{{txt || '\n'}}</P>
+                    <P style="white-space: pre-line;" :key="i" v-for="(txt, i) in param.describe.split('\n')">{{txt || '\n'}}</P>
                     <slot :name="param.name"></slot>
                 </div>
             </template>
@@ -105,10 +103,6 @@
         text-align: left;
         margin-top: 20px;
         box-sizing: border-box;
-    }
-    .props_table{
-        overflow-x: auto;
-        border-top: 1px solid #eee ;
     }
     .mydoc_api_describe {
         box-sizing : border-box ;

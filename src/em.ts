@@ -8,7 +8,6 @@ export function em():number {
     if(window.devicePixelRatio && window.devicePixelRatio > 1){
         return Math.min(window.innerWidth, window.innerHeight) / 100;
     } else {
-        return Math.min(window.innerWidth, window.innerHeight, 650) / 100;
+        return Math.min(window.innerWidth, window.innerHeight, 500) / 100;
     }
-
 }

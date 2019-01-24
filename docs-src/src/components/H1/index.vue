@@ -19,6 +19,7 @@ export default {
     font-size: 2rem;
     margin: 3rem 0 1rem;
     font-weight: 600;
+    line-height: 1.2;
     color: @font-color;
 }
 </style>

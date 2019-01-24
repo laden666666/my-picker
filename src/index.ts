@@ -1,6 +1,6 @@
 import {Picker} from './Picker'
-import {IOptions} from './IOptions'
+import {IOptions,  IPicker} from './API'
 
-export = function(option: IOptions): Picker{
+export = function(option: IOptions): IPicker{
     return new Picker(option);
 }

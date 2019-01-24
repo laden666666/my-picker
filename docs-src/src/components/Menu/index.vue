@@ -1,5 +1,9 @@
 <template>
     <div class="menu" :class="{close: showToggle}">
+
+        <!-- 手机模式关闭菜单的弹层 -->
+        <div class="menu-aside_mark" @click="toggle"></div>
+
         <!-- 侧拉菜单 -->
         <aside class="menu-aside" :class="{fixed: fixed}">
             <div class="menu-nav">
@@ -128,6 +132,12 @@ export default {
                 title.scrollIntoView()
             }
         }
+        let rect = this.$el.getBoundingClientRect()
+        if(rect.top <= 0){
+            this.fixed = true
+        } else {
+            this.fixed = false
+        }
     },
     components: {
         MenuNavList
@@ -233,6 +243,14 @@ export default {
         .close > .menu-aside{
             width: 300px;
             overflow-y: scroll;
+        }
+        .close > .menu-aside_mark{
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 2;
         }
     }
 </style>

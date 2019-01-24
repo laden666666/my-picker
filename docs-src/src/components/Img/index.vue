@@ -1,0 +1,19 @@
+<template>
+    <img :src="src" class="img">
+</template>
+<script>
+export default {
+    props: {
+        src: {
+            type: String,
+            required: true
+        }
+    },
+}
+</script>
+<style lang="less" scoped>
+    @import '../../theme.less';
+    .img {
+        max-width: 100%;
+    }
+</style>

@@ -19,7 +19,6 @@ Vue.component('ICol', Col)
 Vue.component('ITimeline', Timeline)
 Vue.component('ITimelineItem', TimelineItem)
 
-import MyPicker from 'my-picker'
 import 'my-picker/dist/my-picker.css'
 
 Vue.config.productionTip = false

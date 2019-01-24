@@ -2,7 +2,7 @@
  * @file 将用户数据封装为列对象
  */
 
-import {StringCol, GenericCol} from './IOptions'
+import {StringCol, GenericCol} from './API'
 
 export class Col {
     options: any[]

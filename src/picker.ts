@@ -1,6 +1,5 @@
-import {IOptions, StringCol} from './IOptions'
+import {IOptions, StringCol, IPicker} from './API'
 import {Col} from './Col'
-import {IPicker} from './IPicker'
 import defaultOption from './defaultOption'
 import {Wheel3D} from './wheel/Wheel3D'
 import {Wheel} from './wheel/Wheel'

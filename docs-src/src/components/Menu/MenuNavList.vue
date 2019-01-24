@@ -7,7 +7,7 @@
             <p class="menu-nav_link" v-else>{{menu1.title}}</p>
             <ul class="menu-nav_title_list" v-if="'#' + $route.path == menu1.path">
                 <template v-for="(title, index) in titleList">
-                    <li :key="index" v-if="title.level > 1">
+                    <li class="menu-nav_title_item"  :key="index" v-if="title.level > 1">
                         <a class="menu-nav_title_link" 
                             :class="{
                                 'active': $route.hash == '#' + title.title, 
@@ -66,6 +66,7 @@ export default {
     }
     .menu-nav_item{
         margin: 6px 0;
+        list-style: none;
     }
     .menu-nav_item a{
         color: @font-color;
@@ -110,6 +111,9 @@ export default {
     }
     a.menu-nav_link.active{
         color: @main-color;
+    }
+    .menu-nav_title_item{
+        list-style: none;
     }
     a.menu-nav_title_link{
         font-size-adjust: none;

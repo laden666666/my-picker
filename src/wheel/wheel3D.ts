@@ -6,30 +6,18 @@ import $ from '../util/domUtil';
 import {em} from '../em';
 import {MyJQuery} from 'my-jquery/types/MyJQuery'
 import animationUtil from '../util/animationUtil';
-import browserUtil from '../util/browserUtil';
 import constant from '../constant';
-import {IWheel} from '../IWheel'
+import {AWheel} from '../IWheel'
 import {Col} from '../Col'
 import {Picker} from '../Picker'
-import {IOptions} from '../IOptions'
+import {IOptions} from '../API'
 
 declare function require<T>(name: string): T
 
 const perspectiveConversion = require<{(y: number, radius: number, wheelHeight: number): number}>("./perspectiveConversionCache")
 const tick = require<{(): {play()}}>("../tick/tick")();
 
-export class Wheel3D implements IWheel{
-
-    //picker对象
-    private picker: Picker;
-    //option对象
-    private option: IOptions;
-    //记录当前滚轮是容器中第几个滚轮
-    private index: number;
-    //转轮主体
-    private dom: MyJQuery;
-    //转轮上面标签的容器，同时也是转动的轴
-    private contains: MyJQuery;
+export class Wheel3D extends AWheel{
 
     ///////////////////滚轮显示属性
     //最大转角
@@ -56,8 +44,6 @@ export class Wheel3D implements IWheel{
     private angle = 0;
     //当前被选值的index
     private selectedIndex = -1;
-    //被选值的值
-    private selectedValue;
     //记录惯性滑动动画的id
     private animationId = -1;
     //速度，供触摸离开时候的惯性滑动动画使用
@@ -68,23 +54,10 @@ export class Wheel3D implements IWheel{
     private lastY = 0;
     //是否开始触摸,主要给鼠标事件使用
     private isDraging = false;
-    //正在播放的刻度音
-    private audio = null;
-
-    ////////////////////可选项属性
-    //可选项列表
-    private list = [];
-    //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
-    private valueHashMap = {};
-    //如果items数组里的值是对象,其中显示的key
-    private labelKey: string;
-    //如果items数组里的值是对象,其中值的key
-    private itemValueKey: string;
-
-    ////////////////////事件
-    private onSelectItemCallbackList: {(index:number, value:any):void}[] = []
 
     constructor(picker: Picker, col: Col, option: IOptions, index: number){
+        super()
+
         ///////////////////主要属性
         //picker对象
         this.picker = picker;
@@ -354,31 +327,13 @@ export class Wheel3D implements IWheel{
         }
     }
 
-    /**
-    * 获得用户可选的标签
-    */
-    getOptions(): any[]{
-        return this.list;
-    }
-
-    /**
-    * 给定指定标签的值,选择指定标签
-    */
-    selectOption(value: any, showAnimation = false){
-        //如果valueHashMap里面没有value,表示没有这个标签,否则自动选中这个标签
-        if(this.valueHashMap[value] != null){
-            var index = this.valueHashMap[value];
-
-            this.selectIndex(index, showAnimation);
-        }
-    }
 
     /**
     * 给定指定备选标签的index,自动设定标签的各个位置
     * @param index					要选择的index
     * @param showAnimation			是否显示动画,如果显示动画,会用100帧来显示动画
     */
-    private selectIndex(index: number, showAnimation = false){
+    protected selectIndex(index: number, showAnimation = false){
 
         var angle = this.calcAngleBySelectedIndex(index);
         animationUtil.stopAnimation(this.animationId);
@@ -514,13 +469,6 @@ export class Wheel3D implements IWheel{
         })
     }
 
-    /**
-    * 获取被选值
-    */
-    getValue(){
-        return this.selectedValue;
-    }
-
     /////////////////////////////设置前缀后缀
     /**
     * 设置后缀
@@ -550,30 +498,9 @@ export class Wheel3D implements IWheel{
     }
 
     /**
-     * 注册SelectItem的回调事件
-     * @param {{(index:number, value:any):void}} fn
-     */
-    addSelectItemListener(fn: {(index:number, value:any):void}){
-        this.onSelectItemCallbackList.push(fn)
-    }
-
-    /**
-     * 移除注册的SelectItem回调事件
-     * @param {{(index:number, value:any):void}} fn
-     */
-    removeSelectItemListener(fn: {(index:number, value:any):void}){
-        this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(_fn=>_fn !== fn)
-    }
-
-    /**
      * 销毁
      */
     destroy(){
         this.onSelectItemCallbackList = null
-    }
-
-    ////////////////////////////DOM相关
-    getDOM(){
-        return this.dom
     }
 }

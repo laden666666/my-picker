@@ -1,4 +1,4 @@
-import {IOptions} from './IOptions'
+import {IOptions} from './API'
 
 /**
  * 用户默认配置

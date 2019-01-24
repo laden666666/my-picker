@@ -14,7 +14,7 @@
     <p>并在js文件中引用</p>
     <code lang="javascript">{
 `import myPicker form 'my-picker'
-import 'my-picker/my-picker.css'`
+import 'my-picker/dist/my-picker.css'`
     }</code>
 
     <h2>初始化：</h2>
@@ -80,14 +80,14 @@ import 'my-picker/my-picker.css'`
             <td>onSelectItem</td>
             <td>Function</td>
             <td>无</td>
-            <td>用户转动滚轮停止时,响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。
+            <td>用户转动滚轮停止时，响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。
             </td>
         </tr>
         <tr>
             <td>onOkClick</td>
             <td>Function</td>
             <td>无</td>
-            <td>点击"确定按钮"的事件函数,函数会返回一个数组,数组里面是被选值。
+            <td>点击“确定按钮”的事件函数，函数会返回一个数组，数组里面是被选值。
             </td>
         </tr>
         <tr>
@@ -110,7 +110,7 @@ import 'my-picker/my-picker.css'`
     }]
 })`
     }</code>
-    <p>如果cols的参数是一个json，将视为只有一列可选值列表,如:</p>
+    <p>如果cols的参数是一个json，将视为只有一列可选值列表，如:</p>
     <code lang="javascript">{
 `new myPicker({
     cols:{
