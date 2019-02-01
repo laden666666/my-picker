@@ -75,9 +75,7 @@
         <Code lang="javascript" :code="
 `new myPicker({
     cols:{
-        prefix: '第'，
         options: ['一', '二', '三', '四', '五'],
-        suffix: '章',
     }
 })`"></Code>
 
@@ -95,6 +93,17 @@
 
         <P>如果如果可选值列表只有一列,且是个字符串数组,可进一步简化配置为:</P>
         <Code lang="javascript" :code="`new myPicker({cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']})`"></Code>
+
+        <P>除了配置options，cols也可以配置显示在两个的前缀、后缀</P>
+        <Code lang="javascript" :code="
+`new myPicker({
+    cols:{
+        prefix: '第'，
+        options: ['一', '二', '三', '四', '五'],
+        suffix: '章',
+    }
+})`"></Code>
+        <P>prefix是前缀，suffix是后缀，他们会显示在滚轮两侧。</P>
 
         <H3>setValues</H3>
         <P>已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。如:</P>
