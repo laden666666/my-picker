@@ -16,7 +16,7 @@ export default {
 <style lang="less" scoped>
 @import '../../theme.less';
 .h2{
-    margin: 45px 0 0.8em;
+    margin: 55px 0 0.8em;
     padding-bottom: 0.7em;
     border-bottom: 1px solid @border-color;
     font-weight: 600;
@@ -25,6 +25,6 @@ export default {
 }
 .h2-anchor{
     position: absolute;
-    top: -10px;
+    top: -14px;
 }
 </style>

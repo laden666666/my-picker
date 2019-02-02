@@ -61,17 +61,29 @@ export default {
     @import '../../theme.less';
     .menu-nav_list{
         list-style: none;
-        margin: 0 0 0 15px;
+        margin: 0 0 0 25px;
         padding: 0;
+        font-size: 16px;
     }
     .menu-nav_item{
         margin: 6px 0;
         list-style: none;
     }
     .menu-nav_item a{
-        color: @font-color;
-        font-size: 14px;
+        color: #7f8c8d;
+        font-size: 16px;
         font-weight: 400;
+        overflow: hidden;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-bottom: none;
+        display: block;
+        list-style: none;
+    }
+    .menu-nav_link{
+        font-size: 16px;
+        line-height: 1.6em;
         overflow: hidden;
         text-decoration: none;
         text-overflow: ellipsis;
@@ -81,30 +93,9 @@ export default {
         list-style: none;
     }
     p.menu-nav_link{
-        color: @font-color;
-        font-size: 14px;
-        font-weight: 700;
-        overflow: hidden;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        border-bottom: none;
-        display: block;
-        list-style: none;
-        line-height: 2;
-    }
-    a.menu-nav_link{
-        color: @font-color;
-        font-size: 14px;
-        font-weight: 400;
-        overflow: hidden;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        border-bottom: none;
-        display: block;
-        list-style: none;
-        line-height: 1.8;
+        color: #2c3e50;
+        font-weight: 600;
+        margin: 1em 0 .5em;
     }
     a.menu-nav_link:hover{
         text-decoration: underline;
@@ -116,11 +107,12 @@ export default {
         list-style: none;
     }
     a.menu-nav_title_link{
+        color: @font-color;
         font-size-adjust: none;
         text-size-adjust: none;
-        font-size: 12px;
+        font-size: 0.85em;
         display: block;
-        line-height: 1.8;
+        line-height: 2;
     }
     .menu-nav_title_link:hover{
         color: @main-color;
@@ -130,9 +122,9 @@ export default {
         color: @main-color;
     }
     .menu-nav_title_link.level2{
-        padding-left: 10px;
+        padding-left: 15px;
     }
     .menu-nav_title_link.level3{
-        padding-left: 20px;
+        padding-left: 30px;
     }
 </style>

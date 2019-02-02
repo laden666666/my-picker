@@ -27,9 +27,9 @@
                 <Li :key="'required' + index" v-if="calcPropskey['required']">必填：<Strong>{{param.required ? '是' : '否'}}</Strong></Li>
                 <Li :key="'default' + index" v-if="calcPropskey['default']">默认值：<Strong><span v-html="param.default || '-'"></span></Strong></Li>
                 <Li :key="'li' + index">用法：</Li>
-                <div style="padding-left: 10px;" :key="'div' + index">
+                <div style="padding: 10px 0 0 10px;" :key="'div' + index">
                     <Code :code="param.demo" v-if="calcPropskey['demo']"></Code>
-                    <P style="white-space: pre-line;" :key="i" v-for="(txt, i) in param.describe.split('\n')">{{txt || '\n'}}</P>
+                    <P style="white-space: pre-wrap;line-height: 1.5;padding: 0;margin: 0;" :key="i" v-for="(txt, i) in param.describe.split('\n')">{{txt || '\n'}}</P>
                     <slot :name="param.name"></slot>
                 </div>
             </template>
@@ -126,56 +126,4 @@
         border-radius : 0px 0px 4px 4px ;
         color : rgb(51, 51, 51) ;
     }
-
-    .mydoc_api_table{
-        margin : 15px 0px 0px ;
-        padding : 0px ;
-        border : 1px solid @border-color ;
-        border-collapse : collapse ;
-        width : 100% ;
-        color : rgb(0, 0, 0) ;
-        font-size : 14px ;
-        background-color : rgb(253, 252, 248) ;
-        margin-top: -1px;
-        margin-bottom: 8px;
-    }
-
-    .mydoc_api_table tr{
-        margin : 0px ;
-        padding : 0px ;
-        border : 0px ;
-        background-color : rgb(255, 255, 255) ;
-    }
-    .mydoc_api_table tr:nth-child(odd){
-        background-color : rgb(245, 245, 245) ;
-    }
-    .mydoc_api_table tr:nth-child(1){
-        background-color : rgb(63, 63, 63);
-    }
-
-    .mydoc_api_table th{
-        margin : 0px ;
-        padding : 0px 15px 0px 6px ;
-        border: 1px solid @border-color;
-        vertical-align : baseline ;
-        text-align : left ;
-        width : 123px ;
-        word-break: break-all;
-        background: #f7f7f7;
-        white-space: nowrap;
-        color: @main-color;
-        font-weight: 600;
-    }
-
-    .mydoc_api_table td{
-        line-height: 1.5;
-        margin : 0px ;
-        padding : 3px 15px 3px 6px ;
-        border: 1px solid #eee;
-        vertical-align : text-top ;
-        word-break: break-all;
-        font-size: 12px;
-        color: @font-color;
-    }
-
 </style>

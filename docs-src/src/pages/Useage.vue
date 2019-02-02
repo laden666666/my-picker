@@ -1,37 +1,43 @@
 <template>
     <Doc>
         <H1>my-picker</H1>
+        <P>我们将最常用的几种例子展现给大家，如果对例子中的API不是很明白，可以查看<A href="#/API">API</A>。</P>
+
         <H2>简单的选择器</H2>
         <P>可以设置简单的选择器，高仿IOS的PickerView控件，3D形式的滚轮选择器。</P>
-        <Demo :demo="example1" :code="code1"></Demo>
+        <Demo :demo="example1" :code="code1" title="简单的选择器"></Demo>
         
         <H2>带前缀与后缀的选择器</H2>
         <P>可以让选择器的滚轮左右两边设置固定的显示值，实现对选择器增加统一的单位、称呼、序列的文案。</P>
-        <Demo :demo="example2" :code="code2"></Demo>
+        <Demo :demo="example2" :code="code2" title="带前缀与后缀的选择器"></Demo>
         
         <H2>多滚轮的选择器</H2>
         <P>支持多个滚轮同时选择，并且每个滚轮都是3d的，而且还有水平方向的透视效果。建议滚轮最多只能设置3个，否则可能会出现显示异常。</P>
-        <Demo :demo="example3" :code="code3"></Demo>
+        <Demo :demo="example3" :code="code3" title="多滚轮的选择器"></Demo>
         
         <H2>设置默认值及动态设置</H2>
         <P>通过api可以设置默认值，并且可以通过api代替用户选择所选值。如下边的例子，两个picker通过相互调用api，给对方设置值，让两个选择器值保存同步。</P>
-        <Demo :demo="example4" :code="code4"></Demo>
+        <Demo :demo="example4" :code="code4" title="设置默认值及动态设置"></Demo>
         
         <H2>动态设置选择器的可选值</H2>
         <P>通过api可以动态修改可选值。下边的例子中，每选择一次，都会修改可选值列表。</P>
-        <Demo :demo="example5" :code="code5"></Demo>
+        <Demo :demo="example5" :code="code5" title="动态设置选择器的可选值"></Demo>
 
         <H2>label和value的选择器</H2>
         <P>picker不但可以选择字符串数组，还支持选择json，不过必须要提供json的属性中的label和value的key。</P>
-        <Demo :demo="example6" :code="code6"></Demo>
+        <Demo :demo="example6" :code="code6" title="label和value的选择器"></Demo>
         
         <H2>级联选择器</H2>
         <P>通过api修改可选值，可以实现级联选择的功能。</P>
-        <Demo :demo="example7" :code="code7"></Demo>
+        <Demo :demo="example7" :code="code7" title="级联选择器"></Demo>
         
         <H2>构建简单的日期选择器</H2>
         <P>基于picker控件，可以进一步封装出更多选择器控件。这里是一个日期选择控件的例子，代码实现仅做参考。</P>
-        <Demo :demo="example8" :code="code8"></Demo>
+        <Demo :demo="example8" :code="code8" title="构建简单的日期选择器"></Demo>
+        
+        <H2>非3D模式</H2>
+        <P><Strong>myPicker</Strong>默认是使用3D形式的picker，但是它也支持一套平面模式的picker，用于在不兼容css3的<Strong>transform-style: preserve-3d</Strong>属性的浏览器中使用。</P>
+        <Demo :demo="example9" :code="code9" title="非3D模式"></Demo>
     </Doc>
 </template>
 <script>
@@ -43,6 +49,7 @@ import example5 from '../demo/Useage/example5.vue'
 import example6 from '../demo/Useage/example6.vue'
 import example7 from '../demo/Useage/example7.vue'
 import example8 from '../demo/Useage/example8.vue'
+import example9 from '../demo/Useage/example9.vue'
 export default {
     data(){
         return {
@@ -54,6 +61,7 @@ export default {
             example6,
             example7,
             example8,
+            example9,
             code1:
 `<a id="example1" class="selector" placeholder="请选择你喜欢的编程语言"></a>
 <script>
@@ -285,7 +293,103 @@ export default {
         picker8.show();
     })
 <\/script>`,
+            code9:
+`<a id="example9" class="selector" placeholder="请选择日期"></a>
+<script>
+    var year = [];
+    for(var i = 16; i < 30 ; i++){
+        year.push(i + 2000);
+    }
+
+    var month = [];
+    for(var i = 1; i <= 12 ; i++){
+        month.push(i);
+    }
+
+    var today = new Date();
+
+    var picker9  = new myPicker({
+        cols : [{
+            options: year,
+            suffix: "年",
+        },{
+            options: month,
+            suffix: "月",
+        },{
+            options: [],
+            suffix: "日",
+        },],
+        onOkClick: function (values) {
+            document.querySelector('#example8').textContent = values[0] + "年" + values[1] + "月" + values[2] + "日";
+        },
+        setValues: [today.getFullYear(), today.getMonth() + 1, today.getDate()],
+        onSelectItem : function (i, index, value) {
+
+            if(i != 2){
+            var year = this.getValue(0);
+            var month = this.getValue(1);
+
+            if(year == null || month == null)
+                return
+
+            var curDate = new Date();
+            curDate.setYear(year)
+            curDate.setMonth(month);
+            curDate.setDate(0);
+
+            var day = [];
+            for(var i = 1; i <= curDate.getDate() ; i++){
+                day.push(i);
+            }
+            this.setOptions(2, day);
+            }
+        }
+    });
+    document.querySelector('#example8').addEventListener('click', function () {
+        picker9.show();
+    })
+<\/script>`,
         }
     }
 }
 </script>
+<style>
+
+.selector{
+    margin-bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.3rem;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    padding: 10px;
+    width: auto;
+    display: block;
+    cursor: pointer;
+    position: relative;
+  }
+  .selector:empty::before{
+    color: #999;
+    content: attr(placeholder);
+  }
+  .selector::after{
+    position: absolute;
+    right: 10px;
+    top:14px;
+    width: 10px;
+    height: 10px;
+    content: "";
+    display: block;
+    border: solid;
+    border-width: 0 0 2px 2px;
+    border-color: #000;
+    transform: rotate(-45deg);
+  }
+  .selector:hover {
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+  
+</style>

@@ -7,7 +7,6 @@
             <span id="home"></span>
             <Home 
                 v-bind="app"
-                :version="version"
             ></Home>
             <Menu :menu="app.menu" key="1">
                 <span id="menu"></span>
@@ -18,11 +17,12 @@
             <span id="menu"></span>
             <router-view/>
         </Menu>
+        <!--PC和WAP自适应版-->
     </div>
 </template>
 <script>
 import app from './app.json'
-import package1 from '../../package.json'
+import debounce from 'lodash.debounce'
 
 var isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
 
@@ -46,7 +46,6 @@ export default {
         return {
             isScrolling: false,
             app,
-            version: package1.version
         }
     },
     computed: {
@@ -150,14 +149,49 @@ export default {
             this._pageY = undefined
         }
     },
+    mounted(){
+        let scrollY = 0
+        let scrollY2 = 0
+        let scrollHandle1 = ()=>{
+            if(scrollY2 != scrollY){
+                scrollY2 = scrollY
+            }
+            scrollY = window.scrollY
+        }
+        let scrollHandle2 = debounce(()=>{
+            if(!this.isScrolling && this.isHome){
+                if (scrollY > 0 && scrollY < scrollY2 && scrollY < window.innerHeight) {
+                    this.showHome()
+                }
+            }
+        }, 20)
+
+        window.addEventListener('scroll', scrollHandle1, {
+            passive: true
+        })
+        window.addEventListener('scroll', scrollHandle2, {
+            passive: true
+        })
+        this.$once('hook:beforeDestroy', function () {
+            window.removeEventListener('scroll', scrollHandle1, {
+                passive: true
+            })
+            window.removeEventListener('scroll', scrollHandle2, {
+                passive: true
+            })
+        })
+    },
 }
 </script>
 <style>
-html, body{
+html, body {
     padding: 0;
     margin: 0;
+}
+html, body, body code, body kbd, body pre, body samp {
     font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
 }
+
 *{
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -182,42 +216,5 @@ html, body{
 }
 *:hover::-webkit-scrollbar-track{
     background:hsla(0,0%,53%,.1)
-}
-
-.selector{
-  margin-bottom: 1rem;
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.3rem;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-  padding: 10px;
-  width: auto;
-  display: block;
-  cursor: pointer;
-  position: relative;
-}
-.selector:empty::before{
-  color: #999;
-  content: attr(placeholder);
-}
-.selector::after{
-  position: absolute;
-  right: 10px;
-  top:12px;
-  width: 10px;
-  height: 10px;
-  content: "";
-  display: block;
-  border: solid;
-  border-width: 0 0 2px 2px;
-  border-color: #000;
-  transform: rotate(-45deg);
-}
-.selector:hover {
-  text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(0, 0, 0, 0.3);
 }
 </style>

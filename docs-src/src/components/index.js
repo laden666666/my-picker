@@ -8,6 +8,9 @@ import Props from './Props'
 import Instructions from './Instructions'
 import MyFunction from './Function'
 import TimeLine from './TimeLine/'
+import NpmInfo from './NpmInfo/'
+import BrowserList from './BrowserList/'
+import Comments from './Comments/'
 
 // 文档相关
 import Doc from './Doc'
@@ -34,10 +37,9 @@ Vue.component('Props', Props)
 Vue.component('Instructions', Instructions)
 Vue.component('Function', MyFunction)
 Vue.component('TimeLine', TimeLine)
-Vue.component('Table', Table)
-Vue.component('Tr', Tr)
-Vue.component('Td', Td)
-Vue.component('Th', Th)
+Vue.component('NpmInfo', NpmInfo)
+Vue.component('BrowserList', BrowserList)
+Vue.component('Comments', Comments)
 
 // 文档相关
 Vue.component('Doc', Doc)
@@ -49,4 +51,8 @@ Vue.component('A', A)
 Vue.component('Img', Img)
 Vue.component('Strong', Strong)
 Vue.component('Li', Li)
+Vue.component('Table', Table)
+Vue.component('Tr', Tr)
+Vue.component('Td', Td)
+Vue.component('Th', Th)
 Vue.component('Alert', Alert)

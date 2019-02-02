@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a id="example4_1" class="selector" @click="select1">2</a>
-        <a id="example4_2" class="selector" @click="select2">2</a>
+        <a id="example4_1" class="selector" placeholder="" @click="select1">2</a>
+        <a id="example4_2" class="selector" placeholder="" @click="select2">2</a>
     </div>
 </template>
 <script>

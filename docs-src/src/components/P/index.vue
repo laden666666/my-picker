@@ -9,7 +9,13 @@
     padding-bottom: 1.2em;
     position: relative;
     z-index: 1;
-    font-size: 14px;
+    font-size: 16px;
     color: @font-color;
+    word-spacing: 0.7px;
+}
+@media screen and (max-width: @phone-width) {
+    .p{
+        font-size: 14px;
+    }
 }
 </style>

@@ -12,7 +12,7 @@
             <!-- 菜单显示隐藏的切换按钮 -->
             <div class="menu-toggle">
                 <svg @click="toggle" class="menu-toggle_btn" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 128l0 128 1024 0 0-128-1024 0zm0 380.16l0 128 1024 0 0-128-1024 0zm0 384l0 128 1024 0 0-128-1024 0z" p-id="1991"></path>
+                    <path d="M0 128l0 128 1024 0 0-128-1024 0zm0 380.16l0 128 1024 0 0-128-1024 0zm0 384l0 128 1024 0 0-128-1024 0z"></path>
                 </svg>
             </div>
         </aside>
@@ -156,7 +156,6 @@ export default {
         width: 300px;
         height: 100vh;
         border-right: 1px solid rgba(0,0,0,.07);
-        overflow-y: scroll;
         box-sizing: border-box;
         position: absolute;
         top: 0;
@@ -166,26 +165,33 @@ export default {
         z-index: 3;
         transition: all .3s;
         background-color: rgba(255, 255, 255, .9);
-        padding-top: 20px;
+        overflow-y: visible;
     }
     .menu-aside.fixed{
         position: fixed;
     }
     .close > .menu-aside{
         width: 0;
+    }
+    .menu-nav{
+        padding-top: 20px;
+        overflow-y: scroll;
+        height: calc(100% - 40px);
+    }
+    .close > .menu-nav{
         overflow-y: visible;
     }
-    .menu-aside::-webkit-scrollbar-thumb{
+    .menu-nav::-webkit-scrollbar-thumb{
         border-radius:4px;
         background:transparent;
     }
-    .menu-aside:hover::-webkit-scrollbar-thumb{
+    .menu-nav:hover::-webkit-scrollbar-thumb{
         background:hsla(0,0%,53%,.4)
     }
-    .menu-aside::-webkit-scrollbar-track{
+    .menu-nav::-webkit-scrollbar-track{
         background:transparent;
     }
-    .menu-aside:hover::-webkit-scrollbar-track{
+    .menu-nav:hover::-webkit-scrollbar-track{
         background:hsla(0,0%,53%,.1)
     }
     .menu-toggle{
@@ -214,6 +220,9 @@ export default {
         width: 18px;
         cursor: pointer;
     }
+    .menu-toggle_btn:hover path, .menu-toggle_btn:active path{
+        fill: @main-color;
+    }
     .menu-content{
         position: absolute;
         width: calc(100% - 300px);    
@@ -238,10 +247,14 @@ export default {
         }
         .menu-aside{
             width: 0;
-            overflow-y: visible;
         }
         .close > .menu-aside{
             width: 300px;
+        }
+        .menu-nav{
+            overflow-y: visible;
+        }
+        .close  .menu-nav{
             overflow-y: scroll;
         }
         .close > .menu-aside_mark{

@@ -9,6 +9,9 @@
         padding: 10px 15px;
         overflow-x: auto;
     }
+    .code pre code{
+        font-family: Consolas,Menlo,Courier,monospace;
+    }
     div{
         position: relative;
         font-size: 14px;
