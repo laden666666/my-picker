@@ -5,13 +5,9 @@
     height: 100vh;
     width: 100vw;
     user-select: none;
-    background-color: transparent;
-    transition: 0.3s ease-out background-color;
+    background-color:rgba(0,0,0,.6);
+    transition: 0.1s ease-out background-color;
     will-change: background-color;
-
-    &.s-open{
-        background-color:rgba(0,0,0,.6)
-    }
 }
 
 .picker{
@@ -28,17 +24,24 @@
         margin: 0 auto;
         user-select: none;
         will-change: transform;
-        transform: scale(0.5);
-        opacity: 0;
-        transition: 0.3s ease-out all;
+        transform: translateY(600px);
+        transition: .3s ease-out transform .1s;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, .5);
 
         .s-3d &{
             transform-style: preserve-3d;
         }
 
         &.s-open{
-            opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
+        }
+    }
+    
+    @media screen and (min-width: 401px) { 
+        &.picker-frame{
+            top: 50%;
+            bottom: auto;
+            margin-top: -200px;
         }
     }
 
@@ -47,9 +50,9 @@
         height: .15em;
         padding: .03em .05em;
         box-sizing: border-box;
-        background: linear-gradient( to top, #fff 0%, #f7f7f8 100%);
+        background: #fff;
         // background: #f7f7f8;
-        // border-bottom: 1px solid #fff;
+        border-bottom: 1px solid rgba(224, 224, 224, .5);
         display: flex;
         // font-size: 5em;
         line-height: .09em;
@@ -91,7 +94,6 @@
         margin-right: .02em;
     }
 
-    
     & .s-open .picker-body{
         display: none;
     }
@@ -105,77 +107,61 @@
         justify-content: center;
         position: relative;
         box-sizing: border-box;
-        -webkit-mask-box-image:
-                linear-gradient(to top,
-                        rgba(255,255,255,0.3),
-                        rgba(255,255,255,0.3) 5%,
-                        rgba(255,255,255,0.5) 41.6%,
-                        #fff 41.7%,
-                        #fff 58.3%,
-                        rgba(255,255,255,0.5) 58.4%,
-                        rgba(255,255,255,0.3) 95%,
-                        rgba(255,255,255,0.3));
+        color: #000;
+        opacity: 0;
     }
-    &.s-3d .picker-body{
-        transform-style: preserve-3d;
-        padding: 0 calc(1em * 0.220);
-    }
-    & .picker-body::before,& .picker-body::after{
-        display: block;
-        position: absolute;
-        left: 0;
-        width: 1em;
-        border-bottom: 1px solid  rgba(0, 0, 0, 0.1);
-        content: '';
-        height: 0;
-        pointer-events: none;
-    }
-    & .picker-body::after{
-        bottom:41.6%;
-    }
-    & .picker-body::before{
-        top:41.6%;
+    &.s-open .picker-body{
+        opacity: 1;
+        transition: 0 ease-out opacity 0;
     }
 
-    //使用3d透视的滚轮
-    & .picker-wheel3d{
-        flex-grow: 1;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        position: relative;
-        // font-size: 0.553rem;
-        transform-style: preserve-3d;
-    }
+    // 玻璃罩
+    &.s-glass-over {
+        & .picker-glass-over-border-top, & .picker-glass-over-border-bottom{
+            position: absolute;
+            width: 200%;
+            pointer-events: none;
+            top: 0;
+            z-index: 1;
+        }
+        & .picker-glass-over-border-top{
+            box-shadow: 0 .3536em 0 0.5px #eee;
+        }
+        & .picker-glass-over-border-bottom{
+            box-shadow: 0 .4964em 0 0.5px #eee;
+        }
 
-    & .picker-wheel3d:first-child::before{
-        position: absolute;
-        content: "";
-        width: calc(1em * 0.220);
-        height: 100%;
-        top: 0;
-        left: calc(1em * -0.220);
-        pointer-events: none;
-    }
+        &.s-webkit-glass-over .picker-body{
+            -webkit-mask-box-image:
+                    linear-gradient(to top,
+                    transparent,
+                    rgba(255, 255, 255, .2) 5%,
+                    rgba(255, 255, 255, .6) 41.6%,
+                    #fff 41.7%,
+                    #fff 58.3%,
+                    rgba(255, 255, 255, .6) 58.4%,
+                    rgba(255, 255, 255, .2) 95%,
+                    transparent);
+        }
 
-    & .picker-wheel3d:last-child::after{
-        position: absolute;
-        content: "";
-        width: calc(1em * 0.220);
-        height: 100%;
-        top: 0;
-        right: calc(1em * -0.220);
-        pointer-events: none;
-    }
-
-    & .picker-wheel3d:first-child .picker-label:first-child{
-        margin-left: .02em;
-    }
-
-    & .picker-wheel3d:last-child .picker-label:last-child{
-        margin-right: .02em;
+        &:not(.s-webkit-glass-over) .picker-body{
+            &::after, &::before{
+                content: "";
+                display: block;
+                position: absolute;
+                width: 200%;
+                pointer-events: none;
+                z-index: 1;
+            }
+            &::after{
+                bottom: 0;
+                box-shadow: 0 -.1768em 0 .1768em rgba(255, 255, 255, .6);
+            }
+            &::before{
+                top: 0;
+                box-shadow: 0 .1768em 0 .1768em rgba(255, 255, 255, .6);
+            }
+        }
     }
 
     & .picker-label{
@@ -183,100 +169,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        line-height: .04em;
     }
     & .picker-text{
         font-size: .04em;
         display: block;
-    }
-    & .picker-wheel3d ul{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        flex: 1;
-        height: 100%;
-        position: relative;
-        transform-style: inherit;
-    }
-
-    & .picker-wheel3d li{
-        cursor: pointer;
-        display: block;
-        text-align: center;
-        position: absolute;
-        top: -16.666666666%;
-        right: -16.666666666%;
-        bottom: -16.666666666%;
-        left: -16.666666666%;
-        margin: auto auto;
-        //background: black;
-        //color: #fff;
-        user-select: none;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        transform-style: preserve-3d;
-    }
-
-    & .picker-wheel3d:first-child li{
-        margin-right: 0;
-        transform-style: preserve-3d;
-    }
-
-    & .picker-wheel3d:last-child li{
-        margin-left: 0;
-        transform-style: preserve-3d;
-    }
-
-    //不使用3d透视的滚轮
-    & .picker-wheel{
-        flex-grow: 1;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-direction: row;
-        position: relative;
-    }
-
-    & .picker-wheel .picker-label{
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 .02em;
-    }
-    & .picker-wheel ul{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        flex: 1;
-        position: relative;
-        transform-style: inherit;
-    }
-
-    & .picker-wheel li{
-        position: absolute;
-        left: 0;
-        cursor: pointer;
-        display: block;
-        text-align: center;
-        margin: auto auto;
-        width: 100%;
-        height: 0.1428em;
-        line-height: 0.1428em;
-        //background: black;
-        //color: #fff;
-        user-select: none;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    & .picker-wheel:first-child li{
-        margin-right: 0;
-    }
-
-    & .picker-wheel:last-child li{
-        margin-left: 0;
     }
 }

@@ -1,0 +1,93 @@
+.picker{
+
+    // 修正webkit内核显示模糊的bug
+    & .s-zoom-body.picker-body{
+        transform: scale(.5) translate(-50%, -50%);
+        zoom: 2;
+    }
+
+    //使用3d透视的滚轮
+    & .picker-wheel3d{
+        flex-grow: 1;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        position: relative;
+        // font-size: 0.553rem;
+        transform-style: preserve-3d;
+    }
+    & .picker-wheel3d{
+        & .picker-label .picker-text{
+            padding-bottom: .1em;
+        }
+    }
+
+    & .picker-wheel3d:first-child::before{
+        position: absolute;
+        content: "";
+        width: calc(1em * 0.220);
+        height: 100%;
+        top: 0;
+        left: calc(1em * -0.220);
+        pointer-events: none;
+    }
+
+    & .picker-wheel3d:last-child::after{
+        position: absolute;
+        content: "";
+        width: calc(1em * 0.220);
+        height: 100%;
+        top: 0;
+        right: calc(1em * -0.220);
+        pointer-events: none;
+    }
+
+    & .picker-wheel3d:first-child .picker-label:first-child{
+        margin-left: .02em;
+    }
+
+    & .picker-wheel3d:last-child .picker-label:last-child{
+        margin-right: .02em;
+    }
+    & .picker-wheel3d ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        height: 100%;
+        position: relative;
+        transform-style: inherit;
+    }
+
+    & .picker-wheel3d li{
+        box-sizing: initial;
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        position: absolute;
+        top: -16.666666666%;
+        right: -16.666666666%;
+        bottom: -16.666666666%;
+        left: -16.666666666%;
+        margin: auto auto;
+        //background: black;
+        //color: #fff;
+        user-select: none;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        transform-style: preserve-3d;
+    }
+
+    & .picker-wheel3d:first-child li{
+        margin-right: 0;
+        transform-style: preserve-3d;
+    }
+
+    & .picker-wheel3d:last-child li{
+        margin-left: 0;
+        transform-style: preserve-3d;
+    }
+}

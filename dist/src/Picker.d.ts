@@ -1,5 +1,4 @@
-import { IOptions } from './IOptions';
-import { IPicker } from './IPicker';
+import { IOptions, IPicker } from './API';
 export declare class Picker implements IPicker {
     private _option;
     private _wheels;

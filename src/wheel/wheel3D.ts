@@ -4,13 +4,13 @@
 
 import $ from '../util/domUtil';
 import {em} from '../em';
-import {MyJQuery} from 'my-jquery/types/MyJQuery'
 import animationUtil from '../util/animationUtil';
 import constant from '../constant';
-import {AWheel} from '../IWheel'
 import {Col} from '../Col'
 import {Picker} from '../Picker'
 import {IOptions} from '../API'
+import { AWheel } from './AWheel';
+
 
 declare function require<T>(name: string): T
 
@@ -120,6 +120,9 @@ export class Wheel3D extends AWheel{
         this.dom[0].addEventListener("mouseup", endDrag);
         this.dom[0].addEventListener("mouseleave", endDrag);
 
+        // 注册滚轮事件
+        this.initMouseWheel()
+
         //初始化标签
         let transformValue = `translateZ(${this.radius / 100}em) scale(0.75)`
         this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
@@ -134,7 +137,7 @@ export class Wheel3D extends AWheel{
      * 开始拖拽
      * @param {number} offsetY  当前用户手指(鼠标)的y坐标
      */
-    private startDrag(offsetY: number) {
+    protected startDrag(offsetY: number) {
         //记录触摸相关信息,为下一步计算用.计算时候,要将坐标系移至中心,并将单位转为em
         this.lastY = (constant.WHEEL_HEIGHT / 2 -  offsetY / this.em()) * -1 ;
         this.timeStamp = Date.now();
@@ -155,7 +158,7 @@ export class Wheel3D extends AWheel{
      * 拖拽
      * @param {number} offsetY			当前用户手指(鼠标)的y坐标
      */
-    private drag(offsetY: number) {
+    protected drag(offsetY: number) {
 
         if(!this.isDraging){
             return;
@@ -189,7 +192,7 @@ export class Wheel3D extends AWheel{
     /**
      * 拖拽结束
      */
-    private endDrag(): void {
+    protected endDrag(): void {
         if(!this.isDraging){
             return;
         }
@@ -209,6 +212,7 @@ export class Wheel3D extends AWheel{
         this.lastY = 0;
         this.speed = 0;
     }
+
 
     /////////////////////////////////设置相关
     /**
@@ -368,7 +372,7 @@ export class Wheel3D extends AWheel{
                         that.selectedValue = that.selectedValue[that.itemValueKey];
                     }
                     if(oldSelectedIndex != that.selectedIndex)
-                        that.toggleSelected(that.selectedIndex, that.selectedValue);
+                    that.toggleSelected(that.selectedIndex, that.selectedValue);
                 }
             };
 
@@ -483,24 +487,5 @@ export class Wheel3D extends AWheel{
     */
     private setPrefix(text) {
         this.dom.find('.picker-label .picker-text').eq(0).text(text);
-    }
-
-    /////////////////////////////wheel事件相关
-    /**
-    * 触发回调函数的接口
-    * @param index			当前被选值的索引
-    * @param value			当前被选值的值
-    */
-    private toggleSelected(index, value) {
-        this.onSelectItemCallbackList.forEach(fn=>{
-            fn.call(this, index, value)
-        })
-    }
-
-    /**
-     * 销毁
-     */
-    destroy(){
-        this.onSelectItemCallbackList = null
     }
 }

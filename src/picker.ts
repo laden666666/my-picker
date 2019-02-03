@@ -9,7 +9,10 @@ import util from './util/util'
 
 declare function require(name: string): any
 var Frame = require("./frame");
-require("./style/style.scss");
+
+//通过DefinePlugin对去package.json的版本
+declare const PLUGIN_VERSION: string;
+const version = PLUGIN_VERSION
 
 export class Picker implements IPicker{
     //用户配置
@@ -85,7 +88,7 @@ export class Picker implements IPicker{
         this._visible = false;
     }
 
-    version: string = '0.1.5'
+    version: string = version
 
     /**
      * 显示

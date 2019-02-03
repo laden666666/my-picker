@@ -101,7 +101,7 @@ function em() {
     if (window.devicePixelRatio && window.devicePixelRatio > 1) {
         return Math.min(window.innerWidth, window.innerHeight) / 100;
     } else {
-        return Math.min(window.innerWidth, window.innerHeight, 650) / 100;
+        return Math.min(window.innerWidth, window.innerHeight, 400) / 100;
     }
 }
 exports.em = em;
@@ -285,21 +285,122 @@ exports.default = {
 
 "use strict";
 
-
-var cacheData = __webpack_require__(14);
-
 /**
- * 因为perspectiveConversion是个纯函数,因此可以缓存,这样有利于减少计算,增加动画流畅度。尤其在移动端效果十分明显。
- * 计算工作由test/calcIntersectionCache完成,这里只是将其计算结果封装为一个函数
+ * @file 选择器滚轮类的接口
  */
-module.exports = function (y, radius, wheelHeight) {
 
-    //计算比例
-    var ratio = Math.round(y * 200 / wheelHeight);
-    ratio = Math.max(-100, ratio);
-    ratio = Math.min(100, ratio);
-    return y < 0 ? -1 * cacheData[Math.abs(ratio)] : cacheData[Math.abs(ratio)];
-};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+
+var AWheel = function () {
+    function AWheel() {
+        _classCallCheck(this, AWheel);
+
+        ////////////////////可选项属性
+        //可选项列表
+        this.list = [];
+        //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
+        this.valueHashMap = {};
+        ////////////////////事件
+        this.onSelectItemCallbackList = [];
+    }
+    /**
+    * 获得用户可选的标签
+    */
+
+
+    _createClass(AWheel, [{
+        key: "getOptions",
+        value: function getOptions() {
+            return this.list;
+        }
+        /**
+        * 给定指定标签的值,选择指定标签
+        */
+
+    }, {
+        key: "selectOption",
+        value: function selectOption(value) {
+            var showAnimation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+            //如果valueHashMap里面没有value,表示没有这个标签,否则自动选中这个标签
+            if (this.valueHashMap[value] != null) {
+                var index = this.valueHashMap[value];
+                this.selectIndex(index, showAnimation);
+            }
+        }
+        /**
+        * 获取被选值
+        */
+
+    }, {
+        key: "getValue",
+        value: function getValue() {
+            return this.selectedValue;
+        }
+        /**
+         * 注册SelectItem的回调事件
+         * @param {{(index:number, value:any):void}} fn
+         */
+
+    }, {
+        key: "addSelectItemListener",
+        value: function addSelectItemListener(fn) {
+            this.onSelectItemCallbackList.push(fn);
+        }
+        /**
+         * 移除注册的SelectItem回调事件
+         * @param {{(index:number, value:any):void}} fn
+         */
+
+    }, {
+        key: "removeSelectItemListener",
+        value: function removeSelectItemListener(fn) {
+            this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(function (_fn) {
+                return _fn !== fn;
+            });
+        }
+        ////////////////////////////DOM相关
+
+    }, {
+        key: "getDOM",
+        value: function getDOM() {
+            return this.dom;
+        }
+        /////////////////////////////wheel事件相关
+        /**
+        * 触发回调函数的接口
+        * @param index			当前被选值的索引
+        * @param value			当前被选值的值
+        */
+
+    }, {
+        key: "toggleSelected",
+        value: function toggleSelected(index, value) {
+            var _this = this;
+
+            this.onSelectItemCallbackList.forEach(function (fn) {
+                fn.call(_this, index, value);
+            });
+        }
+        /**
+         * 销毁
+         */
+
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.onSelectItemCallbackList = null;
+        }
+    }]);
+
+    return AWheel;
+}();
+
+exports.AWheel = AWheel;
 
 /***/ }),
 /* 6 */
@@ -316,14 +417,14 @@ var _browserUtil = __webpack_require__(3);
 
 var _browserUtil2 = _interopRequireDefault(_browserUtil);
 
-var _dataURLtoU8arr = __webpack_require__(15);
+var _dataURLtoU8arr = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * 滚轮滚动时候发声的函数,是一个单例模式
  */
-var tick = __webpack_require__(16);
+var tick = __webpack_require__(17);
 
 
 function AudioImpl() {
@@ -389,6 +490,9 @@ module.exports = function () {
 
 
 var Picker_1 = __webpack_require__(8);
+__webpack_require__(21);
+__webpack_require__(22);
+__webpack_require__(23);
 module.exports = function (option) {
     return new Picker_1.Picker(option);
 };
@@ -408,11 +512,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Col_1 = __webpack_require__(9);
 var defaultOption_1 = __webpack_require__(10);
 var Wheel3D_1 = __webpack_require__(11);
-var Wheel_1 = __webpack_require__(17);
+var Wheel_1 = __webpack_require__(18);
 var browserUtil_1 = __webpack_require__(3);
-var util_1 = __webpack_require__(18);
-var Frame = __webpack_require__(19);
-__webpack_require__(20);
+var util_1 = __webpack_require__(19);
+var Frame = __webpack_require__(20);
+var version = "v1.0.0";
 
 var Picker = function () {
     function Picker(options) {
@@ -422,7 +526,7 @@ var Picker = function () {
         this._wheels = [];
         //主框架
         this._cols = [];
-        this.version = '0.1.5';
+        this.version = version;
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
         this._option = util_1.default.assign({}, defaultOption_1.default, options);
         //主架
@@ -690,6 +794,7 @@ var defaultOptions = {
     onCancelClick: null,
     fontSize: 15,
     isPerspective: true,
+    hasGlassCover: true,
     hasVoice: true,
     title: '',
     buttons: ["确定", "取消"],
@@ -713,82 +818,82 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
 var em_1 = __webpack_require__(1);
 var animationUtil_1 = __webpack_require__(4);
 var constant_1 = __webpack_require__(2);
-var perspectiveConversion = __webpack_require__(5);
+var AWheel_1 = __webpack_require__(5);
+var perspectiveConversion = __webpack_require__(14);
 var tick = __webpack_require__(6)();
 
-var Wheel3D = function () {
+var Wheel3D = function (_AWheel_1$AWheel) {
+    _inherits(Wheel3D, _AWheel_1$AWheel);
+
     function Wheel3D(picker, col, option, index) {
         _classCallCheck(this, Wheel3D);
 
         ///////////////////滚轮显示属性
         //最大转角
-        this.maxAngle = 0;
+        var _this = _possibleConstructorReturn(this, (Wheel3D.__proto__ || Object.getPrototypeOf(Wheel3D)).call(this));
+
+        _this.maxAngle = 0;
         //最小转角,设置可选项列表后需重新计算
-        this.minAngle = 0;
+        _this.minAngle = 0;
         //滚轮的实际半径,因为有透视效果,所以滚轮实际半径比容器的高度的一半还小。根据勾股定理,计算得实际半径是容器高度的根号5分之1
-        this.radius = constant_1.default.WHEEL_HEIGHT / Math.sqrt(5);
+        _this.radius = constant_1.default.WHEEL_HEIGHT / Math.sqrt(5);
         //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
-        this.visibleAngle = 0;
+        _this.visibleAngle = 0;
         //获取0.01em的实际像素值
-        this.em = em_1.em;
+        _this.em = em_1.em;
         //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
-        this.offsetTop = 0;
+        _this.offsetTop = 0;
         ////////////////////滚动属性
         //滚轮转动前初始的转角,用于计算滚轮是否转动过
-        this.originalAngle = 0;
+        _this.originalAngle = 0;
         //一次拖动过程中滚轮被转动的最大角度
-        this.lastIndexAngle = 0;
+        _this.lastIndexAngle = 0;
         //当前的刻度,计算发声时候会用到。发声要进过一个刻度线或者达到一个新刻度新才会发声。所以需要记录上一次的刻度线。
-        this.changeMaxAngle = 0;
+        _this.changeMaxAngle = 0;
         //当前滚轮转角
-        this.angle = 0;
+        _this.angle = 0;
         //当前被选值的index
-        this.selectedIndex = -1;
+        _this.selectedIndex = -1;
         //记录惯性滑动动画的id
-        this.animationId = -1;
+        _this.animationId = -1;
         //速度，供触摸离开时候的惯性滑动动画使用
-        this.speed = 0;
+        _this.speed = 0;
         //当前时间戳,主要是计算转动速度使用的
-        this.timeStamp = 0;
+        _this.timeStamp = 0;
         //记录上一次触摸节点的offsetY,主要是是计算转动速度使用的
-        this.lastY = 0;
+        _this.lastY = 0;
         //是否开始触摸,主要给鼠标事件使用
-        this.isDraging = false;
-        //正在播放的刻度音
-        this.audio = null;
-        ////////////////////可选项属性
-        //可选项列表
-        this.list = [];
-        //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
-        this.valueHashMap = {};
-        ////////////////////事件
-        this.onSelectItemCallbackList = [];
+        _this.isDraging = false;
         ///////////////////主要属性
         //picker对象
-        this.picker = picker;
+        _this.picker = picker;
         //option对象
-        this.option = option;
+        _this.option = option;
         //记录当前滚轮是容器中第几个滚轮
-        this.index = index;
+        _this.index = index;
         //转轮主体
-        this.dom = domUtil_1.default('<div class="picker-wheel3d">' + '<div class="picker-label"><span class="picker-text"></span></div>' + '<ul></ul>' + '<div class="picker-label"><span class="picker-text"></span></div>' + '</div>').css('height', constant_1.default.WHEEL_HEIGHT / 100 + 'em');
+        _this.dom = domUtil_1.default('<div class="picker-wheel3d">' + '<div class="picker-label"><span class="picker-text"></span></div>' + '<ul></ul>' + '<div class="picker-label"><span class="picker-text"></span></div>' + '</div>').css('height', constant_1.default.WHEEL_HEIGHT / 100 + 'em');
         //转轮上面标签的容器，同时也是转动的轴
-        this.contains = this.dom.find('ul');
+        _this.contains = _this.dom.find('ul');
         ///////////////////滚轮显示属性
         //计算标签可显示的角度的绝对值。因为透视关系,所以可见的标签角度小于90度
-        this.visibleAngle = 90 - Math.acos(this.radius / constant_1.default.WHEEL_HEIGHT * 2) / Math.PI * 180;
+        _this.visibleAngle = 90 - Math.acos(_this.radius / constant_1.default.WHEEL_HEIGHT * 2) / Math.PI * 180;
         ////////////////////可选项属性
         //如果items数组里的值是对象,其中显示的key
-        this.labelKey = col.labelKey;
+        _this.labelKey = col.labelKey;
         //如果items数组里的值是对象,其中值的key
-        this.itemValueKey = col.valueKey;
+        _this.itemValueKey = col.valueKey;
         ////////////////////注册dom事件
-        var that = this;
+        var that = _this;
         //注册拖拽开始事件
         function startDrag(event) {
             //计算offsetTop,为计算触摸事件的offset使用
@@ -801,29 +906,30 @@ var Wheel3D = function () {
             var offsetY = event.touches ? event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
             that.startDrag(offsetY);
         }
-        this.dom[0].addEventListener("touchstart", startDrag);
-        this.dom[0].addEventListener("mousedown", startDrag);
+        _this.dom[0].addEventListener("touchstart", startDrag);
+        _this.dom[0].addEventListener("mousedown", startDrag);
         //注册拖拽事件
         function drag(event) {
             var offsetY = event.touches ? event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
             that.drag(offsetY);
         }
-        this.dom[0].addEventListener("touchmove", drag);
-        this.dom[0].addEventListener("mousemove", drag);
+        _this.dom[0].addEventListener("touchmove", drag);
+        _this.dom[0].addEventListener("mousemove", drag);
         //注册拖拽结束事件
         function endDrag() {
             that.endDrag();
         }
-        this.dom[0].addEventListener("touchend", endDrag);
-        this.dom[0].addEventListener("mouseup", endDrag);
-        this.dom[0].addEventListener("mouseleave", endDrag);
+        _this.dom[0].addEventListener("touchend", endDrag);
+        _this.dom[0].addEventListener("mouseup", endDrag);
+        _this.dom[0].addEventListener("mouseleave", endDrag);
         //初始化标签
-        var transformValue = "translateZ(" + this.radius / 100 + "em) scale(0.75)";
-        this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
+        var transformValue = "translateZ(" + _this.radius / 100 + "em) scale(0.75)";
+        _this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
         //设置标签
-        this.setSuffix(col.suffix);
-        this.setPrefix(col.prefix);
-        this.setOptions(col.options, null, true);
+        _this.setSuffix(col.suffix);
+        _this.setPrefix(col.prefix);
+        _this.setOptions(col.options, null, true);
+        return _this;
     }
     /**
      * 开始拖拽
@@ -1004,30 +1110,6 @@ var Wheel3D = function () {
             }
         }
         /**
-        * 获得用户可选的标签
-        */
-
-    }, {
-        key: "getOptions",
-        value: function getOptions() {
-            return this.list;
-        }
-        /**
-        * 给定指定标签的值,选择指定标签
-        */
-
-    }, {
-        key: "selectOption",
-        value: function selectOption(value) {
-            var showAnimation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-            //如果valueHashMap里面没有value,表示没有这个标签,否则自动选中这个标签
-            if (this.valueHashMap[value] != null) {
-                var index = this.valueHashMap[value];
-                this.selectIndex(index, showAnimation);
-            }
-        }
-        /**
         * 给定指定备选标签的index,自动设定标签的各个位置
         * @param index					要选择的index
         * @param showAnimation			是否显示动画,如果显示动画,会用100帧来显示动画
@@ -1170,15 +1252,6 @@ var Wheel3D = function () {
                 }
             });
         }
-        /**
-        * 获取被选值
-        */
-
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.selectedValue;
-        }
         /////////////////////////////设置前缀后缀
         /**
         * 设置后缀
@@ -1200,64 +1273,10 @@ var Wheel3D = function () {
         value: function setPrefix(text) {
             this.dom.find('.picker-label .picker-text').eq(0).text(text);
         }
-        /////////////////////////////wheel事件相关
-        /**
-        * 触发回调函数的接口
-        * @param index			当前被选值的索引
-        * @param value			当前被选值的值
-        */
-
-    }, {
-        key: "toggleSelected",
-        value: function toggleSelected(index, value) {
-            var _this = this;
-
-            this.onSelectItemCallbackList.forEach(function (fn) {
-                fn.call(_this, index, value);
-            });
-        }
-        /**
-         * 注册SelectItem的回调事件
-         * @param {{(index:number, value:any):void}} fn
-         */
-
-    }, {
-        key: "addSelectItemListener",
-        value: function addSelectItemListener(fn) {
-            this.onSelectItemCallbackList.push(fn);
-        }
-        /**
-         * 移除注册的SelectItem回调事件
-         * @param {{(index:number, value:any):void}} fn
-         */
-
-    }, {
-        key: "removeSelectItemListener",
-        value: function removeSelectItemListener(fn) {
-            this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(function (_fn) {
-                return _fn !== fn;
-            });
-        }
-        /**
-         * 销毁
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.onSelectItemCallbackList = null;
-        }
-        ////////////////////////////DOM相关
-
-    }, {
-        key: "getDOM",
-        value: function getDOM() {
-            return this.dom;
-        }
     }]);
 
     return Wheel3D;
-}();
+}(AWheel_1.AWheel);
 
 exports.Wheel3D = Wheel3D;
 
@@ -1765,10 +1784,32 @@ module.exports = {
 "use strict";
 
 
-module.exports = { "0": 0, "1": 0.006180474730027776, "2": 0.012361758667979887, "3": 0.01854466178595427, "4": 0.024729995586343003, "5": 0.030918573871856408, "6": 0.03711121352142655, "7": 0.043308735273995536, "8": 0.04951196452223301, "9": 0.05572173211827738, "10": 0.06193887519365582, "11": 0.06816423799561012, "12": 0.07439867274213974, "13": 0.08064304049816978, "14": 0.08689821207536214, "15": 0.0931650689582126, "16": 0.09944450425921704, "17": 0.1057374237060475, "18": 0.11204474666385271, "19": 0.11836740719599605, "20": 0.12470635516675682, "21": 0.13106255738976524, "22": 0.13743699882620672, "23": 0.1438306838371266, "24": 0.1502446374944947, "25": 0.15667990695605222, "26": 0.163137562909363, "27": 0.16961870109094018, "28": 0.1761244438868085, "29": 0.18265594202141244, "30": 0.189214376342388, "31": 0.1958009597093892, "32": 0.20241693899591295, "33": 0.20906359721390222, "34": 0.21574225577183714, "35": 0.2224542768780669, "36": 0.22920106610229693, "37": 0.23598407510944647, "38": 0.24280480458155373, "39": 0.24966480734504126, "40": 0.2565656917224997, "41": 0.26350912513022323, "42": 0.2704968379450743, "43": 0.27753062766690556, "44": 0.28461236340577195, "45": 0.2917439907265723, "46": 0.298927536887646, "47": 0.30616511651426775, "48": 0.3134589377530486, "49": 0.3208113089590395, "50": 0.32822464597399087, "51": 0.3357014800618854, "52": 0.3432444665767064, "53": 0.3508563944476478, "54": 0.35854019657886727, "55": 0.3662989612747276, "56": 0.37413594481766604, "57": 0.38205458534478537, "58": 0.39005851819157766, "59": 0.3981515928975172, "60": 0.4063378920994586, "61": 0.41462175257587425, "62": 0.42300778874928274, "63": 0.4315009190073606, "64": 0.4401063952672662, "65": 0.4488298362852176, "66": 0.45767726530766856, "67": 0.4666551527757603, "68": 0.47577046493656705, "69": 0.4850307193901132, "70": 0.4944440488195467, "71": 0.5040192744255141, "72": 0.5137659909310855, "73": 0.523694665462527, "74": 0.5338167531736872, "75": 0.5441448332086339, "76": 0.5546927695451231, "77": 0.5654759025098686, "78": 0.5765112784180985, "79": 0.5878179270265199, "80": 0.5994171995371129, "81": 0.6113331840998124, "82": 0.6235932216642447, "83": 0.6362285534378791, "84": 0.6492751433974548, "85": 0.6627747373240171, "86": 0.6767762470698537, "87": 0.6913375909489355, "88": 0.7065281883018284, "89": 0.7224324166263504, "90": 0.7391545276252866, "91": 0.7568258524516188, "92": 0.7756157498195769, "93": 0.7957489855645078, "94": 0.8175348626997212, "95": 0.8414195586288256, "96": 0.8680892494981647, "97": 0.8987014263951989, "98": 0.935517870959519, "99": 0.9843911534692572, "100": 1.1071487177940906 };
+var cacheData = __webpack_require__(15);
+
+/**
+ * 因为perspectiveConversion是个纯函数,因此可以缓存,这样有利于减少计算,增加动画流畅度。尤其在移动端效果十分明显。
+ * 计算工作由test/calcIntersectionCache完成,这里只是将其计算结果封装为一个函数
+ */
+module.exports = function (y, radius, wheelHeight) {
+
+    //计算比例
+    var ratio = Math.round(y * 200 / wheelHeight);
+    ratio = Math.max(-100, ratio);
+    ratio = Math.min(100, ratio);
+    return y < 0 ? -1 * cacheData[Math.abs(ratio)] : cacheData[Math.abs(ratio)];
+};
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = { "0": 0, "1": 0.006180474730027776, "2": 0.012361758667979887, "3": 0.01854466178595427, "4": 0.024729995586343003, "5": 0.030918573871856408, "6": 0.03711121352142655, "7": 0.043308735273995536, "8": 0.04951196452223301, "9": 0.05572173211827738, "10": 0.06193887519365582, "11": 0.06816423799561012, "12": 0.07439867274213974, "13": 0.08064304049816978, "14": 0.08689821207536214, "15": 0.0931650689582126, "16": 0.09944450425921704, "17": 0.1057374237060475, "18": 0.11204474666385271, "19": 0.11836740719599605, "20": 0.12470635516675682, "21": 0.13106255738976524, "22": 0.13743699882620672, "23": 0.1438306838371266, "24": 0.1502446374944947, "25": 0.15667990695605222, "26": 0.163137562909363, "27": 0.16961870109094018, "28": 0.1761244438868085, "29": 0.18265594202141244, "30": 0.189214376342388, "31": 0.1958009597093892, "32": 0.20241693899591295, "33": 0.20906359721390222, "34": 0.21574225577183714, "35": 0.2224542768780669, "36": 0.22920106610229693, "37": 0.23598407510944647, "38": 0.24280480458155373, "39": 0.24966480734504126, "40": 0.2565656917224997, "41": 0.26350912513022323, "42": 0.2704968379450743, "43": 0.27753062766690556, "44": 0.28461236340577195, "45": 0.2917439907265723, "46": 0.298927536887646, "47": 0.30616511651426775, "48": 0.3134589377530486, "49": 0.3208113089590395, "50": 0.32822464597399087, "51": 0.3357014800618854, "52": 0.3432444665767064, "53": 0.3508563944476478, "54": 0.35854019657886727, "55": 0.3662989612747276, "56": 0.37413594481766604, "57": 0.38205458534478537, "58": 0.39005851819157766, "59": 0.3981515928975172, "60": 0.4063378920994586, "61": 0.41462175257587425, "62": 0.42300778874928274, "63": 0.4315009190073606, "64": 0.4401063952672662, "65": 0.4488298362852176, "66": 0.45767726530766856, "67": 0.4666551527757603, "68": 0.47577046493656705, "69": 0.4850307193901132, "70": 0.4944440488195467, "71": 0.5040192744255141, "72": 0.5137659909310855, "73": 0.523694665462527, "74": 0.5338167531736872, "75": 0.5441448332086339, "76": 0.5546927695451231, "77": 0.5654759025098686, "78": 0.5765112784180985, "79": 0.5878179270265199, "80": 0.5994171995371129, "81": 0.6113331840998124, "82": 0.6235932216642447, "83": 0.6362285534378791, "84": 0.6492751433974548, "85": 0.6627747373240171, "86": 0.6767762470698537, "87": 0.6913375909489355, "88": 0.7065281883018284, "89": 0.7224324166263504, "90": 0.7391545276252866, "91": 0.7568258524516188, "92": 0.7756157498195769, "93": 0.7957489855645078, "94": 0.8175348626997212, "95": 0.8414195586288256, "96": 0.8680892494981647, "97": 0.8987014263951989, "98": 0.935517870959519, "99": 0.9843911534692572, "100": 1.1071487177940906 };
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1791,13 +1832,13 @@ function dataURLtoU8arr(dataurl) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = "data:audio/mpeg;base64,SUQzAwAAAAACPVRBTEIAAAABAAAAVENPTgAAAAEAAABUSVQyAAAAAQAAAFRQRTEAAAABAAAAVFJDSwAAAAEAAABUWUVSAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAEAAAGuQCPj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+urq6urq6urq6urq6urq6urq6urq6urq6u6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6/////////////////////////////////8AAAAeTEFNRTMuOTlyBJwAAAAALhMAADUgJANyQQABrgAABrkfUWHWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//vAxAAAA5gBQ3QAAArvJu6/M4BIhIKgoegEQ8/8DMz/Pgf+Yf8BwB+Z+b+ADgDw/8+o7VqAHMDBTAEFQenlPGADeAWECp4LYcVu9VS9CSRlFhkxw1oMkWM4jYWZOwux2kYYKQWsQ/2ZaUwdEtrLj/YqSyOwMh4qeJUr7XMoYikU+IQ0Fl0qjk87jLrdekgfWb+RhON84zDsakKgs3Zou0k5nT9ylE43Waiz7cwfWGpbM3rXMP1hzuFJScikNSFdLvQXPWYEqZ4yq3KaWd1zPOx//nn+cHSnUZqZYyWap5ZWy7/41ioa/pDolQNStZm24myAA0oAUsytJS4qVtLyfMrafUJqVaJSmQrtBIraqcZqrtu95KNI5Tb+dX71Vet2iXNymBj6gporC+5XVsSQTKC2K/35teC8/0KL/Ff/DEEyiT8rZKIyGuoyeRCzI7wpna5Q2KpYgzmMbLM2XlUCNv/oaWZSlouqkB3Zb7aW79MPu16Zr2jv1vKHhqqZmIaHhnb/SsKAAAAAnUXYNay0jZfhQ+kLcL/BQ6ZSJ0DwHKktA4gjBzi4QMDNC+5PGxEWWbh40wv+9jpbNzzEOEnImHyHThqblErKOHjUUkLlFjHeHR6Nq1opOiMmMmikPRZ/u/x0Cth2kTD7P+kpMxMPLuzvDuzxt5IyAAAAAT4RIEE6AqAAYh4w4CYYcQCEJbMcTOkDjlQ4CXbZKsEICzN+AkpphSMMLBX4hBMIAvInATJvUotAhWGpsGVGrKHEJUEr6wj7S4DFigYJAEKqhw1KjypsnuPCUiwz6RR9m+iRb5Fxo0DuEj06kR1A1DDs5jIKWtturEoLjFDV5jvHH8cef///1e28q4udUp5b876l8u22Gw9HwtDYAAAAAADQL1KAwBl18Zc1OLY7qQ/Dtb/YVtTHz+dBb4SUL6wf9iQ0E6aaWnOVk//Zl9dJdnet0b1//9sX76evxGZ3NZ//+zDE9oBKCIFfvPMACOsSai6eIAXrTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+3DE9IAOXMFX+ZiAAoaaKj81kABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxPwACcCNT7mngAAAAD/DgAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUQUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/w=="
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1812,76 +1853,75 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var domUtil_1 = __webpack_require__(0);
 var em_1 = __webpack_require__(1);
 var animationUtil_1 = __webpack_require__(4);
 var constant_1 = __webpack_require__(2);
-var perspectiveConversion = __webpack_require__(5);
+var AWheel_1 = __webpack_require__(5);
 var tick = __webpack_require__(6)();
 
-var Wheel = function () {
+var Wheel = function (_AWheel_1$AWheel) {
+    _inherits(Wheel, _AWheel_1$AWheel);
+
     function Wheel(picker, col, option, index) {
         _classCallCheck(this, Wheel);
 
         ///////////////////滚轮显示属性
         //最大位移
-        this.maxDistance = 0;
+        var _this = _possibleConstructorReturn(this, (Wheel.__proto__ || Object.getPrototypeOf(Wheel)).call(this));
+
+        _this.maxDistance = 0;
         //最小位移,设置可选项列表后需重新计算
-        this.minDistance = 0;
+        _this.minDistance = 0;
         //获取0.01em的实际像素值
-        this.em = em_1.em;
+        _this.em = em_1.em;
         //获得控件到body最顶端的距离,计算触摸事件的offsetY时候使用
-        this.offsetTop = 0;
+        _this.offsetTop = 0;
         ////////////////////滚动属性
         //滚轮转动前初始的位移,用于计算滚轮是否转动过
-        this.originalDistance = 0;
+        _this.originalDistance = 0;
         //一次拖动过程中滚轮被转动的最大位移
-        this.lastIndexDistance = 0;
+        _this.lastIndexDistance = 0;
         //当前的刻度,计算发声时候会用到。发声要进过一个刻度线或者达到一个新刻度新才会发声。所以需要记录上一次的刻度线。
-        this.changeMaxDistance = 0;
+        _this.changeMaxDistance = 0;
         //当前滚轮位移
-        this.distance = 0;
+        _this.distance = 0;
         //当前被选值的index
-        this.selectedIndex = -1;
+        _this.selectedIndex = -1;
         //记录惯性滑动动画的id
-        this.animationId = -1;
+        _this.animationId = -1;
         //速度，供触摸离开时候的惯性滑动动画使用
-        this.speed = 0;
+        _this.speed = 0;
         //当前时间戳,主要是计算转动速度使用的
-        this.timeStamp = 0;
+        _this.timeStamp = 0;
         //记录上一次触摸节点的offsetY,主要是是计算转动速度使用的
-        this.lastY = 0;
+        _this.lastY = 0;
         //是否开始触摸,主要给鼠标事件使用
-        this.isDraging = false;
-        //正在播放的刻度音
-        this.audio = null;
-        ////////////////////可选项属性
-        //可选项列表
-        this.list = [];
-        //根据值生成的hashmap,主要是为了快速获得value对应可选项的index
-        this.valueHashMap = {};
-        ////////////////////事件
-        this.onSelectItemCallbackList = [];
+        _this.isDraging = false;
         ///////////////////主要属性
         //picker对象
-        this.picker = picker;
+        _this.picker = picker;
         //option对象
-        this.option = option;
+        _this.option = option;
         //记录当前滚轮是容器中第几个滚轮
-        this.index = index;
+        _this.index = index;
         //转轮主体
-        this.dom = domUtil_1.default("<div class=\"picker-wheel\">\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n                <ul></ul>\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n            </div>").css('height', constant_1.default.WHEEL_HEIGHT / 100 + 'em');
+        _this.dom = domUtil_1.default("<div class=\"picker-wheel\">\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n                <ul></ul>\n                <div class=\"picker-label\"><span class=\"picker-text\"></span></div>\n            </div>").css('height', constant_1.default.WHEEL_HEIGHT / 100 + 'em');
         //转轮上面标签的容器，同时也是转动的轴
-        this.contains = this.dom.find('ul');
-        this.setDistance(0);
+        _this.contains = _this.dom.find('ul');
+        _this.setDistance(0);
         ////////////////////可选项属性
         //如果items数组里的值是对象,其中显示的key
-        this.labelKey = col.labelKey;
+        _this.labelKey = col.labelKey;
         //如果items数组里的值是对象,其中值的key
-        this.itemValueKey = col.valueKey;
+        _this.itemValueKey = col.valueKey;
         ////////////////////注册dom事件
-        var that = this;
+        var that = _this;
         //注册拖拽开始事件
         function startDrag(event) {
             //计算offsetTop,为计算触摸事件的offset使用
@@ -1894,26 +1934,27 @@ var Wheel = function () {
             var offsetY = event.touches ? event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
             that.startDrag(offsetY);
         }
-        this.dom[0].addEventListener("touchstart", startDrag);
-        this.dom[0].addEventListener("mousedown", startDrag);
+        _this.dom[0].addEventListener("touchstart", startDrag);
+        _this.dom[0].addEventListener("mousedown", startDrag);
         //注册拖拽事件
         function drag(event) {
             var offsetY = event.touches ? event.touches[0].clientY - that.offsetTop : event.clientY - that.offsetTop;
             that.drag(offsetY);
         }
-        this.dom[0].addEventListener("touchmove", drag);
-        this.dom[0].addEventListener("mousemove", drag);
+        _this.dom[0].addEventListener("touchmove", drag);
+        _this.dom[0].addEventListener("mousemove", drag);
         //注册拖拽结束事件
         function endDrag() {
             that.endDrag();
         }
-        this.dom[0].addEventListener("touchend", endDrag);
-        this.dom[0].addEventListener("mouseup", endDrag);
-        this.dom[0].addEventListener("mouseleave", endDrag);
+        _this.dom[0].addEventListener("touchend", endDrag);
+        _this.dom[0].addEventListener("mouseup", endDrag);
+        _this.dom[0].addEventListener("mouseleave", endDrag);
         //设置标签
-        this.setSuffix(col.suffix);
-        this.setPrefix(col.prefix);
-        this.setOptions(col.options, null, true);
+        _this.setSuffix(col.suffix);
+        _this.setPrefix(col.prefix);
+        _this.setOptions(col.options, null, true);
+        return _this;
     }
     /**
      * 开始拖拽
@@ -2086,30 +2127,6 @@ var Wheel = function () {
             }
         }
         /**
-        * 获得用户可选的标签
-        */
-
-    }, {
-        key: "getOptions",
-        value: function getOptions() {
-            return this.list;
-        }
-        /**
-        * 给定指定标签的值,选择指定标签
-        */
-
-    }, {
-        key: "selectOption",
-        value: function selectOption(value) {
-            var showAnimation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-            //如果valueHashMap里面没有value,表示没有这个标签,否则自动选中这个标签
-            if (this.valueHashMap[value] != null) {
-                var index = this.valueHashMap[value];
-                this.selectIndex(index, showAnimation);
-            }
-        }
-        /**
         * 给定指定备选标签的index,自动设定标签的各个位置
         * @param index					要选择的index
         * @param showAnimation			是否显示动画,如果显示动画,会用100帧来显示动画
@@ -2260,69 +2277,15 @@ var Wheel = function () {
         value: function setPrefix(text) {
             this.dom.find('.picker-label .picker-text').eq(0).text(text);
         }
-        /////////////////////////////wheel事件相关
-        /**
-        * 触发回调函数的接口
-        * @param index			当前被选值的索引
-        * @param value			当前被选值的值
-        */
-
-    }, {
-        key: "toggleSelected",
-        value: function toggleSelected(index, value) {
-            var _this = this;
-
-            this.onSelectItemCallbackList.forEach(function (fn) {
-                fn.call(_this, index, value);
-            });
-        }
-        /**
-         * 注册SelectItem的回调事件
-         * @param {{(index:number, value:any):void}} fn
-         */
-
-    }, {
-        key: "addSelectItemListener",
-        value: function addSelectItemListener(fn) {
-            this.onSelectItemCallbackList.push(fn);
-        }
-        /**
-         * 移除注册的SelectItem回调事件
-         * @param {{(index:number, value:any):void}} fn
-         */
-
-    }, {
-        key: "removeSelectItemListener",
-        value: function removeSelectItemListener(fn) {
-            this.onSelectItemCallbackList = this.onSelectItemCallbackList.filter(function (_fn) {
-                return _fn !== fn;
-            });
-        }
-        /**
-         * 销毁
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.onSelectItemCallbackList = null;
-        }
-        ////////////////////////////DOM相关
-
-    }, {
-        key: "getDOM",
-        value: function getDOM() {
-            return this.dom;
-        }
     }]);
 
     return Wheel;
-}();
+}(AWheel_1.AWheel);
 
 exports.Wheel = Wheel;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2370,7 +2333,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2392,6 +2355,11 @@ var _browserUtil2 = _interopRequireDefault(_browserUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// 阻止事件冒泡
+var preventDefault = function preventDefault(e) {
+	e.preventDefault();
+};
+
 //构建主框架
 function Frame(picker, option) {
 
@@ -2403,21 +2371,37 @@ function Frame(picker, option) {
 	//构建cover
 	this.cover = (0, _domUtil2.default)("<div class='my-picker-cover' style='z-index: " + option.zIndex + "'>").hide();
 
-	this.frame = (0, _domUtil2.default)('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">' + '<header class="picker-head">' + '<a class="picker-btn-cancel"><span class="picker-header-text"></span></a>' + '<h4 class="picker-title"><span class="picker-header-text"></span></h4>' + '<span class="picker-selected">已选0</span>' + '<a class="picker-btn-ok"><span class="picker-header-text"></span></a>' + '</header>' + '<div class="picker-body"></div>' + '</div>').css('height', (_constant2.default.WHEEL_HEIGHT + 15) / 100 + "em").hide();
-	this.frame.find(".picker-body")[0].addEventListener('touchstart', function (event) {
-		event.preventDefault();
-		event.stopPropagation();
-	});
+	this.frame = (0, _domUtil2.default)('<div class="picker picker-frame" style="z-index: ' + (option.zIndex + 1) + '">' + '<header class="picker-head">' + '<a class="picker-btn-cancel"><span class="picker-header-text"></span></a>' + '<h4 class="picker-title"><span class="picker-header-text"></span></h4>'
+	// 未来显示多选时候使用
+	+ '<span class="picker-selected">已选0</span>' + '<a class="picker-btn-ok"><span class="picker-header-text"></span></a>' + '</header>' + '<div class="picker-body">' + '<div class="picker-glass-over-border-top">' + '</div>' + '<div class="picker-glass-over-border-bottom">' + '</div>' + '</div>' + '</div>').css('height', (_constant2.default.WHEEL_HEIGHT + 15) / 100 + "em").hide();
 
 	//如果是3d透视模式，增加3d透视的样式
 	if (!_browserUtil2.default.isIE() && !(_browserUtil2.default.isAndroid() && _browserUtil2.default.androidVersion() < 4.4) && this.option.isPerspective) {
 		this.frame.addClass('s-3d').find(".picker-body").css("perspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("webkitPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("mozPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em").css("msPerspective", _constant2.default.WHEEL_HEIGHT / 100 + "em");
 	}
 
+	// 修复显示模糊的问题，如果浏览器支持zoom，就s-zoom-body修复模糊的问题
+	if (_browserUtil2.default.isWebKit() && document.body.style.zoom != undefined) {
+		this.frame.find(".picker-body").addClass('s-zoom-body');
+	}
+
+	// 如果是webkit内核，可以使用玻璃罩特性
+	if (option.hasGlassCover == true) {
+		this.frame.addClass('s-glass-over');
+		if (_browserUtil2.default.isWebKit()) {
+			this.frame.addClass('s-webkit-glass-over');
+		}
+	}
+
 	//设置标题按钮名
 	this.frame.find(".picker-title .picker-header-text").text(option.title);
 	this.frame.find(".picker-btn-cancel .picker-header-text").text(option.buttons[1] || '取消');
 	this.frame.find(".picker-btn-ok .picker-header-text").text(option.buttons[0] || '确定');
+
+	//阻止的滚轮和触摸事件冒泡，防止悲剧的滚动条在选择的时候改变
+	this.frame.find(".picker-body").on('touchstart', preventDefault);
+	this.frame.on('wheel', preventDefault);
+	this.cover.on('touchstart', preventDefault).on('wheel', preventDefault);
 
 	(0, _domUtil2.default)("body").append(this.frame).append(this.cover);
 
@@ -2492,6 +2476,9 @@ Frame.prototype = {
 	close: function close() {
 		this.remove();
 		window.removeEventListener('resize', this._resizeHandle);
+		this.frame.find(".picker-body").off('touchstart', preventDefault);
+		this.frame.off('wheel', preventDefault);
+		this.cover.off('touchstart', preventDefault).off('wheel', preventDefault);
 	},
 	//移除
 	remove: function remove() {
@@ -2502,7 +2489,19 @@ Frame.prototype = {
 module.exports = Frame;
 
 /***/ }),
-/* 20 */
+/* 21 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

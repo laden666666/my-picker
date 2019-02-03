@@ -36,7 +36,12 @@
             name: 'isPerspective',
             type: 'Boolean', 
             default: '随浏览器变化',
-            describe: '是否以3D透视显示picker的滚轮。如果为true，picker的滚轮会以3D的形式显示，否则会以一个平面的模式显示。\n如果浏览器支持3D模式，默认值会优先显示3D模式；如果浏览器无法支持运行3D模式，即使设置为true也以平民模式显示', 
+            describe: '是否以3D透视显示picker的滚轮。如果为true，picker的滚轮会以3D的形式显示，否则会以一个平面的模式显示。\n如果浏览器支持3D模式，默认值会优先显示3D模式；如果浏览器无法支持运行3D模式，即使设置为true也以平面模式显示', 
+        }, {
+            name: 'hasGlassCover',
+            type: 'Boolean', 
+            default: 'true',
+            describe: '是否有玻璃罩。如果为true，滚轮会被一层渐变层罩住，给人一种类似玻璃遮罩的感觉。\n默认值会优先用webkit-mask-box-image显示玻璃罩；如果浏览器不支持会使用box-shadow实现', 
         }, {
             name: 'fontSize',
             type: 'Number', 

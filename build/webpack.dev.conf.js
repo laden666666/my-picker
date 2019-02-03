@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
-var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var package = require('../package.json')
 var host = '127.0.0.1';
 var port = '8088';
 
@@ -65,7 +65,7 @@ module.exports = {
 					loader: 'postcss-loader',
 					options: {
 						config: {
-							path: path.join(__dirname, 'postcss.config.js')
+							path: path.join(__dirname, '../.postcssrc.js')
 						}
 					}
 				},
@@ -74,6 +74,10 @@ module.exports = {
 	},
 	//插件项
 	plugins: [
+		// 读取版本
+        new webpack.DefinePlugin({
+            PLUGIN_VERSION: '"v' + package.version + '"'
+        }),
 		// 启用作用域提升（scope hoisting）
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		// 代码热替换

@@ -41,6 +41,8 @@ import 'my-picker/dist/my-picker.css'`" lang="javascript"></Code>
 
         <H2>源码</H2>
         <P><A href="https://github.com/laden666666/my-picker">github</A>、<A href="https://gitee.com/laden666666/my-picker">码云</A></P>
+    
+        <Comments></Comments>
     </Doc>
 </template>
 <script>

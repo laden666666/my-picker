@@ -1,0 +1,59 @@
+.picker{
+    //不使用3d透视的滚轮
+    &.s-3d .picker-body{
+        transform-style: preserve-3d;
+        padding: 0 calc(1em * 0.220);
+    }
+    
+    & .picker-wheel{
+        flex-grow: 1;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: row;
+        position: relative;
+    }
+
+    & .picker-wheel .picker-label{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 .02em;
+    }
+    & .picker-wheel ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        position: relative;
+        transform-style: inherit;
+    }
+
+    & .picker-wheel li{
+        position: absolute;
+        left: 0;
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        margin: auto auto;
+        width: 100%;
+        height: 0.1428em;
+        line-height: 0.1428em;
+        //background: black;
+        //color: #fff;
+        user-select: none;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    & .picker-wheel:first-child li{
+        margin-right: 0;
+    }
+
+    & .picker-wheel:last-child li{
+        margin-left: 0;
+    }
+}

@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var autoprefixer = require('autoprefixer');
+var package = require('../package.json')
 
 module.exports = {
     //页面入口文件配置
@@ -63,7 +63,7 @@ module.exports = {
                         loader: 'postcss-loader',
                         options: {
                             config: {
-                                path: path.join(__dirname, 'postcss.config.js')
+                                path: path.join(__dirname, '../.postcssrc.js')
                             }
                         }
                     },
@@ -73,6 +73,10 @@ module.exports = {
 	},
     //插件项
     plugins: [
+		// 读取版本
+        new webpack.DefinePlugin({
+            PLUGIN_VERSION: '"v' + package.version + '"'
+        }),
         // 单独抽离 CSS
         new ExtractTextPlugin("my-picker.css"),
     ],

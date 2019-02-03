@@ -25,6 +25,10 @@
         {
             "title": "使用",
             "path": "#/Useage"
+        },
+        {
+            "title": "升级日志",
+            "path": "#/UpdateLog"
         }
     ]
 }
