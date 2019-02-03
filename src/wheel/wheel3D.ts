@@ -42,8 +42,6 @@ export class Wheel3D extends AWheel{
     private changeMaxAngle = 0;
     //当前滚轮转角
     private angle = 0;
-    //当前被选值的index
-    private selectedIndex = -1;
     //记录惯性滑动动画的id
     private animationId = -1;
     //速度，供触摸离开时候的惯性滑动动画使用

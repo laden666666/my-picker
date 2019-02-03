@@ -7,6 +7,7 @@ import { Picker } from '../picker';
 import { IOptions } from '../API';
 import { IWheel } from '../IWheel';
 import util from '../util/util';
+import browserUtil from '../util/browserUtil';
 
 export abstract class AWheel implements IWheel{
     ////////////////////主属性
@@ -21,7 +22,9 @@ export abstract class AWheel implements IWheel{
 	//转轮上面标签的容器，同时也是转动的轴
 	protected contains: MyJQuery;
     //被选值的值
-    protected selectedValue;
+    protected selectedValue: any
+    // 被选值的值的索引
+    protected selectedIndex: number
 
     ////////////////////可选项属性
     //可选项列表
@@ -132,24 +135,14 @@ export abstract class AWheel implements IWheel{
 
     /////////////////////////////对鼠标滚轮事件相关
     protected initMouseWheel(){
-        let runningWheel = false
-        let wheelDistance = 0
-        let wheelEnd = util.debounce(()=>{
-            runningWheel = false
-            wheelDistance = 0
-            this.endDrag()
-        }, 500)
-
         this.getDOM().on('wheel', (e)=>{
-            console.log(e)
-            if(runningWheel){
-                wheelDistance += 20
-                this.drag(wheelDistance)
-            } else {
-                this.startDrag(0)
-            }
-
-            wheelEnd()
+            // 兼容狐火浏览器滚轮和其他浏览器相反的情况
+            let sign = Math.sign( e.deltaY)
+            if(sign > 0 && this.selectedIndex < this.list.length - 1){
+                this.selectIndex(this.selectedIndex + 1)
+            } else if(sign < 0 && this.selectedIndex > 0){
+                this.selectIndex(this.selectedIndex - 1)
+            } 
         })
     }
 }
