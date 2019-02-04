@@ -1,7 +1,4 @@
 <style scoped>
-    .code pre code{
-        padding: 5px 15px;
-    }
     .code-scale-modal{
         background-color: #fafafa;
         padding: 3px 5px;
@@ -11,6 +8,7 @@
     }
     .code-scale-modal pre{
         font-size: 14px;
+        padding: 5px 15px;
     }
 </style>
 <template>

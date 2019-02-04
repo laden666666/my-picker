@@ -11,7 +11,7 @@
                 <Li>提升了移动端的响应速度</Li>
                 <Li>优化了显示样式</Li>
                 <Li>优化了加载动画</Li>
-                <Li>优化了pc端和竖屏的显示形式，尤其是pc端样式</Li>
+                <Li>优化了pc端和竖屏的显示形式</Li>
                 <Li>增加了滚轮选择功能</Li>
                 <Li>增加了玻璃罩的配置功能</Li>
                 <Li>修复了PC等不支持<Strong>-webkit-mask-box-image</Strong>属性不显示玻璃罩的问题</Li>

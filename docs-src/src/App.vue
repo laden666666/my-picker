@@ -1,5 +1,5 @@
 <template>
-    <div id="app" @mousewheel="onMouseWheel" 
+    <div id="app" @wheel="onMouseWheel" 
         @touchstart="onTouchstart" 
         @touchmove="onTouchmove" 
         @touchend="onTouchend">
@@ -66,7 +66,7 @@ export default {
                 event.stopPropagation()
                 return
             } else {
-                if ((isFirefox && event.detail > 0) || (!isFirefox && event.wheelDelta < 0)) {
+                if (event.deltaY > 0) {
                     if(window.scrollY < window.innerHeight){
                         this.showMenu()
                         event.preventDefault()

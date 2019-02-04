@@ -31,7 +31,7 @@ import 'my-picker/dist/my-picker.css'`" lang="javascript"></Code>
         <BrowserList Android=">=5" Firefox Chrome iPhone Edge Safari></BrowserList>
         
         <Li>非3D模式:</Li>
-        <BrowserList Android=">=4.4" Firefox Chrome iPhone IE Edge Safari></BrowserList>
+        <BrowserList Android=">=4.4" Firefox Chrome iPhone IE=">=10" Edge Safari></BrowserList>
         
         <H2>效果图</H2>
         <H3>移动端demo效果图:</H3>
