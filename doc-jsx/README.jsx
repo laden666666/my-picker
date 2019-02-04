@@ -22,7 +22,7 @@
     <browser-list Android=">=5" Firefox Chrome iPhone Edge Safari/>
 
     <p>非3D模式</p>
-    <browser-list Android=">=4.4" Firefox Chrome IE=">=9" iPhone Edge Safari/>
+    <browser-list Android=">=4.4" Firefox Chrome IE=">=10" iPhone Edge Safari/>
 
     <p>移动端demo效果图:</p>
     <img src="./doc-jsx/images/mobileDemo.gif"/>

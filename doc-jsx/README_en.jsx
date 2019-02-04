@@ -20,7 +20,7 @@
     <browser-list Android=">=5" Firefox Chrome iPhone Edge Safari/>
 
     <p>Non-3D mode</p>
-    <browser-list Android=">=4.4" Firefox Chrome IE=">=9" iPhone Edge Safari/>
+    <browser-list Android=">=4.4" Firefox Chrome IE=">=10" iPhone Edge Safari/>
 
     <p>Effect chart (mobile phone):</p>
     <img src="./doc-jsx/images/mobileDemo.gif"/>
