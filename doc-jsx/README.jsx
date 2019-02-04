@@ -2,15 +2,17 @@
     <title>my-picker</title>
     <npm-info version downloads license name="my-picker"></npm-info>
 
-    <p>高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。<a href="https://laden666666.github.io/my-picker/">demo</a></p>
+    <p>高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。</p>
 
     <h3>功能</h3>
-
     <li>0、3D形式的滚轮选择器，带有透视效果</li>
     <li>1、选择器的前缀与后缀</li>
     <li>2、级联选择器</li>
     <li>3、提供选择音效，更接近原生控件</li>
     <li>4、支持手机和pc</li>
+
+    <h2>使用文档</h2>
+    <p>请参考<a href="https://laden666666.github.io/my-picker/">https://laden666666.github.io/my-picker/</a></p>
 
     <h2>源码</h2>
     <p><a href="https://github.com/laden666666/my-picker">github</a>，<a href="https://gitee.com/laden666666/my-picker">码云</a></p>
@@ -47,7 +49,4 @@
 `import myPicker form 'my-picker'
 import 'my-picker/my-picker.css'`
     }</code>
-
-    <h2>使用文档</h2>
-    <p>请参考<a href="https://laden666666.github.io/my-picker/">https://laden666666.github.io/my-picker/</a></p>
 </doc>

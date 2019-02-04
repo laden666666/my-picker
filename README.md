@@ -3,7 +3,7 @@
             <a href="https://www.npmjs.com/package/my-picker"><img src="https://img.shields.io/npm/dm/my-picker.svg" alt="Downloads"></a>
             <a href="https://www.npmjs.com/package/my-picker"><img src="https://img.shields.io/npm/l/my-picker.svg" alt="License"></a>
         </p>
-高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。[demo](https://laden666666.github.io/my-picker/ "") 
+高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。
 
 
 ### 功能
@@ -12,6 +12,12 @@
 *   2、级联选择器
 *   3、提供选择音效，更接近原生控件
 *   4、支持手机和pc
+
+
+## 使用文档
+
+请参考[https://laden666666.github.io/my-picker/](https://laden666666.github.io/my-picker/ "") 
+
 
 
 ## 源码
@@ -79,11 +85,5 @@ npm i my-picker -S
 import myPicker form 'my-picker'
 import 'my-picker/my-picker.css'
 ```
-
-
-
-## 使用文档
-
-请参考[https://laden666666.github.io/my-picker/](https://laden666666.github.io/my-picker/ "") 
 
 
