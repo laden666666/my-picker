@@ -65,7 +65,8 @@
   },
   "homepage": "https://laden666666.github.io/my-picker/",
   "files": [
-    "dist/*.*",
+    "src",
+    "dist",
     ".postcssrc.js"
   ]
 }
