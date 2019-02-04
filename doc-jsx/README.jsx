@@ -2,7 +2,7 @@
     <title>my-picker</title>
     <npm-info version downloads license name="my-picker"></npm-info>
 
-    <p>高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。</p>
+    <p>高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（10-11）、火狐浏览器。</p>
 
     <h3>功能</h3>
     <li>0、3D形式的滚轮选择器，带有透视效果</li>

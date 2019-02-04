@@ -3,7 +3,7 @@
             <a href="https://www.npmjs.com/package/my-picker"><img src="https://img.shields.io/npm/dm/my-picker.svg" alt="Downloads"></a>
             <a href="https://www.npmjs.com/package/my-picker"><img src="https://img.shields.io/npm/l/my-picker.svg" alt="License"></a>
         </p>
-高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（9-11）、火狐浏览器。
+高仿IOS的PickerView的JavaScript插件，3D形式的滚轮选择器，同时支持最多三级联动的选择效果，支持pc端和移动端两种平台浏览器。支持chrome及移动端默认浏览器、ie（10-11）、火狐浏览器。
 
 
 ### 功能
