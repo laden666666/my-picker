@@ -2,7 +2,7 @@
     <ul class="menu-nav_list">
         <li class="menu-nav_item" v-for="(menu1, index1) in menu" :key="index1">
             <a class="menu-nav_link" :class="{'active': '#' + $route.path == menu1.path}" 
-                v-if="menu1.path" :href="menu1.path" @click="goTop(menu1.path)">{{menu1.title}}</a>
+                v-if="menu1.path" :href="menu1.path" @click.prevent="goPage(menu1.path)">{{menu1.title}}</a>
 
             <p class="menu-nav_link" v-else>{{menu1.title}}</p>
             <ul class="menu-nav_title_list" v-if="'#' + $route.path == menu1.path">
@@ -22,6 +22,27 @@
     </ul>
 </template>
 <script>
+let userAgent = window.navigator.userAgent
+let isIE = (function () {
+    let matches;
+    const tridentMap = {
+        '4': 8,
+        '5': 9,
+        '6': 10,
+        '7': 11
+    };
+
+    matches = userAgent.match(/MSIE (\d+)/i);
+    if(matches && matches[1]) {
+        return !!+matches[1];
+    }
+    matches = userAgent.match(/Trident\/(\d+)/i);
+    if(matches && matches[1]) {
+        return !!tridentMap[matches[1]] || false;
+    }
+    //we did what we could
+    return false;
+})();
 export default {
     name: 'MenuNavList',
     props: {
@@ -46,12 +67,28 @@ export default {
                 this.$router.replace(this.$router.history.current.path + '#' + titleText)
             } catch(e){}
         },
-        goTop(path){
-            if(path === '#' + this.$route.path){
-                let menu = document.querySelector('#menu')
-                if(menu){
-                    menu.scrollIntoView()
+        goPage(path){
+            if(path === this.$route.path){
+                if(path === '#' + this.$route.path){
+                    let menu = document.querySelector('#menu')
+                    if(menu){
+                        menu.scrollIntoView()
+                    }
                 }
+            } else {
+                if(isIE){
+                    window.app.$destroy()
+                    location.assign(location.pathname + path)
+                    setTimeout(()=>{
+                        location.reload()
+                    })
+                } else {
+                    location.assign(location.pathname + path)
+                    this.$nextTick(()=>{
+                        window.scrollTo(0, 0)
+                    })
+                }
+                
             }
         }
     }

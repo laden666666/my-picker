@@ -138,7 +138,8 @@
                 position: absolute;
                 width: 200%;
                 pointer-events: none;
-                z-index: 1;
+                z-index: 2;
+                left: 0;
             }
             &::after{
                 bottom: 0;
@@ -155,7 +156,8 @@
         width: 200%;
         pointer-events: none;
         top: 0;
-        z-index: 1;
+        left: 0;
+        z-index: 2;
     }
     & .picker-glass-over-border-top{
         box-shadow: 0 .3536em 0 0.5px #eee;
