@@ -126,7 +126,7 @@
     setValues: ['钱'],
 })`"></Code>
         <setValues></setValues>
-        <Alert>cols里面设置了几个Col，setValues可以设置几个多设置几个值。</Alert>
+        <Alert>cols里面设置了几个Col，setValues就可以设置几个值。</Alert>
 
         <H3>onSelectItem</H3>
         <Function :data="`

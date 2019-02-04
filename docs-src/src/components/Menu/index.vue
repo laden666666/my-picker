@@ -247,9 +247,11 @@ export default {
         }
         .menu-aside{
             width: 0;
+            opacity: 0;
         }
         .close > .menu-aside{
             width: 300px;
+            opacity: 1;
         }
         .menu-nav{
             overflow-y: visible;

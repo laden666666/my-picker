@@ -341,6 +341,8 @@ export default {
         onOkClick: function (values) {
             document.querySelector('#example8').textContent = values[0] + "年" + values[1] + "月" + values[2] + "日";
         },
+        // 设置平面模式
+        isPerspective: false,
         setValues: [today.getFullYear(), today.getMonth() + 1, today.getDate()],
         onSelectItem : function (i, index, value) {
 
@@ -374,6 +376,7 @@ export default {
     var picker10 = myPicker({
         cols: ['java','c#','JavaScript','php','Python'],
         title:"请选择你喜欢的编程语言",
+        // 关闭操作音
         hasVoice: false,
         onOkClick: function (values) {
             document.querySelector('#example10').textContent = (values[0]);
@@ -389,6 +392,7 @@ export default {
     var picker11 = myPicker({
         cols: ['java','c#','JavaScript','php','Python'],
         title:"请选择你喜欢的编程语言",
+        // 关闭玻璃罩
         hasGlassCover: false,
         onOkClick: function (values) {
             document.querySelector('#example11').textContent = (values[0]);
