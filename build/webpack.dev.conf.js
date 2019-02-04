@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('../package.json')
-var host = '127.0.0.1';
 var port = '8088';
 
 module.exports = {

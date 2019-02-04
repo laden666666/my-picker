@@ -1,5 +1,5 @@
 <template>
-    <a id="example8" class="selector" placeholder="请选择日期" @click="select"></a>
+    <a id="example9" class="selector" placeholder="请选择日期" @click="select"></a>
 </template>
 <script>
 import myPicker from 'my-picker'
@@ -29,7 +29,7 @@ var picker  = new myPicker({
     },],
     isPerspective: false,
     onOkClick: function (values) {
-        document.querySelector('#example8').textContent = values[0] + "年" + values[1] + "月" + values[2] + "日";
+        document.querySelector('#example9').textContent = values[0] + "年" + values[1] + "月" + values[2] + "日";
     },
     setValues: [today.getFullYear(), today.getMonth() + 1, today.getDate()],
     onSelectItem : function (i, index, value) {

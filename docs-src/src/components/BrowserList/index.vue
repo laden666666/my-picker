@@ -22,7 +22,6 @@
 export default {
     computed: {
         browserList(){
-            console.log(this.$attrs)
             return Object.entries(this.$attrs)
         }
     }

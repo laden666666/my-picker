@@ -15,7 +15,7 @@
     ],
     "menu": [
         {
-            "title": "主页",
+            "title": "my-picker",
             "path": "#/"
         },
         {

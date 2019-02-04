@@ -7,6 +7,7 @@
             <span id="home"></span>
             <Home 
                 v-bind="app"
+                :version="version"
             ></Home>
             <Menu :menu="app.menu" key="1">
                 <span id="menu"></span>
@@ -23,6 +24,7 @@
 <script>
 import app from './app.json'
 import debounce from 'lodash.debounce'
+import picker from 'my-picker'
 
 var isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
 
@@ -46,6 +48,7 @@ export default {
         return {
             isScrolling: false,
             app,
+            version: picker.version
         }
     },
     computed: {

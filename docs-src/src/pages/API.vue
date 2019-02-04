@@ -3,8 +3,11 @@
         <H1>my-picker的API</H1>
 
         <H2>初始化：</H2>
-        <P>通过new<Strong>myPicker</Strong>即可创建选择器：</P>
-        <Code lang="javascript" code="new myPicker(option)"></Code>
+        <P>可以使用<Strong>工厂函数——myPicker</Strong>创建选择器：</P>
+        <Code lang="javascript" code="let picker = myPicker(option)"></Code>
+        <P>也可通过new<Strong>myPicker</Strong>创建选择器：</P>
+        <Code lang="javascript" code="let picker = new myPicker(option)"></Code>
+        <Alert>我们推荐使用工厂函数创建选择器，构造函数方式是兼容0.x版本而设计的，在1.x系列中不推荐使用。</Alert>
 
         <P>option是控件的初始化配置，具体配置项有：</P>
         <Instructions :data="[{
@@ -71,7 +74,7 @@
         <H3>cols</H3>
         <P>可选值列表的配置，是个数组，数组每项一列，一列的配置项的完整格式为一个json对象，最多支持3列。如:</P>
         <Code lang="javascript" :code="
-`new myPicker({
+`myPicker({
     cols:[{
         options:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
     },{
@@ -82,7 +85,7 @@
 
         <P>如果cols的参数是一个json，将视为只有一列可选值列表，如:</P>
         <Code lang="javascript" :code="
-`new myPicker({
+`myPicker({
     cols:{
         options: ['一', '二', '三', '四', '五'],
     }
@@ -91,7 +94,7 @@
 
         <P>同时options里面的值可以是一个字符串，也可以是一个json结构。如果是json结构，需要给出显示的key，和其值的key。如:</P>
         <Code lang="javascript" :code="
-`new myPicker({
+`myPicker({
     cols:{
         labelKey: 'name',
         valueKey: 'name',
@@ -101,12 +104,12 @@
         <Col3></Col3>
 
         <P>如果如果可选值列表只有一列,且是个字符串数组,可进一步简化配置为:</P>
-        <Code lang="javascript" :code="`new myPicker({cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']})`"></Code>
+        <Code lang="javascript" :code="`myPicker({cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王']})`"></Code>
         <Col4></Col4>
 
         <P>除了配置options，cols也可以配置显示在两个的前缀、后缀。prefix是前缀，suffix是后缀，他们会显示在滚轮两侧。</P>
         <Code lang="javascript" :code="
-`new myPicker({
+`myPicker({
     cols:{
         prefix: '第'，
         options: ['一', '二', '三', '四', '五'],
@@ -118,7 +121,7 @@
         <H3>setValues</H3>
         <P>已选择的对象。是个数组,索引必须和cols里面的可选值列表的索引一样。如:</P>
         <Code lang="javascript" :code="
-`new myPicker({
+`myPicker({
     cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王'],
     setValues: ['钱'],
 })`"></Code>
@@ -134,7 +137,7 @@
              * @param {any}       selectedValue		被选值
              */
             `"></Function>
-        <Demo :demo="onSelectItem" title="onSelectItem示例" :vertical="true" lang="javascript" :code="`let picker = new myPicker({
+        <Demo :demo="onSelectItem" title="onSelectItem示例" :vertical="true" lang="javascript" :code="`let picker = myPicker({
     cols: [
         ['一', '二', '三', '四', '五'],
         ['I', 'II', 'III', 'IV', 'V'],
@@ -155,7 +158,7 @@ picker.show()`">
              * @returns {boolean}            如果返回值是false,picker不关闭,否则会关闭picker
              */
             `"></Function>
-        <Demo :demo="onOkClick" title="onOkClick示例" :vertical="true" lang="javascript" :code="`let picker = new myPicker({
+        <Demo :demo="onOkClick" title="onOkClick示例" :vertical="true" lang="javascript" :code="`let picker = myPicker({
     cols: [
         [1, 2, 3, 4, 5, 6, 7, 8],
         [1, 2, 3, 4, 5, 6, 7, 8],
@@ -222,6 +225,9 @@ picker.show()`">
         * @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值
         * @returns {any}             设置的值
         */`"></Function>
+
+        <Comments></Comments>
+
     </Doc>
 </template>
 <script>
@@ -244,7 +250,7 @@ export default {
 `<a onclick="show">显示picker，两秒后自动关闭picker</a>
 <a onclick="close">销毁picker</a>
 <script>
-    let picker = new myPicker({
+    let picker = myPicker({
         cols: ['赵', '钱', '孙', '李', '周', '吴', '郑', '王'],
     });
 

@@ -395,6 +395,23 @@ var AWheel = function () {
         value: function destroy() {
             this.onSelectItemCallbackList = null;
         }
+        /////////////////////////////对鼠标滚轮事件相关
+
+    }, {
+        key: "initMouseWheel",
+        value: function initMouseWheel() {
+            var _this2 = this;
+
+            this.getDOM().on('wheel', function (e) {
+                // 兼容狐火浏览器滚轮和其他浏览器相反的情况
+                var sign = Math.sign(e.deltaY);
+                if (sign > 0 && _this2.selectedIndex < _this2.list.length - 1) {
+                    _this2.selectIndex(_this2.selectedIndex + 1);
+                } else if (sign < 0 && _this2.selectedIndex > 0) {
+                    _this2.selectIndex(_this2.selectedIndex - 1);
+                }
+            });
+        }
     }]);
 
     return AWheel;
@@ -409,6 +426,8 @@ exports.AWheel = AWheel;
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _domUtil = __webpack_require__(0);
 
 var _domUtil2 = _interopRequireDefault(_domUtil);
@@ -421,19 +440,63 @@ var _dataURLtoU8arr = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  * 滚轮滚动时候发声的函数,是一个单例模式
  */
 var tick = __webpack_require__(17);
 
+// 合成音
+var Sound = function () {
+    function Sound() {
+        var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new AudioContext();
+
+        _classCallCheck(this, Sound);
+
+        this.context = context;
+        this.init();
+    }
+
+    _createClass(Sound, [{
+        key: 'init',
+        value: function init() {
+            this.oscillator = this.context.createOscillator();
+            this.gainNode = this.context.createGain();
+
+            this.oscillator.frequency.value = 150;
+            this.oscillator.connect(this.gainNode);
+            this.gainNode.connect(this.context.destination);
+        }
+    }, {
+        key: 'play',
+        value: function play() {
+            this.init();
+            this.gainNode.gain.setValueAtTime(3, this.context.currentTime);
+
+            this.oscillator.start();
+            this.gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 1);
+            this.oscillator.stop(this.context.currentTime + 1);
+        }
+    }, {
+        key: 'stop',
+        value: function stop() {
+            this.gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 1);
+            this.oscillator.stop(this.context.currentTime + .25);
+        }
+    }]);
+
+    return Sound;
+}();
 
 function AudioImpl() {
     var _this = this;
 
-    //#4，如果支持mse优先使用mse，这样解决base64禁止发音的问题
+    //#4，如果支持mse优先使用mse，如果支持合成声音则使用，这样解决base64禁止发音的问题
     this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
 
     var MediaSource = window.MediaSource || window.WebkitMediaSource;
+    var AudioContext = window.AudioContext || window.WebkitAudioContext;
     if (MediaSource && MediaSource.isTypeSupported('audio/mpeg')) {
         var mediaSource = new MediaSource();
         this.audio.src = URL.createObjectURL(mediaSource);
@@ -444,6 +507,8 @@ function AudioImpl() {
             });
             sourceBuffer.appendBuffer((0, _dataURLtoU8arr.dataURLtoU8arr)(tick));
         });
+    } else if (AudioContext) {
+        this.audio = new Sound();
     } else {
         this.audio.src = tick;
     }
@@ -455,14 +520,20 @@ function AudioImpl() {
 AudioImpl.prototype.play = function () {
     try {
         if (this.audio) {
-            // #5 参考https://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
-            var isPlaying = this.audio.currentTime > 0 && !this.audio.paused && !this.audio.ended && this.audio.readyState > 2;
-
-            if (!isPlaying) {
+            if (this.audio instanceof Sound) {
+                // 播放合成音
                 this.audio.play();
-                if (_browserUtil2.default.isAndroid() && _browserUtil2.default.androidVersion() < 5) {
-                    this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
-                    this.audio.src = tick;
+            } else {
+                // h5音频文件
+                // #5 参考https://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
+                var isPlaying = this.audio.currentTime > 0 && !this.audio.paused && !this.audio.ended && this.audio.readyState > 2;
+
+                if (!isPlaying) {
+                    this.audio.play();
+                    if (_browserUtil2.default.isAndroid() && _browserUtil2.default.androidVersion() < 5) {
+                        this.audio = (0, _domUtil2.default)('<audio></audio>')[0];
+                        this.audio.src = tick;
+                    }
                 }
             }
         }
@@ -493,9 +564,11 @@ var Picker_1 = __webpack_require__(8);
 __webpack_require__(21);
 __webpack_require__(22);
 __webpack_require__(23);
-module.exports = function (option) {
+var myPicker = function myPicker(option) {
     return new Picker_1.Picker(option);
 };
+myPicker.version = "v1.0.0";
+module.exports = myPicker;
 
 /***/ }),
 /* 8 */
@@ -516,7 +589,6 @@ var Wheel_1 = __webpack_require__(18);
 var browserUtil_1 = __webpack_require__(3);
 var util_1 = __webpack_require__(19);
 var Frame = __webpack_require__(20);
-var version = "v1.0.0";
 
 var Picker = function () {
     function Picker(options) {
@@ -526,7 +598,6 @@ var Picker = function () {
         this._wheels = [];
         //主框架
         this._cols = [];
-        this.version = version;
         //用用户配置,覆盖默认配置,生成当前控件的实例的配置
         this._option = util_1.default.assign({}, defaultOption_1.default, options);
         //主架
@@ -861,8 +932,6 @@ var Wheel3D = function (_AWheel_1$AWheel) {
         _this.changeMaxAngle = 0;
         //当前滚轮转角
         _this.angle = 0;
-        //当前被选值的index
-        _this.selectedIndex = -1;
         //记录惯性滑动动画的id
         _this.animationId = -1;
         //速度，供触摸离开时候的惯性滑动动画使用
@@ -922,6 +991,8 @@ var Wheel3D = function (_AWheel_1$AWheel) {
         _this.dom[0].addEventListener("touchend", endDrag);
         _this.dom[0].addEventListener("mouseup", endDrag);
         _this.dom[0].addEventListener("mouseleave", endDrag);
+        // 注册滚轮事件
+        _this.initMouseWheel();
         //初始化标签
         var transformValue = "translateZ(" + _this.radius / 100 + "em) scale(0.75)";
         _this.dom.find(".picker-label").css("-webkit-transform", transformValue).css("transform", transformValue);
@@ -1891,8 +1962,6 @@ var Wheel = function (_AWheel_1$AWheel) {
         _this.changeMaxDistance = 0;
         //当前滚轮位移
         _this.distance = 0;
-        //当前被选值的index
-        _this.selectedIndex = -1;
         //记录惯性滑动动画的id
         _this.animationId = -1;
         //速度，供触摸离开时候的惯性滑动动画使用
@@ -1950,6 +2019,8 @@ var Wheel = function (_AWheel_1$AWheel) {
         _this.dom[0].addEventListener("touchend", endDrag);
         _this.dom[0].addEventListener("mouseup", endDrag);
         _this.dom[0].addEventListener("mouseleave", endDrag);
+        // 注册滚轮事件
+        _this.initMouseWheel();
         //设置标签
         _this.setSuffix(col.suffix);
         _this.setPrefix(col.prefix);

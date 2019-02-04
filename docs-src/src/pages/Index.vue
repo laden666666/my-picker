@@ -17,6 +17,7 @@
         <P>浏览器环境直接导入dist下的my-picker.js和my-picker.css文件即可，可以使用<A href="https://www.npmjs.com">npm</A>提供的<Strong>CDN</Strong>引入：</P>
         <Code :code="code" lang="html"></Code>
 
+        <H3>webpack环境</H3>
         <P>执行cli命令:</P>
         <Code code="npm i my-picker -S" lang="shell"></Code>
         <P>并在js文件中引用:</P>
@@ -34,15 +35,13 @@ import 'my-picker/dist/my-picker.css'`" lang="javascript"></Code>
         
         <H2>效果图</H2>
         <H3>移动端demo效果图:</H3>
-        <Img src="../assert/mobileDemo.gif" />
+        <Img src="../../../doc-jsx/images/mobileDemo.gif" />
 
         <H3>pc端demo效果图:</H3>
-        <Img src="../assert/pcDemo.gif" />
+        <Img src="../../../doc-jsx/images/pcDemo.gif" />
 
         <H2>源码</H2>
         <P><A href="https://github.com/laden666666/my-picker">github</A>、<A href="https://gitee.com/laden666666/my-picker">码云</A></P>
-    
-        <Comments></Comments>
     </Doc>
 </template>
 <script>

@@ -14,7 +14,6 @@ export declare class Wheel extends AWheel {
     private lastIndexDistance;
     private changeMaxDistance;
     private distance;
-    private selectedIndex;
     private animationId;
     private speed;
     private timeStamp;
@@ -25,16 +24,16 @@ export declare class Wheel extends AWheel {
      * 开始拖拽
      * @param {number} offsetY  当前用户手指(鼠标)的y坐标
      */
-    private startDrag;
+    startDrag(offsetY: number): void;
     /**
      * 拖拽
      * @param {number} offsetY			当前用户手指(鼠标)的y坐标
      */
-    private drag;
+    drag(offsetY: number): void;
     /**
      * 拖拽结束
      */
-    private endDrag;
+    endDrag(): void;
     /**
      * 生成用户可选的标签
      * @param {any[]} list                  用户可选项数组

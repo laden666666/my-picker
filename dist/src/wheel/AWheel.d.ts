@@ -12,10 +12,25 @@ export declare abstract class AWheel implements IWheel {
     protected dom: MyJQuery;
     protected contains: MyJQuery;
     protected selectedValue: any;
+    protected selectedIndex: number;
     protected list: any[];
     protected valueHashMap: {};
     protected labelKey: string;
     protected itemValueKey: string;
+    /**
+     * 开始拖拽
+     * @param {number} offsetY  当前用户手指(鼠标)的y坐标
+     */
+    protected abstract startDrag(offsetY: number): any;
+    /**
+     * 拖拽
+     * @param {number} offsetY			当前用户手指(鼠标)的y坐标
+     */
+    protected abstract drag(offsetY: number): void;
+    /**
+     * 拖拽结束
+     */
+    protected abstract endDrag(): void;
     protected onSelectItemCallbackList: {
         (index: number, value: any): void;
     }[];
@@ -63,4 +78,5 @@ export declare abstract class AWheel implements IWheel {
      * 销毁
      */
     destroy(): void;
+    protected initMouseWheel(): void;
 }

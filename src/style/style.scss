@@ -117,19 +117,6 @@
 
     // 玻璃罩
     &.s-glass-over {
-        & .picker-glass-over-border-top, & .picker-glass-over-border-bottom{
-            position: absolute;
-            width: 200%;
-            pointer-events: none;
-            top: 0;
-            z-index: 1;
-        }
-        & .picker-glass-over-border-top{
-            box-shadow: 0 .3536em 0 0.5px #eee;
-        }
-        & .picker-glass-over-border-bottom{
-            box-shadow: 0 .4964em 0 0.5px #eee;
-        }
 
         &.s-webkit-glass-over .picker-body{
             -webkit-mask-box-image:
@@ -162,6 +149,19 @@
                 box-shadow: 0 .1768em 0 .1768em rgba(255, 255, 255, .6);
             }
         }
+    }
+    & .picker-glass-over-border-top, & .picker-glass-over-border-bottom{
+        position: absolute;
+        width: 200%;
+        pointer-events: none;
+        top: 0;
+        z-index: 1;
+    }
+    & .picker-glass-over-border-top{
+        box-shadow: 0 .3536em 0 0.5px #eee;
+    }
+    & .picker-glass-over-border-bottom{
+        box-shadow: 0 .4964em 0 0.5px #eee;
     }
 
     & .picker-label{

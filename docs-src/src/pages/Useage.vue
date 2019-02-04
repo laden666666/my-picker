@@ -15,7 +15,7 @@
         <P>支持多个滚轮同时选择，并且每个滚轮都是3d的，而且还有水平方向的透视效果。建议滚轮最多只能设置3个，否则可能会出现显示异常。</P>
         <Demo :demo="example3" :code="code3" title="多滚轮的选择器"></Demo>
         
-        <H2>设置默认值及动态设置</H2>
+        <H2>设置默认值及动态设置选中值</H2>
         <P>通过api可以设置默认值，并且可以通过api代替用户选择所选值。如下边的例子，两个picker通过相互调用api，给对方设置值，让两个选择器值保存同步。</P>
         <Demo :demo="example4" :code="code4" title="设置默认值及动态设置"></Demo>
         
@@ -38,6 +38,21 @@
         <H2>非3D模式</H2>
         <P><Strong>myPicker</Strong>默认是使用3D形式的picker，但是它也支持一套平面模式的picker，用于在不兼容css3的<Strong>transform-style: preserve-3d</Strong>属性的浏览器中使用。</P>
         <Demo :demo="example9" :code="code9" title="非3D模式"></Demo>
+        
+        <H2>静音模式</H2>
+        <P><Strong>myPicker</Strong>默认在用户滑动滚轮过程中是提供操作提示音，如果不需要这种提示音，可以通过设置<Strong>hasVoice</Strong>属性关闭操作音。</P>
+        <Demo :demo="example10" :code="code10" title="静音模式">
+            <P>这是一个没有操作音的picker</P>
+        </Demo>
+        
+        <H2>隐藏玻璃罩</H2>
+        <P><Strong>myPicker</Strong>默认在滚轮上面覆盖了一层模糊层，模拟IOS的picker的玻璃罩效果，可以通过设置<Strong>hasGlassCover</Strong>属性关闭显示玻璃罩。</P>
+        <Demo :demo="example11" :code="code11" title="隐藏玻璃罩">
+            <P>这是一个隐藏玻璃罩的picker</P>
+        </Demo>
+
+        <Comments></Comments>
+
     </Doc>
 </template>
 <script>
@@ -50,6 +65,8 @@ import example6 from '../demo/Useage/example6.vue'
 import example7 from '../demo/Useage/example7.vue'
 import example8 from '../demo/Useage/example8.vue'
 import example9 from '../demo/Useage/example9.vue'
+import example10 from '../demo/Useage/example10.vue'
+import example11 from '../demo/Useage/example11.vue'
 export default {
     data(){
         return {
@@ -62,10 +79,12 @@ export default {
             example7,
             example8,
             example9,
+            example10,
+            example11,
             code1:
 `<a id="example1" class="selector" placeholder="请选择你喜欢的编程语言"></a>
 <script>
-    var picker1 = new myPicker({
+    var picker1 = myPicker({
         cols: ['java','c#','JavaScript','php','Python'],
         title:"请选择你喜欢的编程语言",
         onOkClick: function (values) {
@@ -79,7 +98,7 @@ export default {
             code2:
 `<a id="example2" class="selector" @click="select" placeholder="选择要阅读的章节"></a>
 <script>
-    var picker2 = new myPicker({
+    var picker2 = myPicker({
         cols: [{
             prefix: '  第',
             options: ['一', '二', '三', '四', '五'],
@@ -97,7 +116,7 @@ export default {
             code3:
 `<a id="example3" class="selector" @click="select" placeholder="选择要阅读的章节"></a>
 <script>
-    var picker3 = new myPicker({
+    var picker3 = myPicker({
         cols: [{
             options:["一", "二", "三", "四", "五", "六"],
             suffix: '年',
@@ -118,7 +137,7 @@ export default {
 `<a id="example4_1" class="selector">2</a>
 <a id="example4_2" class="selector">2</a>
 <script>
-    var picker4_1 = new myPicker({
+    var picker4_1 = myPicker({
         cols: ['1', '2', '3', '4', '5'],
         setValues: [2],
         onOkClick: function (values) {
@@ -130,7 +149,7 @@ export default {
     document.querySelector('#example4_1').addEventListener('click', function () {
         picker4_1.show();
     })
-    var picker4_2 = new myPicker({
+    var picker4_2 = myPicker({
         cols: ['1', '2', '3', '4', '5'],
         setValues: [2],
         onOkClick: function (values) {
@@ -147,7 +166,7 @@ export default {
             code5:
 `<a id="example5" class="selector" placeholder="请选择任意值"></a>
 <script>
-    var picker5 = new myPicker({
+    var picker5 = myPicker({
         cols: [
             ['选择A共0次', '选择B共0次', '选择C共0次'],
             ['选择D共0次', '选择E共0次', '选择F共0次']
@@ -174,7 +193,7 @@ export default {
             code6:
 `<a id="example6" class="selector" placeholder="请选择人员的userId"></a>
 <script>
-    var picker6 = new myPicker({
+    var picker6 = myPicker({
         cols: {
             options:[{
                 userId:1,
@@ -211,7 +230,7 @@ export default {
         name:"篮球",
         athlete: ['科比','乔丹','詹姆斯']
     }]
-    var picker7 = new myPicker({
+    var picker7 = myPicker({
         cols: [
             {
                 options: athlete,
@@ -252,7 +271,7 @@ export default {
 
     var today = new Date();
 
-    var picker8  = new myPicker({
+    var picker8  = myPicker({
         cols : [{
             options: year,
             suffix: "年",
@@ -308,7 +327,7 @@ export default {
 
     var today = new Date();
 
-    var picker9  = new myPicker({
+    var picker9  = myPicker({
         cols : [{
             options: year,
             suffix: "年",
@@ -345,8 +364,38 @@ export default {
             }
         }
     });
-    document.querySelector('#example8').addEventListener('click', function () {
+    document.querySelector('#example9').addEventListener('click', function () {
         picker9.show();
+    })
+<\/script>`,
+            code10:
+`<a id="example10" class="selector" placeholder="请选择你喜欢的编程语言"></a>
+<script>
+    var picker10 = myPicker({
+        cols: ['java','c#','JavaScript','php','Python'],
+        title:"请选择你喜欢的编程语言",
+        hasVoice: false,
+        onOkClick: function (values) {
+            document.querySelector('#example10').textContent = (values[0]);
+        },
+    })
+    document.querySelector('#example10').addEventListener('click', function () {
+        picker10.show();
+    })
+<\/script>`,
+            code11:
+`<a id="example11" class="selector" placeholder="请选择你喜欢的编程语言"></a>
+<script>
+    var picker11 = myPicker({
+        cols: ['java','c#','JavaScript','php','Python'],
+        title:"请选择你喜欢的编程语言",
+        hasGlassCover: false,
+        onOkClick: function (values) {
+            document.querySelector('#example11').textContent = (values[0]);
+        },
+    })
+    document.querySelector('#example11').addEventListener('click', function () {
+        picker11.show();
     })
 <\/script>`,
         }

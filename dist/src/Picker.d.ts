@@ -7,7 +7,6 @@ export declare class Picker implements IPicker {
     readonly visible: boolean;
     private _visible;
     constructor(options: IOptions);
-    version: string;
     /**
      * 显示
      */

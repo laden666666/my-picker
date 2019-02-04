@@ -6,11 +6,6 @@
  */
 export interface IPicker {
     /**
-     * 控件的版本
-     * @type {string}
-     */
-    version: string;
-    /**
      * 显示
      */
     show(): void;
@@ -188,4 +183,19 @@ export interface IOptions<T = any> {
      * @type {number}
      */
     zIndex?: number;
+}
+export interface IMyPicker {
+    /**
+     * 控件的版本
+     * @type {string}
+     */
+    version: string;
+    /**
+     * 工厂函数
+     */
+    (options: IOptions): IPicker;
+    /**
+     * 构造函数
+     */
+    new (options: IOptions): IPicker;
 }

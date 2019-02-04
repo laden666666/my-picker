@@ -10,10 +10,6 @@ import util from './util/util'
 declare function require(name: string): any
 var Frame = require("./frame");
 
-//通过DefinePlugin对去package.json的版本
-declare const PLUGIN_VERSION: string;
-const version = PLUGIN_VERSION
-
 export class Picker implements IPicker{
     //用户配置
     private _option: IOptions
@@ -87,8 +83,6 @@ export class Picker implements IPicker{
         //是否可见
         this._visible = false;
     }
-
-    version: string = version
 
     /**
      * 显示

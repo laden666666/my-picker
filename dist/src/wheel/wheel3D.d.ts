@@ -16,7 +16,6 @@ export declare class Wheel3D extends AWheel {
     private lastIndexAngle;
     private changeMaxAngle;
     private angle;
-    private selectedIndex;
     private animationId;
     private speed;
     private timeStamp;
@@ -27,16 +26,16 @@ export declare class Wheel3D extends AWheel {
      * 开始拖拽
      * @param {number} offsetY  当前用户手指(鼠标)的y坐标
      */
-    private startDrag;
+    protected startDrag(offsetY: number): void;
     /**
      * 拖拽
      * @param {number} offsetY			当前用户手指(鼠标)的y坐标
      */
-    private drag;
+    protected drag(offsetY: number): void;
     /**
      * 拖拽结束
      */
-    private endDrag;
+    protected endDrag(): void;
     /**
      * 生成用户可选的标签
      * @param {any[]} list                  用户可选项数组
