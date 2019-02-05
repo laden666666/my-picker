@@ -164,7 +164,7 @@ export default {
         transition: transform .25s ease-out;
         z-index: 3;
         transition: all .3s;
-        background-color: rgba(255, 255, 255, .9);
+        background-color: #fbfbfb;
         overflow-y: visible;
     }
     .menu-aside.fixed{
@@ -252,10 +252,12 @@ export default {
             width: 300px;
         }
         .close .menu-nav{
+            pointer-events: initial;
             overflow-y: visible;
             opacity: 1;
         }
         .menu-nav{
+            pointer-events: none;
             overflow-y: visible;
             opacity: 0;
         }
@@ -269,6 +271,7 @@ export default {
             height: 100vh;
             width: 100vw;
             z-index: 2;
+            background-color: rgba(0,0,0,.07)
         }
     }
 </style>
