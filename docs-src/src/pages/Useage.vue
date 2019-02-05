@@ -444,5 +444,7 @@ export default {
     background-color: rgba(255, 255, 255, 0.2);
     border-color: rgba(0, 0, 0, 0.3);
   }
-  
+  .view_demo{
+      
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <A href="#" @click.native.self.prevent="select">查看</A>
+    <Button @click="select" class="view_demo">查看</Button>
 </template>
 <script>
 import myPicker from 'my-picker'

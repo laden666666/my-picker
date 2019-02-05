@@ -1,7 +1,7 @@
 <template>
     <Doc>
-        <P><A href="#" @click.native.self.prevent="show">显示picker，两秒后自动关闭picker</A></P>
-        <P><A href="#" @click.native.self.prevent="close">销毁picker</A></P>
+        <P><Button class="view_demo" @click="show">显示picker，两秒后自动关闭picker</Button></P>
+        <P><Button class="view_demo" @click="close">销毁picker</Button></P>
     </Doc>
 </template>
 <script>

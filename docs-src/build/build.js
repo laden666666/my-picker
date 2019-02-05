@@ -9,7 +9,9 @@ const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
 const config = require('../config')
+const app = require('../src/app.json')
 const webpackConfig = require('./webpack.prod.conf')
+const fs = require('fs-extra')
 
 const spinner = ora('building for production...')
 spinner.start()
@@ -37,5 +39,12 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Tip: built files are meant to be served over an HTTP server.\n' +
       '  Opening index.html over file:// won\'t work.\n'
     ))
+
+    if(app.name != 'my-vue-doc'){
+      rm(path.join(__dirname, '../../docs/'), err=>{
+        if (err) throw err
+        fs.copy(path.join(__dirname, '../docs'), path.join(__dirname, '../../docs'))
+      })
+    }
   })
 })
