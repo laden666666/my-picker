@@ -15,5 +15,6 @@ export default {
     @import '../../theme.less';
     .img {
         max-width: 100%;
+        margin: 10px 0;
     }
 </style>

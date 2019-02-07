@@ -22,27 +22,7 @@
     </ul>
 </template>
 <script>
-let userAgent = window.navigator.userAgent
-let isIE = (function () {
-    let matches;
-    const tridentMap = {
-        '4': 8,
-        '5': 9,
-        '6': 10,
-        '7': 11
-    };
-
-    matches = userAgent.match(/MSIE (\d+)/i);
-    if(matches && matches[1]) {
-        return !!+matches[1];
-    }
-    matches = userAgent.match(/Trident\/(\d+)/i);
-    if(matches && matches[1]) {
-        return !!tridentMap[matches[1]] || false;
-    }
-    //we did what we could
-    return false;
-})();
+import {goLink, goHash} from '../A/goLink'
 export default {
     name: 'MenuNavList',
     props: {
@@ -59,37 +39,10 @@ export default {
     },
     methods: {
         clickLink(titleText){
-            try{
-                let title = document.querySelector(`[name='${titleText}']`)
-                if(title){
-                    title.scrollIntoView()
-                }
-                this.$router.replace(this.$router.history.current.path + '#' + titleText)
-            } catch(e){}
+            goHash(titleText, this.$router)
         },
         goPage(path){
-            if(path === this.$route.path){
-                if(path === '#' + this.$route.path){
-                    let menu = document.querySelector('#menu')
-                    if(menu){
-                        menu.scrollIntoView()
-                    }
-                }
-            } else {
-                if(isIE){
-                    window.app.$destroy()
-                    location.assign(location.pathname + path)
-                    setTimeout(()=>{
-                        location.reload()
-                    })
-                } else {
-                    location.assign(location.pathname + path)
-                    this.$nextTick(()=>{
-                        window.scrollTo(0, 0)
-                    })
-                }
-                
-            }
+            goLink(path, this.$router)
         }
     }
 }

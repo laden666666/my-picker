@@ -5,6 +5,7 @@
         border-radius: 5px;
         height: 100%;
         line-height: 1.6;
+        overflow: auto;
     }
     .code-scale-modal pre{
         font-size: 14px;

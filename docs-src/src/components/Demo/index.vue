@@ -98,14 +98,19 @@
         },
         mounted () {
             this.$nextTick(() => {
-                const demo_height = this.$refs.demo.$el.clientHeight;
-                const code_height = this.$refs.code.$el.clientHeight + 20;
-                this.code_height = code_height;
-                if (code_height <= demo_height) {
+                if(this.$refs.demo && this.$refs.code){
+                    const demo_height = this.$refs.demo.$el.clientHeight;
+                    const code_height = this.$refs.code.$el.clientHeight + 20;
+                    this.code_height = code_height;
+                    if (code_height <= demo_height) {
+                        this.showMore = false;
+                    }
+                    this.demo_height = demo_height;
+                    this.ready = true;
+                } else {
                     this.showMore = false;
+                    this.ready = true;
                 }
-                this.demo_height = demo_height;
-                this.ready = true;
             });
         }
     }

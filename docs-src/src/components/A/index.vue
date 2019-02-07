@@ -1,13 +1,19 @@
 <template>
-    <a class="a" :href="href" :target="href && (href.startsWith('http') || href.startsWith('//')) ? '_blank' : '_self'"><slot></slot></a>
+    <a class="a" :href="href" @click.stop.prevent="goLink"><slot></slot></a>
 </template>
 <script>
+import {goLink} from './goLink'
 export default {
     props: {
         href: {
             type: String,
             required: true
         },
+    },
+    methods: {
+        goLink($event){
+            goLink(this.href, this.$router)
+        }
     }
 }
 </script>

@@ -119,19 +119,6 @@ export default {
             })
         })
 
-        if(this.$route.hash){
-            try{
-                let title = document.querySelector(`[name='${this.$route.hash.substr(1)}']`)
-                if(title){
-                    title.scrollIntoView()
-                }
-            } catch(e){console.log(e)}
-        } else if(this.$route.path != '/'){
-            let title = document.querySelector(`#menu`)
-            if(title){
-                title.scrollIntoView()
-            }
-        }
         let rect = this.$el.getBoundingClientRect()
         if(rect.top <= 0){
             this.fixed = true

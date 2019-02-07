@@ -4,12 +4,20 @@
     </div>
 </template>
 <script>
+import {goHash} from '../A/goLink'
 export default {
     inject: ['clear'],
     name: 'Doc',
     created(){
         if( this.$parent.$parent.$vnode.componentOptions.tag === 'Menu' ){
             this.clear()
+            this.needGoHash = true
+        }
+    },
+    mounted(){
+        if(this.needGoHash){
+            goHash(this.$route.hash, this.$router)
+            this.needGoHash = false
         }
     }
 }

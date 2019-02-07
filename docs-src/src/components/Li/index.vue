@@ -13,6 +13,9 @@
     color: @font-color;
     list-style: none;
 }
+.li + .li{
+    margin-top: 0.4em;
+}
 .li::before{
     content: '';
     display: inline-block;

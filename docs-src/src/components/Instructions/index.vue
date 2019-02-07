@@ -67,8 +67,8 @@
                 return this.data.map(item=> {
                     return {
                         name: item.name,
-                        type: highlight(item.type), 
-                        default: highlight(item.default), 
+                        type: highlight(item.type, 'javascript' || ''), 
+                        default: highlight(item.default || '', 'typescript'), 
                         required: item.required, 
                         describe: item.describe, 
                         demo: item.demo,

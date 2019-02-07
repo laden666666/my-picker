@@ -2,6 +2,7 @@
 <script>
 export default {
     props: {
+        // 是否是倒序显示
         reverse: {
             type: Boolean,
             default: true

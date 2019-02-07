@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+import {goLink, goHash} from '../A/goLink'
 export default {
     name: 'Home',
     props: {
@@ -71,29 +72,7 @@ export default {
     },
     methods: {
         goLink(path){
-            let position = path.indexOf('#')
-            let hash = ~position ? path.substr(position + 1) : ''
-            let routePath = path.split('#')[0]
-            if(this.$route.path == routePath){
-                if(hash){
-                    try{
-                        let title = document.querySelector(`[name='hash']`)
-                        if(title){
-                            title.scrollIntoView()
-                        }
-                        this.$router.replace(path)
-
-                    } catch(e){console.log(e)}
-                } else {
-                    let title = document.querySelector(`#menu`)
-                    if(title){
-                        title.scrollIntoView()
-                    }
-                }
-                
-            } else{
-                this.$router.push(routePath)
-            }
+            goLink(path, this.$router)
         }
     }
 }
