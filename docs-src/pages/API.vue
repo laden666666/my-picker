@@ -191,7 +191,7 @@ picker.show()`">
             <P>显示隐藏相关API示例</P>
         </Demo>
 
-        <H2>已选值相关API：</H2>
+        <H2>选项列表相关API：</H2>
         <H3>myPicker.prototype.setOptions</H3>
         <Function :data="
     `/**
@@ -209,8 +209,8 @@ picker.show()`">
         * @returns {any[]}         滚轮的可选值列表
         */`"></Function>
 
-        <H2>选项列表相关api：</H2>
-        <H3>myPicker.prototype.setValue(index, value)</H3>
+        <H2>已选值相关API：</H2>
+        <H3>myPicker.prototype.setValue</H3>
         <Function :data="
     `/**
         * 设置滚轮的可选值
@@ -218,7 +218,7 @@ picker.show()`">
         * @param {any} value         设置的值
         */`"></Function>
 
-        <H3>myPicker.prototype.getValue(index)</H3>
+        <H3>myPicker.prototype.getValue</H3>
         <Function :data="
     `/**
         * 获取滚轮的值,如果index为空表示获取所有滚轮的值
