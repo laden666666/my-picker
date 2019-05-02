@@ -37,3 +37,4 @@ node_modules/
 npm-debug.log.*
 .history
 .npmrc
+package-lock.json
