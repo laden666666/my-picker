@@ -12,61 +12,61 @@
         <P>option是控件的初始化配置，具体配置项有：</P>
         <Instructions :data="[{
             name: 'cols',
-            type: 'Object 或 Array', 
-            required: true, 
+            type: 'Object 或 Array',
+            required: true,
             describe: '可选值列表的配置，是个数组，数组每项一列，一列的配置项的完整格式为一个json对象，最多支持3列'
         }, {
             name: 'setValues',
-            type: 'Array', 
+            type: 'Array',
             default: '[]',
-            describe: '配置每一列已选择的值。是个数组，索引必须和cols里面的可选值列表的索引一样', 
+            describe: '配置每一列已选择的值。是个数组，索引必须和cols里面的可选值列表的索引一样',
         }, {
             name: 'hasVoice',
-            type: 'Boolean', 
+            type: 'Boolean',
             default: 'true',
-            describe: '是否启动刻度声音。如果值为true，转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。', 
+            describe: '是否启动刻度声音。如果值为true，转动滚轮时候，是否可以发出声音。boolean型，默认是true，即要求发出滴答声。',
         }, {
             name: 'title',
-            type: 'String', 
+            type: 'String',
             default: '\'\'',
-            describe: '显示的标题。', 
+            describe: '显示的标题。',
         }, {
             name: 'zIndex',
-            type: 'Number', 
+            type: 'Number',
             default: '100',
-            describe: '控件的z-index的属性值。', 
+            describe: '控件的z-index的属性值。',
         }, {
             name: 'isPerspective',
-            type: 'Boolean', 
+            type: 'Boolean',
             default: '随浏览器变化',
-            describe: '是否以3D透视显示picker的滚轮。如果为true，picker的滚轮会以3D的形式显示，否则会以一个平面的模式显示。\n如果浏览器支持3D模式，默认值会优先显示3D模式；如果浏览器无法支持运行3D模式，即使设置为true也以平面模式显示', 
+            describe: '是否以3D透视显示picker的滚轮。如果为true，picker的滚轮会以3D的形式显示，否则会以一个平面的模式显示。\n如果浏览器支持3D模式，默认值会优先显示3D模式；如果浏览器无法支持运行3D模式，即使设置为true也以平面模式显示',
         }, {
             name: 'hasGlassCover',
-            type: 'Boolean', 
+            type: 'Boolean',
             default: 'true',
-            describe: '是否有玻璃罩。如果为true，滚轮会被一层渐变层罩住，给人一种类似玻璃遮罩的感觉。\n默认值会优先用webkit-mask-box-image显示玻璃罩；如果浏览器不支持会使用box-shadow实现', 
+            describe: '是否有玻璃罩。如果为true，滚轮会被一层渐变层罩住，给人一种类似玻璃遮罩的感觉。\n默认值会优先用webkit-mask-box-image显示玻璃罩；如果浏览器不支持会使用box-shadow实现',
         }, {
             name: 'fontSize',
-            type: 'Number', 
+            type: 'Number',
             default: '15',
-            describe: '显示的字体大小，只支持数字，单位是px', 
+            describe: '显示的字体大小，只支持数字，单位是px',
         }, {
             name: 'buttons',
-            type: 'Array', 
+            type: 'Array',
             default: '[\'确定\', \'取消\']',
-            describe: '显示按钮的名称，第一个是按钮是确定，第二个是取消。', 
+            describe: '显示按钮的名称，第一个是按钮是确定，第二个是取消。',
         }, {
             name: 'onSelectItem',
-            type: 'Function', 
-            describe: '用户转动滚轮停止时，响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。', 
+            type: 'Function',
+            describe: '用户转动滚轮停止时，响应的事件。停止的时候会选择一个可选项，这个可选项的索引和值会作为回调传给这个事件的回调函数。',
         }, {
             name: 'onOkClick',
-            type: 'Function', 
-            describe: '点击“确定按钮”的事件函数，函数会返回一个数组，数组里面是被选值。', 
+            type: 'Function',
+            describe: '点击“确定按钮”的事件函数，函数会返回一个数组，数组里面是被选值。',
         }, {
             name: 'onCancelClick',
-            type: 'Function', 
-            describe: '点击取消按钮的事件。执行后会关闭picker。', 
+            type: 'Function',
+            describe: '点击取消按钮的事件。执行后会关闭picker。',
         },]"></Instructions>
 
         <P>这里对几个主要配置项做解释。</P>
@@ -225,8 +225,7 @@ picker.show()`">
         * @param {number} index    滚轮的index,从0开始记录。如果为空表示获取所有滚轮的值
         * @returns {any}             设置的值
         */`"></Function>
-
-        <Comments></Comments>
+        <!-- <Comments></Comments> -->
 
     </Doc>
 </template>
@@ -246,7 +245,7 @@ export default {
             onSelectItem,
             onOkClick,
             show,
-            showCode: 
+            showCode:
 `<a onclick="show">显示picker，两秒后自动关闭picker</a>
 <a onclick="close">销毁picker</a>
 <script>

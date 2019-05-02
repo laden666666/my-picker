@@ -96,12 +96,12 @@ exports.default = myJquery(document);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 function em() {
-    //根据屏幕的dpr判断em大小。如果dpr不是1，说明不是pc屏幕，此时选取window.innerWidth和window.innerHeight最小值的100分之一做1em。
-    //如果dpr是1，表示可能是pc屏幕，此时要求控件不能过大，所以去window.innerWidth、window.innerHeight、650当中的最小值的100分之一做1em
-    if (window.devicePixelRatio && window.devicePixelRatio > 1) {
-        return Math.min(window.innerWidth, window.innerHeight) / 100;
+    // 如果height大于等于width，说明是pc或者手机的横屏模式，弹框显示在屏幕正中间
+    // 否则表示是手机竖屏，弹框显示在屏幕下面
+    if (window.innerWidth <= window.innerHeight) {
+        return window.innerWidth / 100;
     } else {
-        return Math.min(window.innerWidth, window.innerHeight, 400) / 100;
+        return Math.min(window.innerHeight, 400) / 100;
     }
 }
 exports.em = em;
@@ -567,7 +567,7 @@ __webpack_require__(23);
 var myPicker = function myPicker(option) {
     return new Picker_1.Picker(option);
 };
-myPicker.version = "v1.0.0";
+myPicker.version = "v1.0.1";
 module.exports = myPicker;
 
 /***/ }),
@@ -1087,69 +1087,87 @@ var Wheel3D = function (_AWheel_1$AWheel) {
 
     }, {
         key: "setOptions",
-        value: function setOptions(list, selectedValue) {
+        value: function setOptions() {
+            var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+            var selectedValue = arguments[1];
             var isInti = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
             var that = this;
-            list = list || [];
-            if (Array.isArray(list)) {
-                //清空容器
-                that.contains.html("");
-                this.list = list;
-            } else {
+            if (!Array.isArray(list)) {
                 throw new TypeError("list is not a array.");
             }
+            // 尽量复用已经存在的DOM，如果newlist长度大于原oldlist长度，用DocumentFragment一次性插入DOM。
+            // newlist长度大于原oldlist长度，删除现有节点中多出的部分
+            // 最后修改DOM的text属性，尽量减小DOM重绘的成本和次数
+            var oldLength = this.list && this.list.length || 0;
+            var lis = this.contains.children();
+            if (oldLength > list.length) {
+                lis.each(function (i, e) {
+                    if (i >= list.length) {
+                        domUtil_1.default(e).remove();
+                    }
+                });
+            }
+            //清空容器
+            this.list = list;
             //计算valueHashMap
             this.valueHashMap = {};
             //计算最小转角
             this.maxAngle = constant_1.default.WHEEL_ITEM_ANGLE * Math.max(0, this.list.length - 1);
             //生成滚轮的标签
-            //标签的index
-            var i = 0,
-
             //标签显示值
-            label,
+            var label,
 
             //显示标签的dom的高度,要求根据wheelItemAngle计算,使各个标签dom的边缘刚好挨在一起,确保没有空细
             height = this.radius * Math.PI * constant_1.default.WHEEL_ITEM_ANGLE / 180;
+            // 如果newlist长度大于原oldlist长度，用DocumentFragment一次性插入DOM
+            // docFragment = document.createDocumentFragment()
             this.list.forEach(function (item, index) {
                 //如果是对象,取labelKey对应值显示。否则直接显示它本身
                 if ((typeof item === "undefined" ? "undefined" : _typeof(item)) === 'object') {
                     label = item[that.labelKey];
-                    that.valueHashMap[item[that.itemValueKey]] = i;
+                    that.valueHashMap[item[that.itemValueKey]] = index;
                 } else {
                     label = item;
-                    that.valueHashMap[item] = i;
+                    that.valueHashMap[item] = index;
                 }
-                //创建label的显示dom,并计算他在容器中的位置(角度)
-                var li = domUtil_1.default("<li></li>");
-                li.append(domUtil_1.default('<span class="picker-text"></span>').text(label));
-                var angle = constant_1.default.WHEEL_ITEM_ANGLE * -index;
-                //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-                var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius / 100 + "em) scale(0.75)";
-                li.css("-webkit-transform", transformValue).css("transform", transformValue).css("padding", height / 5.9 / 100 + "em 0").css("height", height / 100 + "em").css("line-height", height / 100 + "em");
-                //将标签的角度保存到其dom中
-                li.data("angle", angle);
-                //将标签的index保存到其dom中
-                li.data("index", i);
-                //将标签的dom放到contains上,contains的事件全部委托于容器,即标签不监听事件
-                that.contains.append(li);
-                //增加点击选择功能
-                var clickHandle = function clickHandle(event) {
-                    if (that.changeMaxAngle < 1) {
-                        //计算完成,清空速度相关变量,并去除之前的动画效果
-                        that.isDraging = false;
-                        that.lastY = 0;
-                        that.speed = 0;
-                        that.selectIndex(index, true);
-                        event.stopPropagation();
-                        event.preventDefault();
+                if (index < oldLength) {
+                    var span = lis.eq(index).find('span');
+                    if (span.text() != label) {
+                        span.text(label);
                     }
-                };
-                li[0].addEventListener('mouseup', clickHandle);
-                li[0].addEventListener('touchend', clickHandle);
-                i++;
+                } else {
+                    //创建label的显示dom,并计算他在容器中的位置(角度)
+                    var li = domUtil_1.default("<li></li>");
+                    li.append(domUtil_1.default('<span class="picker-text"></span>').text(label));
+                    var angle = constant_1.default.WHEEL_ITEM_ANGLE * -index;
+                    //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
+                    var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius / 100 + "em) scale(0.75)";
+                    li.css("-webkit-transform", transformValue).css("transform", transformValue).css("padding", height / 5.9 / 100 + "em 0").css("height", height / 100 + "em").css("line-height", height / 100 + "em");
+                    //将标签的角度保存到其dom中
+                    li.data("angle", angle);
+                    //将标签的index保存到其dom中
+                    li.data("index", index);
+                    //增加点击选择功能
+                    var clickHandle = function clickHandle(event) {
+                        if (that.changeMaxAngle < 1) {
+                            //计算完成,清空速度相关变量,并去除之前的动画效果
+                            that.isDraging = false;
+                            that.lastY = 0;
+                            that.speed = 0;
+                            that.selectIndex(index, true);
+                            event.stopPropagation();
+                            event.preventDefault();
+                        }
+                    };
+                    li[0].addEventListener('mouseup', clickHandle);
+                    li[0].addEventListener('touchend', clickHandle);
+                    //将标签的dom放到contains上,contains的事件全部委托于容器,即标签不监听事件
+                    that.contains.append(li[0]);
+                    // docFragment.appendChild(li[0]);
+                }
             });
+            // this.contains.append(docFragment)
             //刷新标签
             this.flushLabel();
             if (isInti) {
@@ -1404,6 +1422,23 @@ exports.Wheel3D = Wheel3D;
 		});
 	}
 
+	// 判断element是否符合选择器
+	var matches = Element.prototype.matches || Element.prototype.msMatchesSelector
+	function elsMatches(el, selector){
+		if(!selector) return el
+		var arr = [], selectors = selector.split(',')
+		for(var i in [].slice.call(el)){
+			selectors:
+			for(var j = 0; j < selectors.length; j++){
+				if(matches.call(el[i], selectors[j])){
+					arr.push(el[i])
+					break selectors;
+				}
+			}
+		}
+		return arr
+	}
+
 	//一个模板,用于生成setter和getter重载函数
 	function access(myjq, setter, getter, key, value) {
 		//是否是setter方法,如果是setter方法,value不能是undefined
@@ -1430,7 +1465,7 @@ exports.Wheel3D = Wheel3D;
 	//删除dom时候使用
 	function clearData(item) {
 		var arr;
-		if(item.nodeType == 1){
+		if(item.nodeType == 1 || item.nodeType == 11){
 			delete item[dataKey];
 			arr = item.children;
 		} else if(item && item.length != null){
@@ -1484,7 +1519,7 @@ exports.Wheel3D = Wheel3D;
 				return this;
 			}
 
-			if(typeof selector == "string"){
+			if(typeof selector === 'string'){
 				//如果是字符串，表示可能是选择器，或者是构建字符串
 				selector = selector.trim();
 				//如果是构建字符串，需要判断是否是<>格式，如果不是表示是选择器
@@ -1501,7 +1536,7 @@ exports.Wheel3D = Wheel3D;
 				//类似数组就表示是数组。遍历数组或者是$.init对象，如果里面是dom元素封装返回
 				for(var i = 0,length = 0; i < selector.length; i++){
 					var dom = selector[i];
-					if(dom && dom.nodeType == 1){
+					if(dom && (dom.nodeType == 1 || dom.nodeType == 11)){
 						this[length] = dom;
 						length++;
 					}
@@ -1535,7 +1570,7 @@ exports.Wheel3D = Wheel3D;
 
 		//往集合增加一个dom
 		add: function (item) {
-			if(item && item.nodeType == 1){
+			if(item && item.nodeType == 1 && item.nodeType == 11){
 				this[this.length++] = item;
 			}
 			return this;
@@ -1545,6 +1580,20 @@ exports.Wheel3D = Wheel3D;
 		find: function(selector){
 			return access(this,null,function (dom, selector) {
 				return $(dom.querySelectorAll(selector));
+			},selector)
+		},
+
+		// 获取所有children节点
+		children: function(selector){
+			return access(this,null,function (dom, selector) {
+				return $(elsMatches(dom.children, selector))
+			},selector)
+		},
+
+		// 获得所有节点的
+		parent: function(selector){
+			return access(this,null,function (dom, selector) {
+				return $(elsMatches([dom.parentElement], selector))
 			},selector)
 		},
 

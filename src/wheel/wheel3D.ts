@@ -10,6 +10,7 @@ import {Col} from '../Col'
 import {Picker} from '../Picker'
 import {IOptions} from '../API'
 import { AWheel } from './AWheel';
+import { MyJQuery } from 'my-jquery/types/MyJQuery';
 
 
 declare function require<T>(name: string): T
@@ -219,17 +220,30 @@ export class Wheel3D extends AWheel{
      * @param {*} selectedValue             默认值
      * @param {boolean} [isInti=false]      是否是初始化,初始化不执行设置默认值操作
      */
-    setOptions(list: any[], selectedValue: any, isInti: boolean = false) {
+    setOptions(list: any[] = [], selectedValue: any, isInti: boolean = false) {
+
         var that = this;
 
-        list = list || [];
-        if(Array.isArray(list)){
-            //清空容器
-            that.contains.html("");
-            this.list = list;
-        } else {
+        if(!Array.isArray(list)){
             throw new TypeError("list is not a array.")
         }
+
+        // 尽量复用已经存在的DOM，如果newlist长度大于原oldlist长度，用DocumentFragment一次性插入DOM。
+        // newlist长度大于原oldlist长度，删除现有节点中多出的部分
+        // 最后修改DOM的text属性，尽量减小DOM重绘的成本和次数
+
+        let oldLength = this.list && this.list.length || 0
+        const lis = this.contains.children()
+        if(oldLength > list.length){
+            lis.each((i, e)=>{
+                if(i >= list.length){
+                    $(e).remove()
+                }
+            })
+        }
+
+        //清空容器
+        this.list = list;
 
         //计算valueHashMap
         this.valueHashMap = {};
@@ -238,62 +252,70 @@ export class Wheel3D extends AWheel{
         this.maxAngle = constant.WHEEL_ITEM_ANGLE * (Math.max(0, this.list.length - 1) );
 
         //生成滚轮的标签
-        //标签的index
-        var i = 0,
-            //标签显示值
-            label,
+        //标签显示值
+        var label: string,
             //显示标签的dom的高度,要求根据wheelItemAngle计算,使各个标签dom的边缘刚好挨在一起,确保没有空细
-            height = this.radius * Math.PI * constant.WHEEL_ITEM_ANGLE / 180;
+            height = this.radius * Math.PI * constant.WHEEL_ITEM_ANGLE / 180
+            // 如果newlist长度大于原oldlist长度，用DocumentFragment一次性插入DOM
+            // docFragment = document.createDocumentFragment()
 
-        this.list.forEach(function(item,index){
+        this.list.forEach(function(item, index){
 
             //如果是对象,取labelKey对应值显示。否则直接显示它本身
             if(typeof item === 'object'){
                 label = item[that.labelKey];
-                that.valueHashMap[item[that.itemValueKey]] = i;
+                that.valueHashMap[item[that.itemValueKey]] = index;
             } else {
                 label = item;
-                that.valueHashMap[item] = i;
+                that.valueHashMap[item] = index;
             }
 
-            //创建label的显示dom,并计算他在容器中的位置(角度)
-            var li = $("<li></li>");
-            li.append($('<span class="picker-text"></span>').text(label));
-            var angle = constant.WHEEL_ITEM_ANGLE * -index;
-
-            //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
-            var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)"
-            li.css("-webkit-transform", transformValue).css("transform", transformValue)
-                .css("padding",  `${height / 5.9 / 100}em 0`)
-                .css("height",  height / 100 + "em")
-                .css("line-height", height / 100 + "em");
-            //将标签的角度保存到其dom中
-            li.data("angle", angle);
-            //将标签的index保存到其dom中
-            li.data("index", i);
-
-            //将标签的dom放到contains上,contains的事件全部委托于容器,即标签不监听事件
-            that.contains.append(li);
-
-            //增加点击选择功能
-            var clickHandle = function (event) {
-                if(that.changeMaxAngle < 1) {
-                    //计算完成,清空速度相关变量,并去除之前的动画效果
-                    that.isDraging = false;
-                    that.lastY = 0;
-                    that.speed = 0;
-
-                    that.selectIndex(index, true);
-                    event.stopPropagation();
-                    event.preventDefault();
+            if(index < oldLength){
+                let span = lis.eq(index).find('span')
+                if(span.text() != label){
+                    span.text(label)
                 }
+            } else {
+                //创建label的显示dom,并计算他在容器中的位置(角度)
+                var li = $("<li></li>");
+                li.append($('<span class="picker-text"></span>').text(label));
+                var angle = constant.WHEEL_ITEM_ANGLE * -index;
+
+                //为了解决3d放大后，文字模糊的问题，故采用zoom=2的方案，所以li的尺寸方面，统一缩小一半
+                var transformValue = "rotateX(" + angle + "deg) translateZ(" + that.radius  / 100 + "em) scale(0.75)"
+                li.css("-webkit-transform", transformValue).css("transform", transformValue)
+                    .css("padding",  `${height / 5.9 / 100}em 0`)
+                    .css("height",  height / 100 + "em")
+                    .css("line-height", height / 100 + "em");
+                //将标签的角度保存到其dom中
+                li.data("angle", angle);
+                //将标签的index保存到其dom中
+                li.data("index", index);
+
+                //增加点击选择功能
+                var clickHandle = function (event) {
+                    if(that.changeMaxAngle < 1) {
+                        //计算完成,清空速度相关变量,并去除之前的动画效果
+                        that.isDraging = false;
+                        that.lastY = 0;
+                        that.speed = 0;
+
+                        that.selectIndex(index, true);
+                        event.stopPropagation();
+                        event.preventDefault();
+                    }
+                }
+
+                li[0].addEventListener('mouseup', clickHandle);
+                li[0].addEventListener('touchend', clickHandle);
+
+                //将标签的dom放到contains上,contains的事件全部委托于容器,即标签不监听事件
+                that.contains.append(li[0])
+                // docFragment.appendChild(li[0]);
             }
-
-            li[0].addEventListener('mouseup',clickHandle);
-            li[0].addEventListener('touchend',clickHandle);
-
-            i++;
         });
+
+        // this.contains.append(docFragment)
 
         //刷新标签
         this.flushLabel();

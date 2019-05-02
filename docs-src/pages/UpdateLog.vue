@@ -6,6 +6,12 @@
         <H2>升级日志</H2>
 
         <TimeLine>
+            <template slot="time2">
+                <H3>v1.0.1</H3>
+                <Li>优化了3D模式选项更新函数，使其更加流畅</Li>
+                <Li>提升了微信内置浏览器的响应速度</Li>
+                <Li>修复bug：<A href="https://github.com/laden666666/my-picker/issues/9">#4</A></Li>
+            </template>
             <template slot="time1">
                 <H3>v1.0.0</H3>
                 <Li>提升了移动端的响应速度</Li>

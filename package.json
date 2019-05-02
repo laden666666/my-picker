@@ -1,6 +1,6 @@
 {
   "name": "my-picker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个js控件，移动端使用的选择器，类似ios的选择器的风格",
   "main": "dist/my-picker.min.js",
   "types": "dist/src/index.d.ts",
@@ -47,8 +47,8 @@
     "mocha": "^3.4.2",
     "my-doc-jsx": "^0.4.2",
     "my-doc-jsx-plugin-api": "^0.1.1",
-    "my-vue-doc": "^0.0.1",
-    "my-jquery": "^0.2.8",
+    "my-jquery": "^0.3.1",
+    "my-vue-doc": "0.0.4",
     "node-sass": "^4.5.3",
     "ora": "^1.3.0",
     "postcss-import": "^12.0.1",

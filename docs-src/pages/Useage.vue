@@ -6,19 +6,19 @@
         <H2>简单的选择器</H2>
         <P>可以设置简单的选择器，高仿IOS的PickerView控件，3D形式的滚轮选择器。</P>
         <Demo :demo="example1" :code="code1" title="简单的选择器"></Demo>
-        
+
         <H2>带前缀与后缀的选择器</H2>
         <P>可以让选择器的滚轮左右两边设置固定的显示值，实现对选择器增加统一的单位、称呼、序列的文案。</P>
         <Demo :demo="example2" :code="code2" title="带前缀与后缀的选择器"></Demo>
-        
+
         <H2>多滚轮的选择器</H2>
         <P>支持多个滚轮同时选择，并且每个滚轮都是3d的，而且还有水平方向的透视效果。建议滚轮最多只能设置3个，否则可能会出现显示异常。</P>
         <Demo :demo="example3" :code="code3" title="多滚轮的选择器"></Demo>
-        
+
         <H2>设置默认值及动态设置选中值</H2>
         <P>通过api可以设置默认值，并且可以通过api代替用户选择所选值。如下边的例子，两个picker通过相互调用api，给对方设置值，让两个选择器值保存同步。</P>
         <Demo :demo="example4" :code="code4" title="设置默认值及动态设置"></Demo>
-        
+
         <H2>动态设置选择器的可选值</H2>
         <P>通过api可以动态修改可选值。下边的例子中，每选择一次，都会修改可选值列表。</P>
         <Demo :demo="example5" :code="code5" title="动态设置选择器的可选值"></Demo>
@@ -26,32 +26,31 @@
         <H2>label和value的选择器</H2>
         <P>picker不但可以选择字符串数组，还支持选择json，不过必须要提供json的属性中的label和value的key。</P>
         <Demo :demo="example6" :code="code6" title="label和value的选择器"></Demo>
-        
+
         <H2>级联选择器</H2>
         <P>通过api修改可选值，可以实现级联选择的功能。</P>
         <Demo :demo="example7" :code="code7" title="级联选择器"></Demo>
-        
+
         <H2>构建简单的日期选择器</H2>
         <P>基于picker控件，可以进一步封装出更多选择器控件。这里是一个日期选择控件的例子，代码实现仅做参考。</P>
         <Demo :demo="example8" :code="code8" title="构建简单的日期选择器"></Demo>
-        
+
         <H2>非3D模式</H2>
         <P><Strong>myPicker</Strong>默认是使用3D形式的picker，但是它也支持一套平面模式的picker，用于在不兼容css3的<Strong>transform-style: preserve-3d</Strong>属性的浏览器中使用。</P>
         <Demo :demo="example9" :code="code9" title="非3D模式"></Demo>
-        
+
         <H2>静音模式</H2>
         <P><Strong>myPicker</Strong>默认在用户滑动滚轮过程中是提供操作提示音，如果不需要这种提示音，可以通过设置<Strong>hasVoice</Strong>属性关闭操作音。</P>
         <Demo :demo="example10" :code="code10" title="静音模式">
             <P>这是一个没有操作音的picker</P>
         </Demo>
-        
+
         <H2>隐藏玻璃罩</H2>
         <P><Strong>myPicker</Strong>默认在滚轮上面覆盖了一层模糊层，模拟IOS的picker的玻璃罩效果，可以通过设置<Strong>hasGlassCover</Strong>属性关闭显示玻璃罩。</P>
         <Demo :demo="example11" :code="code11" title="隐藏玻璃罩">
             <P>这是一个隐藏玻璃罩的picker</P>
         </Demo>
-
-        <Comments></Comments>
+        <!-- <Comments></Comments> -->
 
     </Doc>
 </template>
@@ -445,6 +444,6 @@ export default {
     border-color: rgba(0, 0, 0, 0.3);
   }
   .view_demo{
-      
+
   }
 </style>
