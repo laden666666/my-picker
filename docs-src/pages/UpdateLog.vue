@@ -8,9 +8,10 @@
         <TimeLine>
             <template slot="time2">
                 <H3>v1.0.1</H3>
-                <Li>优化了3D模式选项更新函数，使其更加流畅</Li>
-                <Li>提升了微信内置浏览器的响应速度</Li>
-                <Li>修复bug：<A href="https://github.com/laden666666/my-picker/issues/9">#4</A></Li>
+*
+                <Li>优化了3D模式的setOptions函数，使其更新DOM效率更高</Li>
+                <Li>提升了在微信内置浏览器的滚轮响应速度，解决了级联形式的闪白问题</Li>
+                <Li>修复bug：<A href="https://github.com/laden666666/my-picker/issues/9">#9</A></Li>
             </template>
             <template slot="time1">
                 <H3>v1.0.0</H3>
