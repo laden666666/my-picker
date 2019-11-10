@@ -82,7 +82,7 @@ npm i my-picker -S
 并在js文件中引用
 
 ```javascript
-import myPicker form 'my-picker'
+import myPicker from 'my-picker'
 import 'my-picker/my-picker.css'
 ```
 
